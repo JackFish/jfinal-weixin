@@ -4,3 +4,23 @@
 *.jar
 *.war
 *.ear
+
+
+*.bak
+*.class
+*.tmp
+*.log
+/bin/
+build.sh
+integration-repo
+/build/
+
+# IDEA metadata and output dirs
+*.iml
+*.ipr
+*.iws
+out
+
+*.jar
+/webapp/WEB-INF/classes/
+/webapp/WEB-INF/target/

@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.jfinal</groupId>
+  <artifactId>jfinal_weixin_sdk</artifactId>
+  <packaging>war</packaging>
+  <version>0.1-SNAPSHOT</version>
+  <name>jfinal_weixin_sdk</name>
+  <url>http://www.jfinal.com</url>
+  <properties><project.build.sourceEncoding>UTF-8</project.build.sourceEncoding></properties>
+  
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- dependency>
+    	<groupId>org.eclipse.jetty</groupId>
+    	<artifactId>jetty-webapp</artifactId>
+    	<version>8.1.8.v20121106</version>
+    	<scope>provided</scope>
+    </dependency -->
+    
+    <dependency>
+    	<groupId>com.jfinal</groupId>
+    	<artifactId>jetty-server</artifactId>
+    	<version>8.1.8</version>
+    	<scope>provided</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.jfinal</groupId>
+    	<artifactId>jfinal</artifactId>
+    	<version>1.8</version>
+    </dependency>
+    <dependency>
+		<groupId>org.freemarker</groupId>
+		<artifactId>freemarker</artifactId>
+		<version>2.3.20</version>
+	</dependency>
+	<dependency>
+		<groupId>dom4j</groupId>
+		<artifactId>dom4j</artifactId>
+		<version>1.6.1</version>
+	</dependency>
+	<dependency>
+		<groupId>jaxen</groupId>
+		<artifactId>jaxen</artifactId>
+	<version>1.1.6</version>
+</dependency>
+	
+  </dependencies>
+  
+  <build>
+	 	<sourceDirectory>${project.basedir}/src</sourceDirectory>
+	    <scriptSourceDirectory>${project.basedir}/scripts</scriptSourceDirectory>
+	    <testSourceDirectory>${project.basedir}/test</testSourceDirectory>
+	    <outputDirectory>${project.basedir}/webapp/WEB-INF/classes</outputDirectory>
+	    <testOutputDirectory>${project.basedir}/webapp/WEB-INF/test-classes</testOutputDirectory>
+	    <resources>
+	      <resource>
+	        <!-- directory>${project.basedir}/resources</directory -->
+	        <directory>${project.basedir}/src</directory>
+	        <excludes><exclude>**/*.java</exclude></excludes>
+	      </resource>
+	    </resources>
+	    <testResources>
+	      <testResource>
+	        <directory>${project.basedir}/test/resources</directory>
+	        <excludes><exclude>**/*.java</exclude></excludes>
+	      </testResource>
+	    </testResources>
+	    <!-- directory>${project.basedir}/target</directory -->
+	    <directory>${project.basedir}/webapp/WEB-INF/target</directory><!-- v i -->
+    <finalName>jfinal_weixin_sdk</finalName>
+  </build>
+</project>

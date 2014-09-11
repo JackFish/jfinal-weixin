@@ -1,0 +1,194 @@
+package com.jfinal.weixin.sdk.message;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import com.jfinal.weixin.sdk.message.in.InImageMessage;
+import com.jfinal.weixin.sdk.message.in.InLinkMessage;
+import com.jfinal.weixin.sdk.message.in.InLocationMessage;
+import com.jfinal.weixin.sdk.message.in.InMessage;
+import com.jfinal.weixin.sdk.message.in.InTextMessage;
+import com.jfinal.weixin.sdk.message.in.InVideoMessage;
+import com.jfinal.weixin.sdk.message.in.InVoiceMessage;
+import com.jfinal.weixin.sdk.message.in.event.InFollowEvent;
+import com.jfinal.weixin.sdk.message.in.event.InLocationEvent;
+import com.jfinal.weixin.sdk.message.in.event.InMenuEvent;
+import com.jfinal.weixin.sdk.message.in.event.InQrCodeEvent;
+
+public class InMessageParaser {
+	
+	private InMessageParaser() {}
+	
+	/**
+	 * 从 xml 中解析出各类消息与事件
+	 */
+	public static InMessage parse(String xml) {
+		try {
+			return doParse(xml);
+		} catch (DocumentException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * 消息类型
+	 * 1：text 文本消息
+	 * 2：image 图片消息
+	 * 3：voice 语音消息
+	 * 4：video 视频消息
+	 * 5：location 地址位置消息
+	 * 6：link 链接消息
+	 * 7：event 事件
+	 */
+	private static InMessage doParse(String xml) throws DocumentException {
+		Document doc = DocumentHelper.parseText(xml);
+        Element root = doc.getRootElement();
+        String toUserName = root.elementText("ToUserName");
+        String fromUserName = root.elementText("FromUserName");
+        Integer createTime = Integer.parseInt(root.elementText("CreateTime"));
+        String msgType = root.elementText("MsgType");
+        if ("text".equals(msgType))
+        	return parseInTextMessage(root, toUserName, fromUserName, createTime, msgType);
+        if ("image".equals(msgType))
+        	return parseInImageMessage(root, toUserName, fromUserName, createTime, msgType);
+        if ("voice".equals(msgType))
+        	return parseInVoiceMessage(root, toUserName, fromUserName, createTime, msgType);
+        if ("video".equals(msgType))
+        	return parseInVideoMessage(root, toUserName, fromUserName, createTime, msgType);
+        if ("location".equals(msgType))
+        	return parseInLocationMessage(root, toUserName, fromUserName, createTime, msgType);
+        if ("link".equals(msgType))
+        	return parseInLinkMessage(root, toUserName, fromUserName, createTime, msgType);
+        if ("event".equals(msgType))
+        	return parseInEvent(root, toUserName, fromUserName, createTime, msgType);
+        throw new RuntimeException("无法识别的消息类型，请查阅微信公众平台开发文档");
+	}
+	
+	private static InMessage parseInTextMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InTextMessage msg = new InTextMessage(toUserName, fromUserName, createTime, msgType);
+		msg.setContent(root.elementText("Content"));
+		msg.setMsgId(root.elementText("MsgId"));
+		return msg;
+	}
+	
+	private static InMessage parseInImageMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InImageMessage msg = new InImageMessage(toUserName, fromUserName, createTime, msgType);
+		msg.setPicUrl(root.elementText("PicUrl"));
+		msg.setMediaId(root.elementText("MediaId"));
+		msg.setMsgId(root.elementText("MsgId"));
+		return msg;
+	}
+	
+	private static InMessage parseInVoiceMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InVoiceMessage msg = new InVoiceMessage(toUserName, fromUserName, createTime, msgType);
+		msg.setMediaId(root.elementText("MediaId"));
+		msg.setFormat(root.elementText("Format"));
+		msg.setMsgId(root.elementText("MsgId"));
+		return msg;
+	}
+	
+	private static InMessage parseInVideoMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InVideoMessage msg = new InVideoMessage(toUserName, fromUserName, createTime, msgType);
+		msg.setMediaId(root.elementText("MediaId"));
+		msg.setThumbMediaId(root.elementText("ThumbMediaId"));
+		msg.setMsgId(root.elementText("MsgId"));
+		return msg;
+	}
+	
+	private static InMessage parseInLocationMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InLocationMessage msg = new InLocationMessage(toUserName, fromUserName, createTime, msgType);
+		msg.setLocation_X(root.elementText("Location_X"));
+		msg.setLocation_Y(root.elementText("Location_Y"));
+		msg.setScale(root.elementText("Scale"));
+		msg.setLabel(root.elementText("Label"));
+		msg.setMsgId(root.elementText("MsgId"));
+		return msg;
+	}
+	
+	private static InMessage parseInLinkMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InLinkMessage msg = new InLinkMessage(toUserName, fromUserName, createTime, msgType);
+		msg.setTitle(root.elementText("Title"));
+		msg.setDescription(root.elementText("Description"));
+		msg.setUrl(root.elementText("Url"));
+		msg.setMsgId(root.elementText("MsgId"));
+		return msg;
+	}
+	
+	// 解析四种事件
+	private static InMessage parseInEvent(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		String event = root.elementText("Event");
+		if ("LOCATION".equals(event)) {
+			InLocationEvent e = new InLocationEvent(toUserName, fromUserName, createTime, msgType);
+			e.setEvent(event);
+			e.setLatitude(root.elementText("Latitude"));
+			e.setLongitude(root.elementText("Longitude"));
+			e.setPrecision(root.elementText("Precision"));
+			return e;
+		}
+		
+		if ("CLICK".equals(event) || "VIEW".equals(event)) {
+			InMenuEvent e = new InMenuEvent(toUserName, fromUserName, createTime, msgType);
+			e.setEvent(event);
+			e.setEventKey(root.elementText("EventKey"));
+			return e;
+		}
+		
+		String eventKey = root.elementText("EventKey");
+		if ("subscribe".equals(event) && eventKey == null) {
+			InFollowEvent e = new InFollowEvent(toUserName, fromUserName, createTime, msgType);
+			e.setEvent(event);
+			return e;
+		}
+		
+		String ticket = root.elementText("Ticket");
+		if ("subscribe".equals(event) || "SCAN".equals(event)) {
+			if (eventKey != null && ticket != null) {
+				InQrCodeEvent e = new InQrCodeEvent(toUserName, fromUserName, createTime, msgType);
+				e.setEvent(event);
+				e.setEventKey(eventKey);
+				e.setTicket(ticket);
+				return e;
+			}
+		}
+		
+		throw new RuntimeException("无法识别的事件类型，请查阅微信公众平台开发文档");
+	}
+	
+	public static void main(String[] args) throws DocumentException {
+		String xml = 
+			"<xml>\n" +
+				"<ToUserName><![CDATA[James]]></ToUserName>\n" +
+				"<FromUserName><![CDATA[JFinal]]></FromUserName>\n" +
+				"<CreateTime>1348831860</CreateTime>\n" +
+				"<MsgType><![CDATA[text]]></MsgType>\n" +
+					"<Content><![CDATA[this is a test]]></Content>\n" +
+					"<MsgId>1234567890123456</MsgId>\n" +
+			"</xml>";
+		
+//		InTextMessage msg = (InTextMessage)parse(xml);
+//		System.out.println(msg.getToUserName());
+//		System.out.println(msg.getFromUserName());
+//		System.out.println(msg.getContent());
+		
+		
+		String xml_2 = 
+				"<xml>\n" +
+					"<ToUserName><![CDATA[James]]></ToUserName>\n" +
+					"<FromUserName><![CDATA[JFinal]]></FromUserName>\n" +
+					"<CreateTime>1348831860</CreateTime>\n" +
+					"<MsgType><![CDATA[text]]></MsgType>\n" +
+						"<Content><![CDATA[this is a test]]></Content>\n" +
+						"<MsgId>1234567890123456</MsgId>\n" +
+				"</xml>";
+		
+		Document doc = DocumentHelper.parseText(xml_2);
+        Element root = doc.getRootElement();
+        String value = root.elementText("abc");
+        System.out.println(value);
+	}
+}
+
+
+
+
