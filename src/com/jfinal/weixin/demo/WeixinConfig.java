@@ -6,10 +6,6 @@
 
 package com.jfinal.weixin.demo;
 
-/**
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- */
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
