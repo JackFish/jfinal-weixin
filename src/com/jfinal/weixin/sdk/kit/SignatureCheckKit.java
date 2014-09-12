@@ -19,7 +19,7 @@ import com.jfinal.core.Controller;
  */
 public class SignatureCheckKit {
 	
-	private static final String TOKEN = "__jfinal__token__";
+	private static final String TOKEN = "__your_app__token__";
 	public static final SignatureCheckKit me = new SignatureCheckKit();
 	
 	/**
