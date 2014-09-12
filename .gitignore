@@ -19,7 +19,6 @@ integration-repo
 *.iml
 *.ipr
 *.iws
-out
 
 *.jar
 /webapp/WEB-INF/classes/

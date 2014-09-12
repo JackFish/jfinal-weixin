@@ -4,48 +4,43 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-package com.jfinal.weixin.sdk.message.in;
+package com.jfinal.weixin.sdk.message.out;
 
 /**
-	接收消息，以下是接收文本消息的例子
-	接收文本消息
+	回复文本消息
 	<xml>
-		<ToUserName><![CDATA[toUser]]></ToUserName>
-		<FromUserName><![CDATA[fromUser]]></FromUserName> 
-		<CreateTime>1348831860</CreateTime>
-		<MsgType><![CDATA[text]]></MsgType>
-			<Content><![CDATA[this is a test]]></Content>
-			<MsgId>1234567890123456</MsgId>
+	<ToUserName><![CDATA[toUser]]></ToUserName>
+	<FromUserName><![CDATA[fromUser]]></FromUserName>
+	<CreateTime>12345678</CreateTime>
+	<MsgType><![CDATA[text]]></MsgType>
+	<Content><![CDATA[你好]]></Content>
 	</xml>
+
  */
-public abstract class InMessage {
+public abstract class OutMessage {
 	
-	// 开发者微信号
+	// 接收方帐号（收到的OpenID）
 	protected String toUserName;
 	
-	// 发送方帐号（一个OpenID）
+	// 开发者微信号
 	protected String fromUserName;
 	
 	// 消息创建时间 （整型）
 	protected Integer createTime;
 	
 	/**
-	 * 消息类型
+	 * 被动响应消息类型
 	 * 1：text 文本消息
 	 * 2：image 图片消息
 	 * 3：voice 语音消息
 	 * 4：video 视频消息
-	 * 5：location 地址位置消息
-	 * 6：link 链接消息
-	 * 7：event 事件
+	 * 5：music 音乐消息
+	 * 6：news 图文消息
 	 */
 	protected String msgType;
 	
-	public InMessage(String toUserName, String fromUserName, Integer createTime, String msgType) {
-		this.toUserName = toUserName;
-		this.fromUserName = fromUserName;
-		this.createTime = createTime;
-		this.msgType = msgType;
+	public Integer now() {
+		return (int)(System.currentTimeMillis() / 1000);
 	}
 	
 	public String getToUserName() {
@@ -80,10 +75,3 @@ public abstract class InMessage {
 		this.msgType = msgType;
 	}
 }
-
-
-
-
-
-
-
