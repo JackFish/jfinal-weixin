@@ -21,12 +21,12 @@ package com.jfinal.weixin.sdk.message.out;
 public class OutImageMessage extends OutMessage {
 	public static final String TEMPLATE = 
 			"<xml>\n" +
-			"<ToUserName><![CDATA[${toUser}]]></ToUserName>\n" +
-			"<FromUserName><![CDATA[${fromUser}]]></FromUserName>\n" +
-			"<CreateTime>${createTime}</CreateTime>\n" +
-			"<MsgType><![CDATA[${msgType}]]></MsgType>\n" +
+			"<ToUserName><![CDATA[${__msg.toUser}]]></ToUserName>\n" +
+			"<FromUserName><![CDATA[${__msg.fromUser}]]></FromUserName>\n" +
+			"<CreateTime>${__msg.createTime}</CreateTime>\n" +
+			"<MsgType><![CDATA[${__msg.msgType}]]></MsgType>\n" +
 				"<Image>\n" +
-					"<MediaId><![CDATA[${mediaId}]]></MediaId>\n" +
+					"<MediaId><![CDATA[${__msg.mediaId}]]></MediaId>\n" +
 				"</Image>\n" +
 			"</xml>";
 	

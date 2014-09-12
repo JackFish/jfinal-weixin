@@ -23,14 +23,14 @@ package com.jfinal.weixin.sdk.message.out;
 public class OutVideoMessage extends OutMessage {
 	public static final String TEMPLATE =
 			"<xml>\n" +
-			"<ToUserName><![CDATA[${toUser}]]></ToUserName>\n" +
-			"<FromUserName><![CDATA[${fromUser}]]></FromUserName>\n" +
-			"<CreateTime>${createTime}</CreateTime>\n" +
-			"<MsgType><![CDATA[${msgType}]]></MsgType>\n" +
+			"<ToUserName><![CDATA[${__msg.toUser}]]></ToUserName>\n" +
+			"<FromUserName><![CDATA[${__msg.fromUser}]]></FromUserName>\n" +
+			"<CreateTime>${__msg.createTime}</CreateTime>\n" +
+			"<MsgType><![CDATA[${__msg.msgType}]]></MsgType>\n" +
 				"<Video>\n" +
-					"<MediaId><![CDATA[${mediaId}]]></MediaId>\n" +
-					"<Title><![CDATA[${title}]]></Title>\n" +
-					"<Description><![CDATA[${description}]]></Description>\n" +
+					"<MediaId><![CDATA[${__msg.mediaId}]]></MediaId>\n" +
+					"<Title><![CDATA[${__msg.title}]]></Title>\n" +
+					"<Description><![CDATA[${__msg.description}]]></Description>\n" +
 				"</Video>\n" +
 			"</xml>";
 	

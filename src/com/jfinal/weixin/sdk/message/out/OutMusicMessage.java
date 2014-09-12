@@ -26,16 +26,16 @@ public class OutMusicMessage extends OutMessage {
 	
 	public static final String TEMPLATE =
 		"<xml>\n" +
-			"<ToUserName><![CDATA[${toUser}]]></ToUserName>\n" +
-			"<FromUserName><![CDATA[${fromUser}]]></FromUserName>\n" +
-			"<CreateTime>${createTime}</CreateTime>\n" +
-			"<MsgType><![CDATA[${msgType}]]></MsgType>\n" +
+			"<ToUserName><![CDATA[${__msg.toUser}]]></ToUserName>\n" +
+			"<FromUserName><![CDATA[${__msg.fromUser}]]></FromUserName>\n" +
+			"<CreateTime>${__msg.createTime}</CreateTime>\n" +
+			"<MsgType><![CDATA[${__msg.msgType}]]></MsgType>\n" +
 				"<Music>\n" +
-					"<Title><![CDATA[${title}]]></Title>\n" +
-					"<Description><![CDATA[${description}]]></Description>\n" +
-					"<MusicUrl><![CDATA[${musicUrl}]]></MusicUrl>\n" +
-					"<HQMusicUrl><![CDATA[${hQMusicUrl}]]></HQMusicUrl>\n" +
-					"<ThumbMediaId><![CDATA[${thumbMediaId}]]></ThumbMediaId>\n" +
+					"<Title><![CDATA[${__msg.title}]]></Title>\n" +
+					"<Description><![CDATA[${__msg.description}]]></Description>\n" +
+					"<MusicUrl><![CDATA[${__msg.musicUrl}]]></MusicUrl>\n" +
+					"<HQMusicUrl><![CDATA[${__msg.hQMusicUrl}]]></HQMusicUrl>\n" +
+					"<ThumbMediaId><![CDATA[${__msg.thumbMediaId}]]></ThumbMediaId>\n" +
 				"</Music>\n" +
 		"</xml>";
 			

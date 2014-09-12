@@ -4,5 +4,5 @@ password =
 devMode = true
 
 # 测试用的账号
-appID = xxxxx
-appsecret = yyyy
+appID = wx9803d1188fa5fbda
+appsecret = db859c968763c582794e7c3d003c3d87

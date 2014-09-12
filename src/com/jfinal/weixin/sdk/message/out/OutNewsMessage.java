@@ -37,13 +37,13 @@ import java.util.List;
 public class OutNewsMessage extends OutMessage {
 	public static final String TEMPLATE =
 			"<xml>\n" +
-			"<ToUserName><![CDATA[${toUser}]]></ToUserName>\n" +
-			"<FromUserName><![CDATA[${fromUser}]]></FromUserName>\n" +
-			"<CreateTime>${createTime}</CreateTime>\n" +
-			"<MsgType><![CDATA[${msgType}]]></MsgType>\n" +
-				"<ArticleCount>${articles.size()}</ArticleCount>\n" +
+			"<ToUserName><![CDATA[${__msg.toUser}]]></ToUserName>\n" +
+			"<FromUserName><![CDATA[${__msg.fromUser}]]></FromUserName>\n" +
+			"<CreateTime>${__msg.createTime}</CreateTime>\n" +
+			"<MsgType><![CDATA[${__msg.msgType}]]></MsgType>\n" +
+				"<ArticleCount>${__msg.getArticleCount()}</ArticleCount>\n" +
 				"<Articles>\n" +
-					"<#list articles as x>\n"+
+					"<#list __msg.getArticles() as x>\n"+
 						"<item>\n" +
 							"<Title><![CDATA[${x.title}]]></Title>\n" + 
 							"<Description><![CDATA[${x.description}]]></Description>\n" +
@@ -54,7 +54,7 @@ public class OutNewsMessage extends OutMessage {
 				"</Articles>\n" +
 			"</xml>";
 	
-	private Integer articleCount;
+	// private Integer articleCount;
 	private List<News> articles = new ArrayList<News>();
 	
 	public OutNewsMessage() {
@@ -62,12 +62,13 @@ public class OutNewsMessage extends OutMessage {
 	}
 	
 	public Integer getArticleCount() {
-		return articleCount;
+		// return articleCount;
+		return articles.size();
 	}
 	
-	public void setArticleCount(Integer articleCount) {
-		this.articleCount = articleCount;
-	}
+//	public void setArticleCount(Integer articleCount) {
+//		this.articleCount = articleCount;
+//	}
 	
 	public List<News> getArticles() {
 		return articles;

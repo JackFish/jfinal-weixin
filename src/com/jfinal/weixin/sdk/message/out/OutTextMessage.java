@@ -19,11 +19,11 @@ package com.jfinal.weixin.sdk.message.out;
 public class OutTextMessage extends OutMessage {
 	public static final String TEMPLATE =
 			"<xml>\n" +
-			"<ToUserName><![CDATA[${toUser}]]></ToUserName>\n" +
-			"<FromUserName><![CDATA[${fromUser}]]></FromUserName>\n" +
-			"<CreateTime>${createTime}</CreateTime>\n" +
-			"<MsgType><![CDATA[${msgType}]]></MsgType>\n" +
-				"<Content><![CDATA[${content}]]></Content>\n" +
+			"<ToUserName><![CDATA[${__msg.toUser}]]></ToUserName>\n" +
+			"<FromUserName><![CDATA[${__msg.fromUser}]]></FromUserName>\n" +
+			"<CreateTime>${__msg.createTime}</CreateTime>\n" +
+			"<MsgType><![CDATA[${__msg.msgType}]]></MsgType>\n" +
+				"<Content><![CDATA[${__msg.content}]]></Content>\n" +
 			"</xml>";
 	
 	private String content;

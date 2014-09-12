@@ -88,7 +88,7 @@ public abstract class WeixinController extends Controller {
 	 * 在接收到消息后服务器响应消息
 	 */
 	public void render(OutMessage outMessage) {
-		render(new OutMessageRender(outMessage.getClass().getSimpleName()));
+		render(new OutMessageRender(outMessage));
 	}
 	
 	public InMessage getInMessage() {

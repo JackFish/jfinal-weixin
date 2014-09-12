@@ -10,14 +10,17 @@ import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+
 import com.jfinal.render.Render;
 import com.jfinal.render.RenderException;
+import com.jfinal.weixin.sdk.message.out.OutMessage;
 import com.jfinal.weixin.sdk.message.out.OutMusicMessage;
 import com.jfinal.weixin.sdk.message.out.OutNewsMessage;
 import com.jfinal.weixin.sdk.message.out.OutImageMessage;
 import com.jfinal.weixin.sdk.message.out.OutTextMessage;
 import com.jfinal.weixin.sdk.message.out.OutVideoMessage;
 import com.jfinal.weixin.sdk.message.out.OutVoiceMessage;
+
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -28,10 +31,17 @@ public class OutMessageRender extends Render {
 	private transient static final String contentType = "text/xml; charset=" + getEncoding();
 	private static Configuration config = init();
 	
-	private String outMessageName;
+	// private String outMessageName;
+	private OutMessage outMessage;
 	
-	public OutMessageRender(String outMessageName) {
-		this.outMessageName = outMessageName;
+	// public OutMessageRender(String outMessageName) {
+		// this.outMessageName = outMessageName;
+	// }
+	
+	public OutMessageRender(OutMessage outMessage) {
+		if (outMessage == null)
+			throw new IllegalArgumentException("参数 OutMessage 不能为 null。");
+		this.outMessage = outMessage;
 	}
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})
@@ -44,9 +54,12 @@ public class OutMessageRender extends Render {
 			root.put(attrName, request.getAttribute(attrName));
 		}
 		
+		// 供 OutMessage 的 TEMPLATE 使用
+		root.put("__msg", outMessage);
+		
 		PrintWriter writer = null;
         try {
-			Template template = config.getTemplate(outMessageName, getEncoding());
+			Template template = config.getTemplate(outMessage.getClass().getSimpleName(), getEncoding());
 			writer = response.getWriter();
 			template.process(root, writer);		// Merge the data-model and the template
 		} catch (Exception e) {
