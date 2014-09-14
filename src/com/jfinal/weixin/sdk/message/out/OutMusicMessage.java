@@ -26,8 +26,8 @@ public class OutMusicMessage extends OutMessage {
 	
 	public static final String TEMPLATE =
 		"<xml>\n" +
-			"<ToUserName><![CDATA[${__msg.toUser}]]></ToUserName>\n" +
-			"<FromUserName><![CDATA[${__msg.fromUser}]]></FromUserName>\n" +
+			"<ToUserName><![CDATA[${__msg.toUserName}]]></ToUserName>\n" +
+			"<FromUserName><![CDATA[${__msg.fromUserName}]]></FromUserName>\n" +
 			"<CreateTime>${__msg.createTime}</CreateTime>\n" +
 			"<MsgType><![CDATA[${__msg.msgType}]]></MsgType>\n" +
 				"<Music>\n" +
