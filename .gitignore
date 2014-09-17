@@ -23,3 +23,4 @@ integration-repo
 *.jar
 /webapp/WEB-INF/classes/
 /webapp/WEB-INF/target/
+dev_plan.txt
