@@ -3,6 +3,15 @@ user = root
 password =
 devMode = true
 
+# 微信服务器回调所用的 url 与 token
+url = http://www.jfinal.com/weixin
+token = __my__token__
+
 # 测试用的账号
 appID = wx9803d1188fa5fbda
 appsecret = db859c968763c582794e7c3d003c3d87
+
+
+skipBecomeDeveloperCheck = true
+
+

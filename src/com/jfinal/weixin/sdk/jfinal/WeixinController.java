@@ -6,6 +6,7 @@
 
 package com.jfinal.weixin.sdk.jfinal;
 
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.weixin.sdk.kit.HttpKit;
@@ -28,17 +29,24 @@ import com.jfinal.weixin.sdk.message.out.OutMessage;
 /**
  * 自动接收微信服务器消息，自动解析成 InMessage 并分发到相应的处理方法
  */
-// @Before(SignatureCheckInterceptor.class)
 public abstract class WeixinController extends Controller {
+	
+	private String inMessageXml = null;
 	
 	/**
 	 * 配置为微信开发者中心的 URL
 	 * 这里应该要包含 become_developer 的 api
 	 */
 	public void index() {
-		// 成为开发者判断
+		// 签名检测
+		if (SignatureCheckKit.me.checkSignature(this) == false) {
+			renderText("check signature failure");
+			return ;
+		}
+		
+		// 通过 echostr 判断请求是否为配置微信服务器回调所需的 url 与 token
 		if (StrKit.notBlank(getPara("echostr"))) {
-			becomeDeveloper();
+			configUrlAndToken();
 			return ;
 		}
 		
@@ -70,9 +78,9 @@ public abstract class WeixinController extends Controller {
 	}
 	
 	/**
-	 * 成为开发者
+	 * 配置微信服务器回调所需的 url 与 token
 	 */
-	private void becomeDeveloper() {
+	private void configUrlAndToken() {
 		String echostr = getPara("echostr");
 		String signature = getPara("signature");
         String timestamp = getPara("timestamp");
@@ -81,7 +89,7 @@ public abstract class WeixinController extends Controller {
 		if (isOk)
 			renderText(echostr);
 		else
-			renderText("验证失败：become_developer");
+			renderText("验证失败：configUrlAndToken");
 	}
 	
 	/**
@@ -91,9 +99,16 @@ public abstract class WeixinController extends Controller {
 		render(new OutMessageRender(outMessage));
 	}
 	
+	@Before(NotAction.class)
+	public String getInMessageXml() {
+		if (inMessageXml == null)
+			inMessageXml = HttpKit.readData(getRequest());
+		return inMessageXml;
+	}
+	
+	@Before(NotAction.class)
 	public InMessage getInMessage() {
-		String messageXml = HttpKit.readData(getRequest());
-		return InMessageParaser.parse(messageXml);
+		return InMessageParaser.parse(getInMessageXml());
 	}
 	
 	// 处理接收到的文本消息

@@ -27,6 +27,13 @@ import com.jfinal.weixin.sdk.message.out.OutTextMessage;
  */
 public class DemoController extends WeixinController {
 	
+	public void index() {
+		super.index();
+		// String inMessageXml = getInMessageXml();
+		// 可将 inMessageXml 写入数据库以便查看
+		// new InMessave(inMessageXml).save();
+	}
+	
 	private void initTestOutTextMessage(OutMessage outMsg, InMessage inMsg) {
 		outMsg.setToUserName(inMsg.getFromUserName());
 		outMsg.setFromUserName(inMsg.getToUserName());

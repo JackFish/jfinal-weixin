@@ -8,7 +8,7 @@
 		<filter-class>com.jfinal.core.JFinalFilter</filter-class>
 		<init-param>
 			<param-name>configClass</param-name>
-			<param-value>com.jfinal.weixin.sdk.common.WeixinConfig</param-value>
+			<param-value>com.jfinal.weixin.demo.WeixinConfig</param-value>
 		</init-param>
 	</filter>
 	

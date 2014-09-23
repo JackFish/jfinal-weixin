@@ -12,10 +12,15 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
+import com.jfinal.core.JFinal;
+import com.jfinal.weixin.sdk.api.ApiConfig;
 
 public class WeixinConfig extends JFinalConfig {
 	public void configConstant(Constants me) {
+		loadPropertyFile("a_little_config.txt");
 		me.setDevMode(true);
+		ApiConfig.setUrl(getProperty("url"));
+		ApiConfig.setToken(getProperty("token"));
 	}
 	
 	public void configRoute(Routes me) {
@@ -32,5 +37,9 @@ public class WeixinConfig extends JFinalConfig {
 	
 	public void configHandler(Handlers me) {
 		
+	}
+	
+	public static void main(String[] args) {
+		JFinal.start("webapp", 80, "/", 5);
 	}
 }
