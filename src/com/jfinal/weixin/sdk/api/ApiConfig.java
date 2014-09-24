@@ -4,6 +4,26 @@ public class ApiConfig {
 	
 	private static String url = null;
 	private static String token = null;
+	private static String appId = null;
+	private static String appSecret = null;
+	
+	public static void init(String url, String token) {
+		setUrl(url);
+		setToken(token);
+	}
+	
+	public static void init(String url, String token, String appId, String appSecret) {
+		setUrl(url);
+		setToken(token);
+		setAppId(appId);
+		setAppSecret(appSecret);
+	}
+	
+	public static String getUrl() {
+		if (url == null)
+			throw new RuntimeException("init ApiConfig.setUrl(...) first");
+		return url;
+	}
 	
 	public static void setUrl(String url) {
 		if (url == null)
@@ -11,10 +31,10 @@ public class ApiConfig {
 		ApiConfig.url = url;
 	}
 	
-	public static String getUrl() {
-		if (url == null)
-			throw new RuntimeException("init ApiConfig.url first");
-		return url;
+	public static String getToken() {
+		if (token == null)
+			throw new RuntimeException("init ApiConfig.setToken(...) first");
+		return token;
 	}
 	
 	public static void setToken(String token) {
@@ -23,9 +43,31 @@ public class ApiConfig {
 		ApiConfig.token = token;
 	}
 	
-	public static String getToken() {
-		if (token == null)
-			throw new RuntimeException("init ApiConfig.token first");
-		return token;
+	public static String getAppId() {
+		if (appId == null)
+			throw new RuntimeException("init ApiConfig.setAppId(...) first");
+		return appId;
+	}
+	
+	public static void setAppId(String appId) {
+		if (appId == null)
+			throw new IllegalArgumentException("appId can not be null");
+		ApiConfig.appId = appId;
+	}
+	
+	public static String getAppSecret() {
+		if (appSecret == null)
+			throw new RuntimeException("init ApiConfig.setAppSecret(...) first");
+		return appSecret;
+	}
+	
+	public static void setAppSecret(String appSecret) {
+		if (appSecret == null)
+			throw new IllegalArgumentException("appSecret can not be null");
+		ApiConfig.appSecret = appSecret;
 	}
 }
+
+
+
+

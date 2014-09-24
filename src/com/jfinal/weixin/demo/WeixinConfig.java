@@ -21,6 +21,8 @@ public class WeixinConfig extends JFinalConfig {
 		me.setDevMode(true);
 		ApiConfig.setUrl(getProperty("url"));
 		ApiConfig.setToken(getProperty("token"));
+		ApiConfig.setAppId(getProperty("appId"));
+		ApiConfig.setAppSecret(getProperty("appSecret"));
 	}
 	
 	public void configRoute(Routes me) {
