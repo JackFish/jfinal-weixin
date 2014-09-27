@@ -26,39 +26,38 @@ import freemarker.template.Template;
 public class OutMsgXmlBuilder {
 	
 	private static String encoding = "utf-8";
-	private static Configuration config = init();
+	private static Configuration config = initFreeMarkerConfiguration();
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static String build(OutMsg outMsg) {
 		if (outMsg == null)
-			throw new IllegalArgumentException("参数 OutMsg 不能为 null。");
+			throw new IllegalArgumentException("参数 OutMsg 不能为 null");
 		
 		Map root = new HashMap();
-		// 供 OutMsg 的 TEMPLATE 使用
+		// 供 OutMsg 里的 TEMPLATE 使用
 		root.put("__msg", outMsg);
 		
-		Template template;
 		try {
-			template = config.getTemplate(outMsg.getClass().getSimpleName(), encoding);
+			Template template = config.getTemplate(outMsg.getClass().getSimpleName(), encoding);
 			StringWriter sw = new StringWriter();
 			template.process(root, sw);
-			
-			
 			return sw.toString();
+		} catch (freemarker.core.InvalidReferenceException e) {
+			throw new RuntimeException("可能是 " + outMsg.getClass().getSimpleName()+  " 对象中的某些属性未赋值，请仔细检查", e);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	private static Configuration init() {
+	private static Configuration initFreeMarkerConfiguration() {
 		Configuration config = new Configuration();
-		StringTemplateLoader stringLoader = new StringTemplateLoader();
-		initStringLoader(stringLoader);
-		config.setTemplateLoader(stringLoader);
+		StringTemplateLoader stringTemplateLoader = new StringTemplateLoader();
+		initStringTemplateLoader(stringTemplateLoader);
+		config.setTemplateLoader(stringTemplateLoader);
 		return config;
 	}
 	
-	private static void initStringLoader(StringTemplateLoader loader) {
+	private static void initStringTemplateLoader(StringTemplateLoader loader) {
 		// text 文本消息
 		loader.putTemplate(OutTextMsg.class.getSimpleName(), OutTextMsg.TEMPLATE);
 		// news 图文消息
