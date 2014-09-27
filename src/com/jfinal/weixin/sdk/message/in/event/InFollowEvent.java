@@ -18,6 +18,27 @@ import com.jfinal.weixin.sdk.message.in.InMessage;
 			<Event><![CDATA[subscribe]]></Event>
 	</xml>
 */
+
+/**
+	关注实测数据结果： 比官方文档多出一个 EventKey 标记
+	<xml>
+		<ToUserName><![CDATA[gh_e21b62f685f4]]></ToUserName>
+		<FromUserName><![CDATA[o5Ljujn78A_S0uk_WvAM_fKFEXm4]]></FromUserName>
+		<CreateTime>1411785252</CreateTime>
+		<MsgType><![CDATA[event]]></MsgType>
+			<Event><![CDATA[subscribe]]></Event>
+			<EventKey><![CDATA[]]></EventKey>
+	</xml>
+	取消关注实测数据结果：比官方文档多出一个 EventKey 标记
+	<xml>
+		<ToUserName><![CDATA[gh_e21b62f685f4]]></ToUserName>
+		<FromUserName><![CDATA[o5Ljujn78A_S0uk_WvAM_fKFEXm4]]></FromUserName>
+		<CreateTime>1411785559</CreateTime>
+		<MsgType><![CDATA[event]]></MsgType>
+			<Event><![CDATA[unsubscribe]]></Event>
+			<EventKey><![CDATA[]]></EventKey>
+	</xml>
+*/
 public class InFollowEvent extends InMessage {
 	
 	// 订阅：subscribe

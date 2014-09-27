@@ -28,6 +28,7 @@ import com.jfinal.weixin.sdk.message.out.OutTextMessage;
 public class DemoController extends WeixinController {
 	
 	public void index() {
+		System.out.println(getInMessageXml());
 		super.index();
 		// String inMessageXml = getInMessageXml();
 		// 可将 inMessageXml 写入数据库以便查看
