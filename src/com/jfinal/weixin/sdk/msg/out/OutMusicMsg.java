@@ -36,16 +36,18 @@ public class OutMusicMsg extends OutMsg {
 					"<Title><![CDATA[${__msg.title}]]></Title>\n" +
 					"<Description><![CDATA[${__msg.description}]]></Description>\n" +
 					"<MusicUrl><![CDATA[${__msg.musicUrl}]]></MusicUrl>\n" +
-					"<HQMusicUrl><![CDATA[${__msg.hQMusicUrl}]]></HQMusicUrl>\n" +
-					"<ThumbMediaId><![CDATA[${__msg.thumbMediaId}]]></ThumbMediaId>\n" +
+					"<HQMusicUrl><![CDATA[${__msg.hqMusicUrl}]]></HQMusicUrl>\n" +
+					// 官司方文档错误，无此标记: "<ThumbMediaId><![CDATA[${__msg.thumbMediaId}]]></ThumbMediaId>\n" +
+					"<FuncFlag>${__msg.funcFlag}</FuncFlag>\n" +
 				"</Music>\n" +
 		"</xml>";
 			
 	private String title;
 	private String description;
 	private String musicUrl;
-	private String hQMusicUrl;
-	private String thumbMediaId;
+	private String hqMusicUrl;
+	// private String thumbMediaId;	// 官方文档有误，无此属性
+	private String funcFlag = "0";
 	
 	public OutMusicMsg() {
 		this.msgType = "music";
@@ -80,21 +82,31 @@ public class OutMusicMsg extends OutMsg {
 		this.musicUrl = musicUrl;
 	}
 	
-	public String gethQMusicUrl() {
-		return hQMusicUrl;
+	public String getHqMusicUrl() {
+		return hqMusicUrl;
 	}
 	
-	public void sethQMusicUrl(String hQMusicUrl) {
-		this.hQMusicUrl = hQMusicUrl;
+	public void setHqMusicUrl(String hqMusicUrl) {
+		this.hqMusicUrl = hqMusicUrl;
 	}
 	
+	public String getFuncFlag() {
+		return funcFlag;
+	}
+	
+	// 设置为星标
+	public void setFuncFlag(boolean funcFlag) {
+		this.funcFlag = funcFlag ? "1" : "0";
+	}
+	
+	/* 官方文档有误，无此属性
 	public String getThumbMediaId() {
 		return thumbMediaId;
 	}
 	
 	public void setThumbMediaId(String thumbMediaId) {
 		this.thumbMediaId = thumbMediaId;
-	}
+	}*/
 }
 
 

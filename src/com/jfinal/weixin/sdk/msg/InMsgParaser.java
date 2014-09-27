@@ -180,6 +180,7 @@ public class InMsgParaser {
 		throw new RuntimeException("无法识别的事件类型，请查阅微信公众平台开发文档");
 	}
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws DocumentException {
 		String xml = 
 			"<xml>\n" +
