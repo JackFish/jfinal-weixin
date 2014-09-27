@@ -34,10 +34,10 @@ package com.jfinal.weixin.sdk.msg.out;
 
 public class News {
 	
-	private String title;
-	private String description;
-	private String picUrl;
-	private String url;
+	private String title;		// 不是必须
+	private String description;	// 不是必须
+	private String picUrl;		// 不是必须
+	private String url;			// 不是必须
 	
 	public News(String title, String description, String picUrl, String url) {
 		this.title = title;

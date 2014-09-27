@@ -31,14 +31,14 @@ public class OutVideoMsg extends OutMsg {
 			"<MsgType><![CDATA[${__msg.msgType}]]></MsgType>\n" +
 				"<Video>\n" +
 					"<MediaId><![CDATA[${__msg.mediaId}]]></MediaId>\n" +
-					"<Title><![CDATA[${__msg.title}]]></Title>\n" +
-					"<Description><![CDATA[${__msg.description}]]></Description>\n" +
+					"<Title><![CDATA[${(__msg.title)!}]]></Title>\n" +
+					"<Description><![CDATA[${(__msg.description)!}]]></Description>\n" +
 				"</Video>\n" +
 			"</xml>";
 	
 	private String mediaId;
-	private String title;
-	private String description;
+	private String title;		// 不是必须
+	private String description;	// 不是必须
 	
 	public OutVideoMsg() {
 		this.msgType = "video";

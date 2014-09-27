@@ -46,10 +46,10 @@ public class OutNewsMsg extends OutMsg {
 				"<Articles>\n" +
 					"<#list __msg.getArticles() as x>\n"+
 						"<item>\n" +
-							"<Title><![CDATA[${x.title}]]></Title>\n" + 
-							"<Description><![CDATA[${x.description}]]></Description>\n" +
-							"<PicUrl><![CDATA[${x.picUrl}]]></PicUrl>\n" +
-							"<Url><![CDATA[${x.url}]]></Url>\n" +
+							"<Title><![CDATA[${(x.title)!}]]></Title>\n" + 
+							"<Description><![CDATA[${(x.description)!}]]></Description>\n" +
+							"<PicUrl><![CDATA[${(x.picUrl)!}]]></PicUrl>\n" +
+							"<Url><![CDATA[${(x.url)!}]]></Url>\n" +
 						"</item>\n" +
 					"</#list>\n" +
 				"</Articles>\n" +

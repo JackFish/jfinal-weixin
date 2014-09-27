@@ -33,19 +33,19 @@ public class OutMusicMsg extends OutMsg {
 			"<CreateTime>${__msg.createTime}</CreateTime>\n" +
 			"<MsgType><![CDATA[${__msg.msgType}]]></MsgType>\n" +
 				"<Music>\n" +
-					"<Title><![CDATA[${__msg.title}]]></Title>\n" +
-					"<Description><![CDATA[${__msg.description}]]></Description>\n" +
-					"<MusicUrl><![CDATA[${__msg.musicUrl}]]></MusicUrl>\n" +
-					"<HQMusicUrl><![CDATA[${__msg.hqMusicUrl}]]></HQMusicUrl>\n" +
+					"<Title><![CDATA[${(__msg.title)!}]]></Title>\n" +
+					"<Description><![CDATA[${(__msg.description)!}]]></Description>\n" +
+					"<MusicUrl><![CDATA[${(__msg.musicUrl)!}]]></MusicUrl>\n" +
+					"<HQMusicUrl><![CDATA[${(__msg.hqMusicUrl)!}]]></HQMusicUrl>\n" +
 					// 官司方文档错误，无此标记: "<ThumbMediaId><![CDATA[${__msg.thumbMediaId}]]></ThumbMediaId>\n" +
 					"<FuncFlag>${__msg.funcFlag}</FuncFlag>\n" +
 				"</Music>\n" +
 		"</xml>";
 			
-	private String title;
-	private String description;
-	private String musicUrl;
-	private String hqMusicUrl;
+	private String title;		// 不是必须
+	private String description;	// 不是必须
+	private String musicUrl;	// 不是必须
+	private String hqMusicUrl;	// 不是必须
 	// private String thumbMediaId;	// 官方文档有误，无此属性
 	private String funcFlag = "0";
 	
