@@ -30,7 +30,7 @@ import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResult
 import com.jfinal.weixin.sdk.msg.out.OutMsg;
 
 /**
- * 自动接收微信服务器消息，自动解析成 InMsg 并分发到相应的处理方法
+ * 接收微信服务器消息，自动解析成 InMsg 并分发到相应的处理方法
  */
 public abstract class WeixinController extends Controller {
 	
@@ -41,7 +41,7 @@ public abstract class WeixinController extends Controller {
 	 * weixin 公众号服务器调用唯一入口，即在开发者中心输入的 URL 必须要指向此 action
 	 */
 	public void index() {
-		// 开发模式输出交互消息
+		// 开发模式输出微信服务发送过来的  xml 消息
 		if (ApiConfig.isDevMode()) {
 			System.out.println("接收消息:");
 			System.out.println(getInMsgXml());
@@ -87,10 +87,8 @@ public abstract class WeixinController extends Controller {
 			processInMenuEvent((InMenuEvent)msg);
 		else if (msg instanceof InSpeechRecognitionResults)
 			processInSpeechRecognitionResults((InSpeechRecognitionResults)msg);
-		else {
-			renderText("未能识别的消息类型!");
+		else
 			log.error("未能识别的消息类型。 消息 xml 内容为：\n" + getInMsgXml());
-		}
 	}
 	
 	/**
@@ -104,10 +102,8 @@ public abstract class WeixinController extends Controller {
 		boolean isOk = SignatureCheckKit.me.checkSignature(signature, timestamp, nonce);
 		if (isOk)
 			renderText(echostr);
-		else {
-			renderText("验证失败：configUrlAndToken");
+		else
 			log.error("验证失败：configUrlAndToken");
-		}
 	}
 	
 	/**
