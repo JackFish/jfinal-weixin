@@ -115,7 +115,7 @@ public abstract class WeixinController extends Controller {
 		if (ApiConfig.isDevMode()) {
 			System.out.println("发送消息:");
 			System.out.println(outMsgXml);
-			System.out.println("1212--------------------------------------------------------------------------------\n");
+			System.out.println("--------------------------------------------------------------------------------\n");
 		}
 		renderText(outMsgXml, "text/xml");
 	}
