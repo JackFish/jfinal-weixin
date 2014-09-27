@@ -56,30 +56,30 @@ public class InMsgParaser {
         Integer createTime = Integer.parseInt(root.elementText("CreateTime"));
         String msgType = root.elementText("MsgType");
         if ("text".equals(msgType))
-        	return parseInTextMessage(root, toUserName, fromUserName, createTime, msgType);
+        	return parseInTextMsg(root, toUserName, fromUserName, createTime, msgType);
         if ("image".equals(msgType))
-        	return parseInImageMessage(root, toUserName, fromUserName, createTime, msgType);
+        	return parseInImageMsg(root, toUserName, fromUserName, createTime, msgType);
         if ("voice".equals(msgType))
-        	return parseInVoiceMessage(root, toUserName, fromUserName, createTime, msgType);
+        	return parseInVoiceMsg(root, toUserName, fromUserName, createTime, msgType);
         if ("video".equals(msgType))
-        	return parseInVideoMessage(root, toUserName, fromUserName, createTime, msgType);
+        	return parseInVideoMsg(root, toUserName, fromUserName, createTime, msgType);
         if ("location".equals(msgType))
-        	return parseInLocationMessage(root, toUserName, fromUserName, createTime, msgType);
+        	return parseInLocationMsg(root, toUserName, fromUserName, createTime, msgType);
         if ("link".equals(msgType))
-        	return parseInLinkMessage(root, toUserName, fromUserName, createTime, msgType);
+        	return parseInLinkMsg(root, toUserName, fromUserName, createTime, msgType);
         if ("event".equals(msgType))
         	return parseInEvent(root, toUserName, fromUserName, createTime, msgType);
         throw new RuntimeException("无法识别的消息类型，请查阅微信公众平台开发文档");
 	}
 	
-	private static InMsg parseInTextMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+	private static InMsg parseInTextMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
 		InTextMsg msg = new InTextMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setContent(root.elementText("Content"));
 		msg.setMsgId(root.elementText("MsgId"));
 		return msg;
 	}
 	
-	private static InMsg parseInImageMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+	private static InMsg parseInImageMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
 		InImageMsg msg = new InImageMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setPicUrl(root.elementText("PicUrl"));
 		msg.setMediaId(root.elementText("MediaId"));
@@ -87,7 +87,7 @@ public class InMsgParaser {
 		return msg;
 	}
 	
-	private static InMsg parseInVoiceMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+	private static InMsg parseInVoiceMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
 		InVoiceMsg msg = new InVoiceMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setMediaId(root.elementText("MediaId"));
 		msg.setFormat(root.elementText("Format"));
@@ -95,7 +95,7 @@ public class InMsgParaser {
 		return msg;
 	}
 	
-	private static InMsg parseInVideoMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+	private static InMsg parseInVideoMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
 		InVideoMsg msg = new InVideoMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setMediaId(root.elementText("MediaId"));
 		msg.setThumbMediaId(root.elementText("ThumbMediaId"));
@@ -103,7 +103,7 @@ public class InMsgParaser {
 		return msg;
 	}
 	
-	private static InMsg parseInLocationMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+	private static InMsg parseInLocationMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
 		InLocationMsg msg = new InLocationMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setLocation_X(root.elementText("Location_X"));
 		msg.setLocation_Y(root.elementText("Location_Y"));
@@ -113,7 +113,7 @@ public class InMsgParaser {
 		return msg;
 	}
 	
-	private static InMsg parseInLinkMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+	private static InMsg parseInLinkMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
 		InLinkMsg msg = new InLinkMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setTitle(root.elementText("Title"));
 		msg.setDescription(root.elementText("Description"));
@@ -191,7 +191,7 @@ public class InMsgParaser {
 					"<MsgId>1234567890123456</MsgId>\n" +
 			"</xml>";
 		
-//		InTextMessage msg = (InTextMessage)parse(xml);
+//		InTextMsg msg = (InTextMsg)parse(xml);
 //		System.out.println(msg.getToUserName());
 //		System.out.println(msg.getFromUserName());
 //		System.out.println(msg.getContent());

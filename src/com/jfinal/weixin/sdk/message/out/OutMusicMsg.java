@@ -51,8 +51,8 @@ public class OutMusicMsg extends OutMsg {
 		this.msgType = "music";
 	}
 	
-	public OutMusicMsg(InMsg inMessage) {
-		super(inMessage);
+	public OutMusicMsg(InMsg inMsg) {
+		super(inMsg);
 		this.msgType = "music";
 	}
 	

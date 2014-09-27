@@ -38,8 +38,8 @@ public class OutVoiceMsg extends OutMsg {
 		this.msgType = "voice";
 	}
 	
-	public OutVoiceMsg(InMsg inMessage) {
-		super(inMessage);
+	public OutVoiceMsg(InMsg inMsg) {
+		super(inMsg);
 		this.msgType = "voice";
 	}
 	

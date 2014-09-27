@@ -38,8 +38,8 @@ public class OutImageMsg extends OutMsg {
 		this.msgType = "image";
 	}
 	
-	public OutImageMsg(InMsg inMessage) {
-		super(inMessage);
+	public OutImageMsg(InMsg inMsg) {
+		super(inMsg);
 		this.msgType = "image";
 	}
 	

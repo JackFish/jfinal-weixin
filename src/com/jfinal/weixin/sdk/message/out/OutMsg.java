@@ -44,9 +44,9 @@ public abstract class OutMsg {
 	/**
 	 * 用接收到的消息初始化要发出去的消息，关键在于两者 toUserName 与 fromUserName 相反
 	 */
-	public OutMsg(InMsg inMessage) {
-		this.toUserName = inMessage.getFromUserName();
-		this.fromUserName = inMessage.getToUserName();
+	public OutMsg(InMsg inMsg) {
+		this.toUserName = inMsg.getFromUserName();
+		this.fromUserName = inMsg.getToUserName();
 		this.createTime = now();
 	}
 	

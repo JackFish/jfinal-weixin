@@ -63,8 +63,8 @@ public class OutNewsMsg extends OutMsg {
 		this.msgType = "news";
 	}
 	
-	public OutNewsMsg(InMsg inMessage) {
-		super(inMessage);
+	public OutNewsMsg(InMsg inMsg) {
+		super(inMsg);
 		this.msgType = "news";
 	}
 	

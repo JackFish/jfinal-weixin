@@ -34,8 +34,8 @@ public class OutTextMsg extends OutMsg {
 		this.msgType = "text";
 	}
 	
-	public OutTextMsg(InMsg inMessage) {
-		super(inMessage);
+	public OutTextMsg(InMsg inMsg) {
+		super(inMsg);
 		this.msgType = "text";
 	}
 	

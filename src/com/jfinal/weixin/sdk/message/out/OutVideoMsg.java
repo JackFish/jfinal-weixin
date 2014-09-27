@@ -44,8 +44,8 @@ public class OutVideoMsg extends OutMsg {
 		this.msgType = "video";
 	}
 	
-	public OutVideoMsg(InMsg inMessage) {
-		super(inMessage);
+	public OutVideoMsg(InMsg inMsg) {
+		super(inMsg);
 		this.msgType = "video";
 	}
 	
