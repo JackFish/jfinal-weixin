@@ -18,7 +18,10 @@ import com.jfinal.weixin.sdk.api.ApiConfig;
 public class WeixinConfig extends JFinalConfig {
 	public void configConstant(Constants me) {
 		loadPropertyFile("a_little_config.txt");
-		me.setDevMode(true);
+		me.setDevMode(getPropertyToBoolean("devMode", false));
+		
+		// 配置微信 API 相关常量
+		ApiConfig.setDevMode(me.getDevMode());
 		ApiConfig.setUrl(getProperty("url"));
 		ApiConfig.setToken(getProperty("token"));
 		ApiConfig.setAppId(getProperty("appId"));
