@@ -43,8 +43,9 @@ public class OutTextMessage extends OutMessage {
 		return content;
 	}
 	
-	public void setContent(String content) {
+	public OutTextMessage setContent(String content) {
 		this.content = content;
+		return this;
 	}
 }
 

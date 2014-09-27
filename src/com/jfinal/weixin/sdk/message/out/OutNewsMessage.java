@@ -82,7 +82,24 @@ public class OutNewsMessage extends OutMessage {
 	}
 	
 	public void setArticles(List<News> articles) {
-		this.articles = articles;
+		if (articles != null)
+			this.articles = articles;
+	}
+	
+	public OutNewsMessage addNews(List<News> articles) {
+		if (articles != null)
+			this.articles.addAll(articles);
+		return this;
+	}
+	
+	public OutNewsMessage addNews(String title, String description, String picUrl, String url) {
+		this.articles.add(new News(title, description, picUrl, url));
+		return this;
+	}
+	
+	public OutNewsMessage addNews(News news) {
+		this.articles.add(news);
+		return this;
 	}
 }
 

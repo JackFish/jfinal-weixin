@@ -39,6 +39,17 @@ public class News {
 	private String picUrl;
 	private String url;
 	
+	public News(String title, String description, String picUrl, String url) {
+		this.title = title;
+		this.description = description;
+		this.picUrl = picUrl;
+		this.url = url;
+	}
+	
+	public News() {
+		
+	}
+	
 	public String getTitle() {
 		return title;
 	}
