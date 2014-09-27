@@ -6,7 +6,7 @@
 
 package com.jfinal.weixin.sdk.message.out;
 
-import com.jfinal.weixin.sdk.message.in.InMessage;
+import com.jfinal.weixin.sdk.message.in.InMsg;
 
 /**
 	回复文本消息
@@ -18,7 +18,7 @@ import com.jfinal.weixin.sdk.message.in.InMessage;
 			<Content><![CDATA[你好]]></Content>
 	</xml>
  */
-public class OutTextMessage extends OutMessage {
+public class OutTextMsg extends OutMsg {
 	public static final String TEMPLATE =
 			"<xml>\n" +
 			"<ToUserName><![CDATA[${__msg.toUserName}]]></ToUserName>\n" +
@@ -30,11 +30,11 @@ public class OutTextMessage extends OutMessage {
 	
 	private String content;
 	
-	public OutTextMessage() {
+	public OutTextMsg() {
 		this.msgType = "text";
 	}
 	
-	public OutTextMessage(InMessage inMessage) {
+	public OutTextMsg(InMsg inMessage) {
 		super(inMessage);
 		this.msgType = "text";
 	}
@@ -43,7 +43,7 @@ public class OutTextMessage extends OutMessage {
 		return content;
 	}
 	
-	public OutTextMessage setContent(String content) {
+	public OutTextMsg setContent(String content) {
 		this.content = content;
 		return this;
 	}

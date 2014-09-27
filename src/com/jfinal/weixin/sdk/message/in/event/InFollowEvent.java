@@ -6,7 +6,7 @@
 
 package com.jfinal.weixin.sdk.message.in.event;
 
-import com.jfinal.weixin.sdk.message.in.InMessage;
+import com.jfinal.weixin.sdk.message.in.InMsg;
 
 /**
 	接收 关注/取消关注事件
@@ -39,7 +39,7 @@ import com.jfinal.weixin.sdk.message.in.InMessage;
 			<EventKey><![CDATA[]]></EventKey>
 	</xml>
 */
-public class InFollowEvent extends InMessage {
+public class InFollowEvent extends InMsg {
 	
 	// 订阅：subscribe
 	// 取消订阅：unsubscribe

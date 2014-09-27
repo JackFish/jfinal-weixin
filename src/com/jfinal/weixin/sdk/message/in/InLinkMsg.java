@@ -19,14 +19,14 @@ package com.jfinal.weixin.sdk.message.in;
 			<MsgId>1234567890123456</MsgId>
 	</xml>
 */
-public class InLinkMessage extends InMessage {
+public class InLinkMsg extends InMsg {
 	
 	private String title;
 	private String description;
 	private String url;
 	private String msgId;
 	
-	public InLinkMessage(String toUserName, String fromUserName, Integer createTime, String msgType) {
+	public InLinkMsg(String toUserName, String fromUserName, Integer createTime, String msgType) {
 		super(toUserName, fromUserName, createTime, msgType);
 	}
 	

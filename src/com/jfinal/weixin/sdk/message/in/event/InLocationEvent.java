@@ -6,7 +6,7 @@
 
 package com.jfinal.weixin.sdk.message.in.event;
 
-import com.jfinal.weixin.sdk.message.in.InMessage;
+import com.jfinal.weixin.sdk.message.in.InMsg;
 
 /**
 	上报地理位置事件
@@ -21,7 +21,7 @@ import com.jfinal.weixin.sdk.message.in.InMessage;
 			<Precision>119.385040</Precision>
 	</xml>
  */
-public class InLocationEvent extends InMessage {
+public class InLocationEvent extends InMsg {
 	
 	private String event;
 	private String latitude;

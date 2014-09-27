@@ -18,13 +18,13 @@ package com.jfinal.weixin.sdk.message.in;
 			<MsgId>1234567890123456</MsgId>
 	</xml>
 */
-public class InVideoMessage extends InMessage {
+public class InVideoMsg extends InMsg {
 	
 	private String mediaId;
 	private String thumbMediaId;
 	private String msgId;
 	
-	public InVideoMessage(String toUserName, String fromUserName, Integer createTime, String msgType) {
+	public InVideoMsg(String toUserName, String fromUserName, Integer createTime, String msgType) {
 		super(toUserName, fromUserName, createTime, msgType);
 	}
 	

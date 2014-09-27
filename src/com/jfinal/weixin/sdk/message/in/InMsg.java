@@ -18,7 +18,7 @@ package com.jfinal.weixin.sdk.message.in;
 			<MsgId>1234567890123456</MsgId>
 	</xml>
  */
-public abstract class InMessage {
+public abstract class InMsg {
 	
 	// 开发者微信号
 	protected String toUserName;
@@ -41,7 +41,7 @@ public abstract class InMessage {
 	 */
 	protected String msgType;
 	
-	public InMessage(String toUserName, String fromUserName, Integer createTime, String msgType) {
+	public InMsg(String toUserName, String fromUserName, Integer createTime, String msgType) {
 		this.toUserName = toUserName;
 		this.fromUserName = fromUserName;
 		this.createTime = createTime;

@@ -9,7 +9,7 @@ package com.jfinal.weixin.sdk.message.out;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jfinal.weixin.sdk.message.in.InMessage;
+import com.jfinal.weixin.sdk.message.in.InMsg;
 
 /**
 	回复图文消息
@@ -36,7 +36,7 @@ import com.jfinal.weixin.sdk.message.in.InMessage;
 			</Articles>
 	</xml> 
  */
-public class OutNewsMessage extends OutMessage {
+public class OutNewsMsg extends OutMsg {
 	public static final String TEMPLATE =
 			"<xml>\n" +
 			"<ToUserName><![CDATA[${__msg.toUserName}]]></ToUserName>\n" +
@@ -59,11 +59,11 @@ public class OutNewsMessage extends OutMessage {
 	// private Integer articleCount;
 	private List<News> articles = new ArrayList<News>();
 	
-	public OutNewsMessage() {
+	public OutNewsMsg() {
 		this.msgType = "news";
 	}
 	
-	public OutNewsMessage(InMessage inMessage) {
+	public OutNewsMsg(InMsg inMessage) {
 		super(inMessage);
 		this.msgType = "news";
 	}
@@ -86,18 +86,18 @@ public class OutNewsMessage extends OutMessage {
 			this.articles = articles;
 	}
 	
-	public OutNewsMessage addNews(List<News> articles) {
+	public OutNewsMsg addNews(List<News> articles) {
 		if (articles != null)
 			this.articles.addAll(articles);
 		return this;
 	}
 	
-	public OutNewsMessage addNews(String title, String description, String picUrl, String url) {
+	public OutNewsMsg addNews(String title, String description, String picUrl, String url) {
 		this.articles.add(new News(title, description, picUrl, url));
 		return this;
 	}
 	
-	public OutNewsMessage addNews(News news) {
+	public OutNewsMsg addNews(News news) {
 		this.articles.add(news);
 		return this;
 	}

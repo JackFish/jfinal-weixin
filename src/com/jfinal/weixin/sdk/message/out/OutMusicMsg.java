@@ -6,7 +6,7 @@
 
 package com.jfinal.weixin.sdk.message.out;
 
-import com.jfinal.weixin.sdk.message.in.InMessage;
+import com.jfinal.weixin.sdk.message.in.InMsg;
 
 /**
 	回复音乐消息
@@ -24,7 +24,7 @@ import com.jfinal.weixin.sdk.message.in.InMessage;
 			</Music>
 	</xml>
 */
-public class OutMusicMessage extends OutMessage {
+public class OutMusicMsg extends OutMsg {
 	
 	public static final String TEMPLATE =
 		"<xml>\n" +
@@ -47,11 +47,11 @@ public class OutMusicMessage extends OutMessage {
 	private String hQMusicUrl;
 	private String thumbMediaId;
 	
-	public OutMusicMessage() {
+	public OutMusicMsg() {
 		this.msgType = "music";
 	}
 	
-	public OutMusicMessage(InMessage inMessage) {
+	public OutMusicMsg(InMsg inMessage) {
 		super(inMessage);
 		this.msgType = "music";
 	}

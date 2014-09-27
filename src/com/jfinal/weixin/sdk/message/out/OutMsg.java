@@ -6,7 +6,7 @@
 
 package com.jfinal.weixin.sdk.message.out;
 
-import com.jfinal.weixin.sdk.message.in.InMessage;
+import com.jfinal.weixin.sdk.message.in.InMsg;
 
 /**
 	回复文本消息
@@ -19,7 +19,7 @@ import com.jfinal.weixin.sdk.message.in.InMessage;
 	</xml>
 
  */
-public abstract class OutMessage {
+public abstract class OutMsg {
 	
 	// 接收方帐号（收到的OpenID）
 	protected String toUserName;
@@ -44,13 +44,13 @@ public abstract class OutMessage {
 	/**
 	 * 用接收到的消息初始化要发出去的消息，关键在于两者 toUserName 与 fromUserName 相反
 	 */
-	public OutMessage(InMessage inMessage) {
+	public OutMsg(InMsg inMessage) {
 		this.toUserName = inMessage.getFromUserName();
 		this.fromUserName = inMessage.getToUserName();
 		this.createTime = now();
 	}
 	
-	public OutMessage() {
+	public OutMsg() {
 		
 	}
 	

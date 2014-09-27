@@ -20,14 +20,14 @@ package com.jfinal.weixin.sdk.message.in;
 			<MsgId>1234567890123456</MsgId>
 	</xml>
 */
-public class InLocationMessage extends InMessage {
+public class InLocationMsg extends InMsg {
 	private String location_X;
 	private String location_Y;
 	private String scale;
 	private String label;
 	private String msgId;
 	
-	public InLocationMessage(String toUserName, String fromUserName, Integer createTime, String msgType) {
+	public InLocationMsg(String toUserName, String fromUserName, Integer createTime, String msgType) {
 		super(toUserName, fromUserName, createTime, msgType);
 	}
 	

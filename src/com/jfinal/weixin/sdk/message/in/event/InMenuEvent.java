@@ -6,7 +6,7 @@
 
 package com.jfinal.weixin.sdk.message.in.event;
 
-import com.jfinal.weixin.sdk.message.in.InMessage;
+import com.jfinal.weixin.sdk.message.in.InMsg;
 
 /**
 	自定义菜单事件
@@ -30,7 +30,7 @@ import com.jfinal.weixin.sdk.message.in.InMessage;
 			<EventKey><![CDATA[www.qq.com]]></EventKey>
 	</xml>
  */
-public class InMenuEvent extends InMessage {
+public class InMenuEvent extends InMsg {
 	private String event;
 	private String eventKey;
 	

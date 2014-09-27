@@ -11,26 +11,26 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import com.jfinal.kit.StrKit;
-import com.jfinal.weixin.sdk.message.in.InImageMessage;
-import com.jfinal.weixin.sdk.message.in.InLinkMessage;
-import com.jfinal.weixin.sdk.message.in.InLocationMessage;
-import com.jfinal.weixin.sdk.message.in.InMessage;
-import com.jfinal.weixin.sdk.message.in.InTextMessage;
-import com.jfinal.weixin.sdk.message.in.InVideoMessage;
-import com.jfinal.weixin.sdk.message.in.InVoiceMessage;
+import com.jfinal.weixin.sdk.message.in.InImageMsg;
+import com.jfinal.weixin.sdk.message.in.InLinkMsg;
+import com.jfinal.weixin.sdk.message.in.InLocationMsg;
+import com.jfinal.weixin.sdk.message.in.InMsg;
+import com.jfinal.weixin.sdk.message.in.InTextMsg;
+import com.jfinal.weixin.sdk.message.in.InVideoMsg;
+import com.jfinal.weixin.sdk.message.in.InVoiceMsg;
 import com.jfinal.weixin.sdk.message.in.event.InFollowEvent;
 import com.jfinal.weixin.sdk.message.in.event.InLocationEvent;
 import com.jfinal.weixin.sdk.message.in.event.InMenuEvent;
 import com.jfinal.weixin.sdk.message.in.event.InQrCodeEvent;
 
-public class InMessageParaser {
+public class InMsgParaser {
 	
-	private InMessageParaser() {}
+	private InMsgParaser() {}
 	
 	/**
 	 * 从 xml 中解析出各类消息与事件
 	 */
-	public static InMessage parse(String xml) {
+	public static InMsg parse(String xml) {
 		try {
 			return doParse(xml);
 		} catch (DocumentException e) {
@@ -48,7 +48,7 @@ public class InMessageParaser {
 	 * 6：link 链接消息
 	 * 7：event 事件
 	 */
-	private static InMessage doParse(String xml) throws DocumentException {
+	private static InMsg doParse(String xml) throws DocumentException {
 		Document doc = DocumentHelper.parseText(xml);
         Element root = doc.getRootElement();
         String toUserName = root.elementText("ToUserName");
@@ -72,39 +72,39 @@ public class InMessageParaser {
         throw new RuntimeException("无法识别的消息类型，请查阅微信公众平台开发文档");
 	}
 	
-	private static InMessage parseInTextMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
-		InTextMessage msg = new InTextMessage(toUserName, fromUserName, createTime, msgType);
+	private static InMsg parseInTextMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InTextMsg msg = new InTextMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setContent(root.elementText("Content"));
 		msg.setMsgId(root.elementText("MsgId"));
 		return msg;
 	}
 	
-	private static InMessage parseInImageMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
-		InImageMessage msg = new InImageMessage(toUserName, fromUserName, createTime, msgType);
+	private static InMsg parseInImageMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InImageMsg msg = new InImageMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setPicUrl(root.elementText("PicUrl"));
 		msg.setMediaId(root.elementText("MediaId"));
 		msg.setMsgId(root.elementText("MsgId"));
 		return msg;
 	}
 	
-	private static InMessage parseInVoiceMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
-		InVoiceMessage msg = new InVoiceMessage(toUserName, fromUserName, createTime, msgType);
+	private static InMsg parseInVoiceMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InVoiceMsg msg = new InVoiceMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setMediaId(root.elementText("MediaId"));
 		msg.setFormat(root.elementText("Format"));
 		msg.setMsgId(root.elementText("MsgId"));
 		return msg;
 	}
 	
-	private static InMessage parseInVideoMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
-		InVideoMessage msg = new InVideoMessage(toUserName, fromUserName, createTime, msgType);
+	private static InMsg parseInVideoMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InVideoMsg msg = new InVideoMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setMediaId(root.elementText("MediaId"));
 		msg.setThumbMediaId(root.elementText("ThumbMediaId"));
 		msg.setMsgId(root.elementText("MsgId"));
 		return msg;
 	}
 	
-	private static InMessage parseInLocationMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
-		InLocationMessage msg = new InLocationMessage(toUserName, fromUserName, createTime, msgType);
+	private static InMsg parseInLocationMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InLocationMsg msg = new InLocationMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setLocation_X(root.elementText("Location_X"));
 		msg.setLocation_Y(root.elementText("Location_Y"));
 		msg.setScale(root.elementText("Scale"));
@@ -113,8 +113,8 @@ public class InMessageParaser {
 		return msg;
 	}
 	
-	private static InMessage parseInLinkMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
-		InLinkMessage msg = new InLinkMessage(toUserName, fromUserName, createTime, msgType);
+	private static InMsg parseInLinkMessage(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InLinkMsg msg = new InLinkMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setTitle(root.elementText("Title"));
 		msg.setDescription(root.elementText("Description"));
 		msg.setUrl(root.elementText("Url"));
@@ -123,7 +123,7 @@ public class InMessageParaser {
 	}
 	
 	// 解析四种事件
-	private static InMessage parseInEvent(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+	private static InMsg parseInEvent(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
 		String event = root.elementText("Event");
 		String eventKey = root.elementText("EventKey");
 		

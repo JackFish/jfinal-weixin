@@ -6,7 +6,7 @@
 
 package com.jfinal.weixin.sdk.message.out;
 
-import com.jfinal.weixin.sdk.message.in.InMessage;
+import com.jfinal.weixin.sdk.message.in.InMsg;
 
 /**
 	回复语音消息
@@ -20,7 +20,7 @@ import com.jfinal.weixin.sdk.message.in.InMessage;
 			</Voice>
 	</xml>
  */
-public class OutVoiceMessage extends OutMessage {
+public class OutVoiceMsg extends OutMsg {
 	public static final String TEMPLATE =
 			"<xml>\n" +
 				"<ToUserName><![CDATA[${__msg.toUserName}]]></ToUserName>\n" +
@@ -34,11 +34,11 @@ public class OutVoiceMessage extends OutMessage {
 			
 	private String mediaId;
 	
-	public OutVoiceMessage() {
+	public OutVoiceMsg() {
 		this.msgType = "voice";
 	}
 	
-	public OutVoiceMessage(InMessage inMessage) {
+	public OutVoiceMsg(InMsg inMessage) {
 		super(inMessage);
 		this.msgType = "voice";
 	}

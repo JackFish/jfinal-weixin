@@ -6,7 +6,7 @@
 
 package com.jfinal.weixin.sdk.message.in.event;
 
-import com.jfinal.weixin.sdk.message.in.InMessage;
+import com.jfinal.weixin.sdk.message.in.InMsg;
 
 /**
 	扫描带参数二维码事件
@@ -32,7 +32,7 @@ import com.jfinal.weixin.sdk.message.in.InMessage;
 			<Ticket><![CDATA[TICKET]]></Ticket>
 	</xml>
  */
-public class InQrCodeEvent extends InMessage {
+public class InQrCodeEvent extends InMsg {
 	
 	// 1. 用户未关注时，进行关注后的事件推送： subscribe
 	// 2. 用户已关注时的事件推送： SCAN

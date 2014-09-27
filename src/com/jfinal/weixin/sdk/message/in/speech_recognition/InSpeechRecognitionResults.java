@@ -6,7 +6,7 @@
 
 package com.jfinal.weixin.sdk.message.in.speech_recognition;
 
-import com.jfinal.weixin.sdk.message.in.InMessage;
+import com.jfinal.weixin.sdk.message.in.InMsg;
 
 
 /**
@@ -22,7 +22,7 @@ import com.jfinal.weixin.sdk.message.in.InMessage;
 			<MsgId>1234567890123456</MsgId>
 	</xml>
  */
-public class InSpeechRecognitionResults extends InMessage {
+public class InSpeechRecognitionResults extends InMsg {
 	
 	private String mediaId;
 	private String format;

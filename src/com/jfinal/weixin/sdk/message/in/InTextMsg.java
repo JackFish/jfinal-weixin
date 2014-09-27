@@ -17,12 +17,12 @@ package com.jfinal.weixin.sdk.message.in;
 			<MsgId>1234567890123456</MsgId>
 	</xml>
  */
-public class InTextMessage extends InMessage {
+public class InTextMsg extends InMsg {
 	
 	private String content;
 	private String msgId;
 	
-	public InTextMessage(String toUserName, String fromUserName, Integer createTime, String msgType) {
+	public InTextMsg(String toUserName, String fromUserName, Integer createTime, String msgType) {
 		super(toUserName, fromUserName, createTime, msgType);
 	}
 	

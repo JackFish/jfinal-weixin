@@ -18,13 +18,13 @@ package com.jfinal.weixin.sdk.message.in;
 			<MsgId>1234567890123456</MsgId>
 	</xml>
 */
-public class InVoiceMessage extends InMessage {
+public class InVoiceMsg extends InMsg {
 	
 	private String mediaId;
 	private String format;
 	private String msgId;
 	
-	public InVoiceMessage(String toUserName, String fromUserName, Integer createTime, String msgType) {
+	public InVoiceMsg(String toUserName, String fromUserName, Integer createTime, String msgType) {
 		super(toUserName, fromUserName, createTime, msgType);
 	}
 	
