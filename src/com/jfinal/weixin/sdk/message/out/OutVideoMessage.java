@@ -6,6 +6,8 @@
 
 package com.jfinal.weixin.sdk.message.out;
 
+import com.jfinal.weixin.sdk.message.in.InMessage;
+
 /**
 	回复视频消息
 	<xml>
@@ -39,6 +41,11 @@ public class OutVideoMessage extends OutMessage {
 	private String description;
 	
 	public OutVideoMessage() {
+		this.msgType = "video";
+	}
+	
+	public OutVideoMessage(InMessage inMessage) {
+		super(inMessage);
 		this.msgType = "video";
 	}
 	

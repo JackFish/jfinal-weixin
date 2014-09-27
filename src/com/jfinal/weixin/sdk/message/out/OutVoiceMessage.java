@@ -6,6 +6,8 @@
 
 package com.jfinal.weixin.sdk.message.out;
 
+import com.jfinal.weixin.sdk.message.in.InMessage;
+
 /**
 	回复语音消息
 	<xml>
@@ -33,6 +35,11 @@ public class OutVoiceMessage extends OutMessage {
 	private String mediaId;
 	
 	public OutVoiceMessage() {
+		this.msgType = "voice";
+	}
+	
+	public OutVoiceMessage(InMessage inMessage) {
+		super(inMessage);
 		this.msgType = "voice";
 	}
 	

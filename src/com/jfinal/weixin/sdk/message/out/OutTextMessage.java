@@ -6,6 +6,8 @@
 
 package com.jfinal.weixin.sdk.message.out;
 
+import com.jfinal.weixin.sdk.message.in.InMessage;
+
 /**
 	回复文本消息
 	<xml>
@@ -29,6 +31,11 @@ public class OutTextMessage extends OutMessage {
 	private String content;
 	
 	public OutTextMessage() {
+		this.msgType = "text";
+	}
+	
+	public OutTextMessage(InMessage inMessage) {
+		super(inMessage);
 		this.msgType = "text";
 	}
 	

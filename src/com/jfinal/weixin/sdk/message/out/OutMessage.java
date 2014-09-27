@@ -6,6 +6,8 @@
 
 package com.jfinal.weixin.sdk.message.out;
 
+import com.jfinal.weixin.sdk.message.in.InMessage;
+
 /**
 	回复文本消息
 	<xml>
@@ -38,6 +40,19 @@ public abstract class OutMessage {
 	 * 6：news 图文消息
 	 */
 	protected String msgType;
+	
+	/**
+	 * 用接收到的消息初始化要发出去的消息，关键在于两者 toUserName 与 fromUserName 相反
+	 */
+	public OutMessage(InMessage inMessage) {
+		this.toUserName = inMessage.getFromUserName();
+		this.fromUserName = inMessage.getToUserName();
+		this.createTime = now();
+	}
+	
+	public OutMessage() {
+		
+	}
 	
 	public Integer now() {
 		return (int)(System.currentTimeMillis() / 1000);

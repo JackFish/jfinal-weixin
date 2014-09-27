@@ -6,6 +6,8 @@
 
 package com.jfinal.weixin.sdk.message.out;
 
+import com.jfinal.weixin.sdk.message.in.InMessage;
+
 /**
 	回复图片消息
 	<xml>
@@ -33,6 +35,11 @@ public class OutImageMessage extends OutMessage {
 	private String mediaId;
 	
 	public OutImageMessage() {
+		this.msgType = "image";
+	}
+	
+	public OutImageMessage(InMessage inMessage) {
+		super(inMessage);
 		this.msgType = "image";
 	}
 	

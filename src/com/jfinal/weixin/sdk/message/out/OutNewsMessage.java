@@ -9,6 +9,8 @@ package com.jfinal.weixin.sdk.message.out;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jfinal.weixin.sdk.message.in.InMessage;
+
 /**
 	回复图文消息
 	<xml>
@@ -58,6 +60,11 @@ public class OutNewsMessage extends OutMessage {
 	private List<News> articles = new ArrayList<News>();
 	
 	public OutNewsMessage() {
+		this.msgType = "news";
+	}
+	
+	public OutNewsMessage(InMessage inMessage) {
+		super(inMessage);
 		this.msgType = "news";
 	}
 	
