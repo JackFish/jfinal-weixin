@@ -6,14 +6,16 @@ public class ApiConfig {
 	private static String token = null;
 	private static String appId = null;
 	private static String appSecret = null;
-	private static boolean outputXml = false;
 	
-	public static void setOutputXml(boolean outputXml) {
-		ApiConfig.outputXml = outputXml;
+	// 开发模式将输出消息交互 xml 到控制台
+	private static boolean devMode = false;
+	
+	public static void setDevMode(boolean devMode) {
+		ApiConfig.devMode = devMode;
 	}
 	
-	public static boolean getOutputXml() {
-		return outputXml;
+	public static boolean isDevMode() {
+		return devMode;
 	}
 	
 	public static void init(String url, String token) {

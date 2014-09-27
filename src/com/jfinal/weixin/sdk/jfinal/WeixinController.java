@@ -10,9 +10,11 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Logger;
+import com.jfinal.weixin.sdk.api.ApiConfig;
 import com.jfinal.weixin.sdk.kit.HttpKit;
 import com.jfinal.weixin.sdk.kit.SignatureCheckKit;
 import com.jfinal.weixin.sdk.msg.InMsgParaser;
+import com.jfinal.weixin.sdk.msg.OutMsgXmlBuilder;
 import com.jfinal.weixin.sdk.msg.in.InImageMsg;
 import com.jfinal.weixin.sdk.msg.in.InLinkMsg;
 import com.jfinal.weixin.sdk.msg.in.InLocationMsg;
@@ -39,6 +41,12 @@ public abstract class WeixinController extends Controller {
 	 * weixin 公众号服务器调用唯一入口，即在开发者中心输入的 URL 必须要指向此 action
 	 */
 	public void index() {
+		// 开发模式输出交互消息
+		if (ApiConfig.isDevMode()) {
+			System.out.println("接收消息:");
+			System.out.println(getInMsgXml());
+		}
+		
 		// 签名检测
 		if (SignatureCheckKit.me.checkSignature(this) == false) {
 			renderText("check signature failure");
@@ -55,6 +63,7 @@ public abstract class WeixinController extends Controller {
 			return ;
 		}
 		
+		// 解析消息并根据消息类型分发到相应的处理方法
 		InMsg msg = getInMsg();
 		if (msg instanceof InTextMsg)
 			processInTextMsg((InTextMsg)msg);
@@ -102,10 +111,17 @@ public abstract class WeixinController extends Controller {
 	}
 	
 	/**
-	 * 在接收到消息后服务器响应消息
+	 * 在接收到微信服务器的 InMsg 消息后后响应 OutMsg 消息
 	 */
 	public void render(OutMsg outMsg) {
-		render(new OutMsgRender(outMsg));
+		String outMsgXml = OutMsgXmlBuilder.build(outMsg);
+		// 开发模式向控制台输出即将发送的 OutMsg 消息的 xml 内容
+		if (ApiConfig.isDevMode()) {
+			System.out.println("发送消息:");
+			System.out.println(outMsgXml);
+			System.out.println("1212--------------------------------------------------------------------------------\n");
+		}
+		renderText(outMsgXml, "text/xml");
 	}
 	
 	@Before(NotAction.class)
