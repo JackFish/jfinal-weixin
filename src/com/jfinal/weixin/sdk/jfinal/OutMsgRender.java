@@ -10,38 +10,31 @@ import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-
 import com.jfinal.render.Render;
 import com.jfinal.render.RenderException;
-import com.jfinal.weixin.sdk.message.out.OutMessage;
-import com.jfinal.weixin.sdk.message.out.OutMusicMessage;
-import com.jfinal.weixin.sdk.message.out.OutNewsMessage;
-import com.jfinal.weixin.sdk.message.out.OutImageMessage;
-import com.jfinal.weixin.sdk.message.out.OutTextMessage;
-import com.jfinal.weixin.sdk.message.out.OutVideoMessage;
-import com.jfinal.weixin.sdk.message.out.OutVoiceMessage;
-
+import com.jfinal.weixin.sdk.message.out.OutMsg;
+import com.jfinal.weixin.sdk.message.out.OutMusicMsg;
+import com.jfinal.weixin.sdk.message.out.OutNewsMsg;
+import com.jfinal.weixin.sdk.message.out.OutImageMsg;
+import com.jfinal.weixin.sdk.message.out.OutTextMsg;
+import com.jfinal.weixin.sdk.message.out.OutVideoMsg;
+import com.jfinal.weixin.sdk.message.out.OutVoiceMsg;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 @SuppressWarnings("serial")
-public class OutMessageRender extends Render {
+public class OutMsgRender extends Render {
 	
 	private transient static final String contentType = "text/xml; charset=" + getEncoding();
 	private static Configuration config = init();
 	
-	// private String outMessageName;
-	private OutMessage outMessage;
+	private OutMsg outMsg;
 	
-	// public OutMessageRender(String outMessageName) {
-		// this.outMessageName = outMessageName;
-	// }
-	
-	public OutMessageRender(OutMessage outMessage) {
-		if (outMessage == null)
-			throw new IllegalArgumentException("参数 OutMessage 不能为 null。");
-		this.outMessage = outMessage;
+	public OutMsgRender(OutMsg outMsg) {
+		if (outMsg == null)
+			throw new IllegalArgumentException("参数 OutMsg 不能为 null。");
+		this.outMsg = outMsg;
 	}
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})
@@ -55,11 +48,11 @@ public class OutMessageRender extends Render {
 		}
 		
 		// 供 OutMessage 的 TEMPLATE 使用
-		root.put("__msg", outMessage);
+		root.put("__msg", outMsg);
 		
 		PrintWriter writer = null;
         try {
-			Template template = config.getTemplate(outMessage.getClass().getSimpleName(), getEncoding());
+			Template template = config.getTemplate(outMsg.getClass().getSimpleName(), getEncoding());
 			writer = response.getWriter();
 			template.process(root, writer);		// Merge the data-model and the template
 		} catch (Exception e) {
@@ -81,17 +74,17 @@ public class OutMessageRender extends Render {
 	
 	private static void initStringLoader(StringTemplateLoader loader) {
 		// text 文本消息
-		loader.putTemplate(OutTextMessage.class.getSimpleName(), OutTextMessage.TEMPLATE);
+		loader.putTemplate(OutTextMsg.class.getSimpleName(), OutTextMsg.TEMPLATE);
 		// news 图文消息
-		loader.putTemplate(OutNewsMessage.class.getSimpleName(), OutNewsMessage.TEMPLATE);
+		loader.putTemplate(OutNewsMsg.class.getSimpleName(), OutNewsMsg.TEMPLATE);
 		// image 图片消息
-		loader.putTemplate(OutImageMessage.class.getSimpleName(), OutImageMessage.TEMPLATE);
+		loader.putTemplate(OutImageMsg.class.getSimpleName(), OutImageMsg.TEMPLATE);
 		//voice 语音消息
-		loader.putTemplate(OutVoiceMessage.class.getSimpleName(), OutVoiceMessage.TEMPLATE);
+		loader.putTemplate(OutVoiceMsg.class.getSimpleName(), OutVoiceMsg.TEMPLATE);
 		// video 视频消息
-		loader.putTemplate(OutVideoMessage.class.getSimpleName(), OutVideoMessage.TEMPLATE);
+		loader.putTemplate(OutVideoMsg.class.getSimpleName(), OutVideoMsg.TEMPLATE);
 		// music 音乐消息
-		loader.putTemplate(OutMusicMessage.class.getSimpleName(), OutMusicMessage.TEMPLATE);
+		loader.putTemplate(OutMusicMsg.class.getSimpleName(), OutMusicMsg.TEMPLATE);
 	}
 }
 

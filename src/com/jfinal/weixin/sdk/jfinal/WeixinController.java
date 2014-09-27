@@ -9,38 +9,43 @@ package com.jfinal.weixin.sdk.jfinal;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
+import com.jfinal.log.Logger;
 import com.jfinal.weixin.sdk.kit.HttpKit;
 import com.jfinal.weixin.sdk.kit.SignatureCheckKit;
-import com.jfinal.weixin.sdk.message.InMessageParaser;
-import com.jfinal.weixin.sdk.message.in.InImageMessage;
-import com.jfinal.weixin.sdk.message.in.InLinkMessage;
-import com.jfinal.weixin.sdk.message.in.InLocationMessage;
-import com.jfinal.weixin.sdk.message.in.InMessage;
-import com.jfinal.weixin.sdk.message.in.InTextMessage;
-import com.jfinal.weixin.sdk.message.in.InVideoMessage;
-import com.jfinal.weixin.sdk.message.in.InVoiceMessage;
+import com.jfinal.weixin.sdk.message.InMsgParaser;
+import com.jfinal.weixin.sdk.message.in.InImageMsg;
+import com.jfinal.weixin.sdk.message.in.InLinkMsg;
+import com.jfinal.weixin.sdk.message.in.InLocationMsg;
+import com.jfinal.weixin.sdk.message.in.InMsg;
+import com.jfinal.weixin.sdk.message.in.InTextMsg;
+import com.jfinal.weixin.sdk.message.in.InVideoMsg;
+import com.jfinal.weixin.sdk.message.in.InVoiceMsg;
 import com.jfinal.weixin.sdk.message.in.event.InFollowEvent;
 import com.jfinal.weixin.sdk.message.in.event.InLocationEvent;
 import com.jfinal.weixin.sdk.message.in.event.InMenuEvent;
 import com.jfinal.weixin.sdk.message.in.event.InQrCodeEvent;
 import com.jfinal.weixin.sdk.message.in.speech_recognition.InSpeechRecognitionResults;
-import com.jfinal.weixin.sdk.message.out.OutMessage;
+import com.jfinal.weixin.sdk.message.out.OutMsg;
 
 /**
  * 自动接收微信服务器消息，自动解析成 InMessage 并分发到相应的处理方法
  */
 public abstract class WeixinController extends Controller {
 	
-	private String inMessageXml = null;
+	private static final Logger log =  Logger.getLogger(WeixinController.class);
+	private String inMsgXml = null;
 	
 	/**
-	 * 配置为微信开发者中心的 URL
-	 * 这里应该要包含 become_developer 的 api
+	 * weixin 公众号服务器调用唯一入口，即在开发者中心输入的 URL 必须要指向此 action
 	 */
 	public void index() {
 		// 签名检测
 		if (SignatureCheckKit.me.checkSignature(this) == false) {
 			renderText("check signature failure");
+			log.error("check signature failure: " +
+					" signature = " + getPara("signature") +
+					" timestamp = " + getPara("timestamp") +
+					" nonce = " + getPara("nonce"));
 			return ;
 		}
 		
@@ -50,19 +55,19 @@ public abstract class WeixinController extends Controller {
 			return ;
 		}
 		
-		InMessage msg = getInMessage();
-		if (msg instanceof InTextMessage)
-			processInTextMessage((InTextMessage)msg);
-		else if (msg instanceof InImageMessage)
-			processInImageMessage((InImageMessage)msg);
-		else if (msg instanceof InVoiceMessage)
-			processInVoiceMessage((InVoiceMessage)msg);
-		else if (msg instanceof InVideoMessage)
-			processInVideoMessage((InVideoMessage)msg);
-		else if (msg instanceof InLocationMessage)
-			processInLocationMessage((InLocationMessage)msg);
-		else if (msg instanceof InLinkMessage)
-			processInLinkMessage((InLinkMessage)msg);
+		InMsg msg = getInMsg();
+		if (msg instanceof InTextMsg)
+			processInTextMsg((InTextMsg)msg);
+		else if (msg instanceof InImageMsg)
+			processInImageMsg((InImageMsg)msg);
+		else if (msg instanceof InVoiceMsg)
+			processInVoiceMsg((InVoiceMsg)msg);
+		else if (msg instanceof InVideoMsg)
+			processInVideoMsg((InVideoMsg)msg);
+		else if (msg instanceof InLocationMsg)
+			processInLocationMsg((InLocationMsg)msg);
+		else if (msg instanceof InLinkMsg)
+			processInLinkMsg((InLinkMsg)msg);
 		else if (msg instanceof InFollowEvent)
 			processInFollowEvent((InFollowEvent)msg);
 		else if (msg instanceof InQrCodeEvent)
@@ -73,8 +78,10 @@ public abstract class WeixinController extends Controller {
 			processInMenuEvent((InMenuEvent)msg);
 		else if (msg instanceof InSpeechRecognitionResults)
 			processInSpeechRecognitionResults((InSpeechRecognitionResults)msg);
-		else
+		else {
 			renderText("未能识别的消息类型!");
+			log.error("未能识别的消息类型。 消息 xml 内容为：\n" + getInMsgXml());
+		}
 	}
 	
 	/**
@@ -88,46 +95,48 @@ public abstract class WeixinController extends Controller {
 		boolean isOk = SignatureCheckKit.me.checkSignature(signature, timestamp, nonce);
 		if (isOk)
 			renderText(echostr);
-		else
+		else {
 			renderText("验证失败：configUrlAndToken");
+			log.error("验证失败：configUrlAndToken");
+		}
 	}
 	
 	/**
 	 * 在接收到消息后服务器响应消息
 	 */
-	public void render(OutMessage outMessage) {
-		render(new OutMessageRender(outMessage));
+	public void render(OutMsg outMsg) {
+		render(new OutMsgRender(outMsg));
 	}
 	
 	@Before(NotAction.class)
-	public String getInMessageXml() {
-		if (inMessageXml == null)
-			inMessageXml = HttpKit.readData(getRequest());
-		return inMessageXml;
+	public String getInMsgXml() {
+		if (inMsgXml == null)
+			inMsgXml = HttpKit.readData(getRequest());
+		return inMsgXml;
 	}
 	
 	@Before(NotAction.class)
-	public InMessage getInMessage() {
-		return InMessageParaser.parse(getInMessageXml());
+	public InMsg getInMsg() {
+		return InMsgParaser.parse(getInMsgXml());
 	}
 	
 	// 处理接收到的文本消息
-	protected abstract void processInTextMessage(InTextMessage inTextMessage);
+	protected abstract void processInTextMsg(InTextMsg inTextMsg);
 	
 	// 处理接收到的图片消息
-	protected abstract void processInImageMessage(InImageMessage inImageMessage);
+	protected abstract void processInImageMsg(InImageMsg inImageMsg);
 	
 	// 处理接收到的语音消息
-	protected abstract void processInVoiceMessage(InVoiceMessage inVoiceMessage);
+	protected abstract void processInVoiceMsg(InVoiceMsg inVoiceMsg);
 	
 	// 处理接收到的视频消息
-	protected abstract void processInVideoMessage(InVideoMessage inVideoMessage);
+	protected abstract void processInVideoMsg(InVideoMsg inVideoMsg);
 	
 	// 处理接收到的地址位置消息
-	protected abstract void processInLocationMessage(InLocationMessage inLocationMessage);
+	protected abstract void processInLocationMsg(InLocationMsg inLocationMsg);
 
 	// 处理接收到的链接消息
-	protected abstract void processInLinkMessage(InLinkMessage inLinkMessage);
+	protected abstract void processInLinkMsg(InLinkMsg inLinkMsg);
 	
 	// 处理接收到的关注/取消关注事件
 	protected abstract void processInFollowEvent(InFollowEvent inFollowEvent);
