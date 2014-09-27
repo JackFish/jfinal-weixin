@@ -12,23 +12,23 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.log.Logger;
 import com.jfinal.weixin.sdk.kit.HttpKit;
 import com.jfinal.weixin.sdk.kit.SignatureCheckKit;
-import com.jfinal.weixin.sdk.message.InMsgParaser;
-import com.jfinal.weixin.sdk.message.in.InImageMsg;
-import com.jfinal.weixin.sdk.message.in.InLinkMsg;
-import com.jfinal.weixin.sdk.message.in.InLocationMsg;
-import com.jfinal.weixin.sdk.message.in.InMsg;
-import com.jfinal.weixin.sdk.message.in.InTextMsg;
-import com.jfinal.weixin.sdk.message.in.InVideoMsg;
-import com.jfinal.weixin.sdk.message.in.InVoiceMsg;
-import com.jfinal.weixin.sdk.message.in.event.InFollowEvent;
-import com.jfinal.weixin.sdk.message.in.event.InLocationEvent;
-import com.jfinal.weixin.sdk.message.in.event.InMenuEvent;
-import com.jfinal.weixin.sdk.message.in.event.InQrCodeEvent;
-import com.jfinal.weixin.sdk.message.in.speech_recognition.InSpeechRecognitionResults;
-import com.jfinal.weixin.sdk.message.out.OutMsg;
+import com.jfinal.weixin.sdk.msg.InMsgParaser;
+import com.jfinal.weixin.sdk.msg.in.InImageMsg;
+import com.jfinal.weixin.sdk.msg.in.InLinkMsg;
+import com.jfinal.weixin.sdk.msg.in.InLocationMsg;
+import com.jfinal.weixin.sdk.msg.in.InMsg;
+import com.jfinal.weixin.sdk.msg.in.InTextMsg;
+import com.jfinal.weixin.sdk.msg.in.InVideoMsg;
+import com.jfinal.weixin.sdk.msg.in.InVoiceMsg;
+import com.jfinal.weixin.sdk.msg.in.event.InFollowEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InLocationEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
+import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
+import com.jfinal.weixin.sdk.msg.out.OutMsg;
 
 /**
- * 自动接收微信服务器消息，自动解析成 InMessage 并分发到相应的处理方法
+ * 自动接收微信服务器消息，自动解析成 InMsg 并分发到相应的处理方法
  */
 public abstract class WeixinController extends Controller {
 	

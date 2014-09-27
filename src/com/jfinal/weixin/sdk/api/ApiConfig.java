@@ -6,6 +6,15 @@ public class ApiConfig {
 	private static String token = null;
 	private static String appId = null;
 	private static String appSecret = null;
+	private static boolean outputXml = false;
+	
+	public static void setOutputXml(boolean outputXml) {
+		ApiConfig.outputXml = outputXml;
+	}
+	
+	public static boolean getOutputXml() {
+		return outputXml;
+	}
 	
 	public static void init(String url, String token) {
 		setUrl(url);
