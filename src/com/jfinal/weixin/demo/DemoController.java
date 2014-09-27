@@ -25,23 +25,12 @@ import com.jfinal.weixin.sdk.msg.out.OutVideoMsg;
 import com.jfinal.weixin.sdk.msg.out.OutVoiceMsg;
 
 /**
- * 设置好weixin开发者中心的 URL 与 token 即可开始开发，并将此 DemoController 的
- * index 方法映射到开发者中心的 URL 之上即可用个人微信测试效果，以实现极速微信开发
+ * 将此 DemoController 在YourJFinalConfig 中注册路由，
+ * 并设置好weixin开发者中心的 URL 与 token ，使 URL 指向该
+ * DemoController 继承自父类 WeixinController 的 index
+ * 方法即可直接运行看效果，在此基础之上修改相关的方法即可进行实际项目开发
  */
 public class DemoController extends WeixinController {
-	
-	/*
-	 * weixin 公众号服务器调用唯一入口，即在开发者中心输入的 url 必须要指向此 action(non-Javadoc)
-	 * 必须要调用父类的 index() 方法，否则无法进行消息的解析与调度
-	 * 可以省图此方法，因为父类 WeixinController 中的 index 会被继承过来
-	 */
-	public void index() {
-		super.index();	// 必须要高度用父类的 index() 方法
-		
-		// String inMsgXml = getInMsgXml();
-		// 可将 inMsgXml 写入数据库以便查看
-		// new InMsg(inMsgXml).save();
-	}
 	
 	/**
 	 * 实现父类抽方法，处理文本消息
@@ -52,9 +41,10 @@ public class DemoController extends WeixinController {
 	protected void processInTextMsg(InTextMsg inTextMsg) {
 		String msgContent = inTextMsg.getContent().trim();
 		// 帮助提示
+		String helpStr = "\t发送 help 可获得帮助，发送 news 可收取图文消息，发送 music 可获取音乐消息";
 		if ("help".equalsIgnoreCase(msgContent)) {
 			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
-			outMsg.setContent("发送 help 可获得帮助，发送 news 可收取图文消息，发送 music 可获取音乐消息");
+			outMsg.setContent(helpStr);
 			render(outMsg);
 		}
 		// 图文消息测试
@@ -74,10 +64,10 @@ public class DemoController extends WeixinController {
 			outMsg.setFuncFlag(true);
 			render(outMsg);
 		}
-		// 其它文本消息直接返回原值
+		// 其它文本消息直接返回原值 + 帮助提示
 		else {
 			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
-			outMsg.setContent("文本消息已成功接收，内容为： " + inTextMsg.getContent());
+			outMsg.setContent("\t文本消息已成功接收，内容为： " + inTextMsg.getContent() + "\n\n" + helpStr);
 			render(outMsg);
 		}
 	}
