@@ -4,7 +4,7 @@ password =
 devMode = true
 
 # 微信服务器回调所用的 url 与 token
-url=http://www.jfinal.com/weixin
+url=http://jfinal-weixin-dev.jfinal.com/weixin
 token=__my__token__
 
 # 测试用的账号

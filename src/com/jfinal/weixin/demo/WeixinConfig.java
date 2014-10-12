@@ -6,6 +6,7 @@
 
 package com.jfinal.weixin.demo;
 
+import java.util.Properties;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -13,11 +14,19 @@ import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.core.JFinal;
+import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.weixin.sdk.api.ApiConfig;
 
 public class WeixinConfig extends JFinalConfig {
+	
+	public Properties loadPropertyFile(String pro, String dev) {
+		try {return super.loadPropertyFile(pro);}
+		catch (Exception e)
+			{return super.loadPropertyFile(dev);}
+	}
+	
 	public void configConstant(Constants me) {
-		loadPropertyFile("a_little_config.txt");
+		loadPropertyFile("a_little_config_pro.txt", "a_little_config.txt");
 		me.setDevMode(getPropertyToBoolean("devMode", false));
 		
 		// 配置微信 API 相关常量
@@ -33,7 +42,11 @@ public class WeixinConfig extends JFinalConfig {
 	}
 	
 	public void configPlugin(Plugins me) {
+		// C3p0Plugin c3p0Plugin = new C3p0Plugin(getProperty("jdbcUrl"), getProperty("user"), getProperty("password").trim());
+		// me.add(c3p0Plugin);
 		
+		EhCachePlugin ecp = new EhCachePlugin();
+		me.add(ecp);
 	}
 	
 	public void configInterceptor(Interceptors me) {

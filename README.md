@@ -1,1 +1,1 @@
-#jfinal_weixin_sdk
+#jfinal weixin 极速开发

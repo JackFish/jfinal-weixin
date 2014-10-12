@@ -8,11 +8,9 @@ package com.jfinal.weixin.sdk.jfinal;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.StrKit;
 import com.jfinal.log.Logger;
 import com.jfinal.weixin.sdk.api.ApiConfig;
 import com.jfinal.weixin.sdk.kit.HttpKit;
-import com.jfinal.weixin.sdk.kit.SignatureCheckKit;
 import com.jfinal.weixin.sdk.msg.InMsgParaser;
 import com.jfinal.weixin.sdk.msg.OutMsgXmlBuilder;
 import com.jfinal.weixin.sdk.msg.in.InImageMsg;
@@ -28,6 +26,7 @@ import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 import com.jfinal.weixin.sdk.msg.out.OutMsg;
+import com.jfinal.weixin.sdk.msg.out.OutTextMsg;
 
 /**
  * 接收微信服务器消息，自动解析成 InMsg 并分发到相应的处理方法
@@ -35,32 +34,18 @@ import com.jfinal.weixin.sdk.msg.out.OutMsg;
 public abstract class WeixinController extends Controller {
 	
 	private static final Logger log =  Logger.getLogger(WeixinController.class);
-	private String inMsgXml = null;
+	private String inMsgXml = null;		// 本次请求 xml数据
+	private InMsg inMsg = null;			// 本次请求 xml 解析后的 InMsg 对象
 	
 	/**
 	 * weixin 公众号服务器调用唯一入口，即在开发者中心输入的 URL 必须要指向此 action
 	 */
+	@Before(WeixinInterceptor.class)
 	public void index() {
 		// 开发模式输出微信服务发送过来的  xml 消息
 		if (ApiConfig.isDevMode()) {
 			System.out.println("接收消息:");
 			System.out.println(getInMsgXml());
-		}
-		
-		// 签名检测
-		if (SignatureCheckKit.me.checkSignature(this) == false) {
-			renderText("check signature failure");
-			log.error("check signature failure: " +
-					" signature = " + getPara("signature") +
-					" timestamp = " + getPara("timestamp") +
-					" nonce = " + getPara("nonce"));
-			return ;
-		}
-		
-		// 通过 echostr 判断请求是否为配置微信服务器回调所需的 url 与 token
-		if (StrKit.notBlank(getPara("echostr"))) {
-			configUrlAndToken();
-			return ;
 		}
 		
 		// 解析消息并根据消息类型分发到相应的处理方法
@@ -92,21 +77,6 @@ public abstract class WeixinController extends Controller {
 	}
 	
 	/**
-	 * 配置微信服务器回调所需的 url 与 token
-	 */
-	private void configUrlAndToken() {
-		String echostr = getPara("echostr");
-		String signature = getPara("signature");
-        String timestamp = getPara("timestamp");
-        String nonce = getPara("nonce");
-		boolean isOk = SignatureCheckKit.me.checkSignature(signature, timestamp, nonce);
-		if (isOk)
-			renderText(echostr);
-		else
-			log.error("验证失败：configUrlAndToken");
-	}
-	
-	/**
 	 * 在接收到微信服务器的 InMsg 消息后后响应 OutMsg 消息
 	 */
 	public void render(OutMsg outMsg) {
@@ -120,6 +90,12 @@ public abstract class WeixinController extends Controller {
 		renderText(outMsgXml, "text/xml");
 	}
 	
+	public void renderOutTextMsg(String content) {
+		OutTextMsg outMsg= new OutTextMsg(getInMsg());
+		outMsg.setContent(content);
+		render(outMsg);
+	}
+	
 	@Before(NotAction.class)
 	public String getInMsgXml() {
 		if (inMsgXml == null)
@@ -129,7 +105,9 @@ public abstract class WeixinController extends Controller {
 	
 	@Before(NotAction.class)
 	public InMsg getInMsg() {
-		return InMsgParaser.parse(getInMsgXml());
+		if (inMsg == null)
+			inMsg = InMsgParaser.parse(getInMsgXml()); 
+		return inMsg;
 	}
 	
 	// 处理接收到的文本消息
@@ -165,6 +143,8 @@ public abstract class WeixinController extends Controller {
 	// 处理接收到的语音识别结果
 	protected abstract void processInSpeechRecognitionResults(InSpeechRecognitionResults inSpeechRecognitionResults);
 }
+
+
 
 
 
