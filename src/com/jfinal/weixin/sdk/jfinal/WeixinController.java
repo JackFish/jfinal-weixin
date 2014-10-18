@@ -99,7 +99,7 @@ public abstract class WeixinController extends Controller {
 	@Before(NotAction.class)
 	public String getInMsgXml() {
 		if (inMsgXml == null)
-			inMsgXml = HttpKit.readData(getRequest());
+			inMsgXml = HttpKit.readIncommingRequestData(getRequest());
 		return inMsgXml;
 	}
 	
