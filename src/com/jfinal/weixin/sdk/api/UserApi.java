@@ -6,9 +6,6 @@
 
 package com.jfinal.weixin.sdk.api;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.jfinal.weixin.sdk.kit.HttpKit;
 import com.jfinal.weixin.sdk.kit.ParaMap;
 
