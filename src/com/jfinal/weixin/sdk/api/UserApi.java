@@ -8,7 +8,9 @@ package com.jfinal.weixin.sdk.api;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.jfinal.weixin.sdk.kit.HttpKit;
+import com.jfinal.weixin.sdk.kit.ParaMap;
 
 /**
  * 用户管理 API
@@ -20,19 +22,15 @@ public class UserApi {
 	private static String getFollowers = "https://api.weixin.qq.com/cgi-bin/user/get";
 	
 	public ApiResult getUserInfo(String openId) {
-		Map<String, String> qp = new HashMap<String, String>();
-		qp.put("access_token", OAuthApi.getAccessToken().getAccessToken());
-		qp.put("openid", openId);
-		qp.put("lang", "zh_CN");
-		return new ApiResult(HttpKit.get(getUserInfo, qp));
+		ParaMap pm = ParaMap.create("access_token", OAuthApi.getAccessToken().getAccessToken()).put("openid", openId).put("lang", "zh_CN");
+		return new ApiResult(HttpKit.get(getUserInfo, pm.getData()));
 	}
 	
 	public ApiResult getFollowers(String nextOpenid) {
-		Map<String, String> qp = new HashMap<String, String>();
-		qp.put("access_token", OAuthApi.getAccessToken().getAccessToken());
+		ParaMap pm = ParaMap.create("access_token", OAuthApi.getAccessToken().getAccessToken());
 		if (nextOpenid != null)
-			qp.put("next_openid", nextOpenid);
-		return new ApiResult(HttpKit.get(getFollowers, qp));
+			pm.put("next_openid", nextOpenid);
+		return new ApiResult(HttpKit.get(getFollowers, pm.getData()));
 	}
 	
 	public ApiResult getFollows() {

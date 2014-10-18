@@ -7,11 +7,11 @@
 package com.jfinal.weixin.sdk.api;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.jfinal.weixin.sdk.kit.HttpKit;
+import com.jfinal.weixin.sdk.kit.ParaMap;
 
 /**
  * 认证并获取 access_token API
@@ -39,9 +39,7 @@ public class OAuthApi {
 	private static AccessToken requestAccesToken() {
 		final String appId = ApiConfig.getAppId();
 		final String appSecret = ApiConfig.getAppSecret();
-		Map<String, String> queryParas = new HashMap<String, String>();
-		queryParas.put("appid", appId);
-		queryParas.put("secret", appSecret);
+		Map<String, String> queryParas = ParaMap.create("appid", appId).put("secret", appSecret).getData();
 		String json = HttpKit.get(url, queryParas);
 		return new AccessToken(json);
 	}
