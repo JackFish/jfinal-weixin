@@ -203,10 +203,15 @@ public class HttpKit {
 			return url;
 		
 		StringBuilder sb = new StringBuilder(url);
-		if (url.indexOf("?") == -1)
+		boolean isFirst;
+		if (url.indexOf("?") == -1) {
+			isFirst = true;
 			sb.append("?");
+		}
+		else {
+			isFirst = false;
+		}
 		
-		boolean isFirst = true;
 		for (Entry<String, String> entry : queryParas.entrySet()) {
 			if (isFirst) isFirst = false;	
 			else sb.append("&");
