@@ -17,18 +17,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ApiResult {
 	
 	private Map<String, Object> attrs;
+	private String json;
 	
 	/**
 	 * 通过 json 构造 ApiResult，注意返回结果不为 json 的 api（如果有的话）
 	 */
 	@SuppressWarnings("unchecked")
 	public ApiResult(String jsonStr) {
+		this.json = jsonStr;
+		
 		try {
 			Map<String, Object> temp = new ObjectMapper().readValue(jsonStr, Map.class);
 			this.attrs = temp;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public String getJson() {
+		return json;
 	}
 	
 	/**

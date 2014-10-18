@@ -39,6 +39,7 @@ public class WeixinConfig extends JFinalConfig {
 	
 	public void configRoute(Routes me) {
 		me.add("/weixin", DemoController.class);
+		me.add("/api", ApiController.class, "/api");
 	}
 	
 	public void configPlugin(Plugins me) {

@@ -19,7 +19,7 @@ public class MenuApi {
 	/**
 	 * 查询菜单
 	 */
-	public ApiResult getMenu() {
+	public static ApiResult getMenu() {
 		String jsonResult = HttpKit.get(getMenu + OAuthApi.getAccessToken().getAccessToken());
 		return new ApiResult(jsonResult);
 	}

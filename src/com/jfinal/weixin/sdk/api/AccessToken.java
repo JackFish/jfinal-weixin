@@ -21,8 +21,11 @@ public class AccessToken {
 	private String errmsg;			// 出错时有值
 	
 	private Long expiredTime;		// 正确获取到 access_token 时有值，存放过期时间
+	private String json;
 	
 	public AccessToken(String jsonStr) {
+		this.json = jsonStr;
+		
 		try {
 			@SuppressWarnings("rawtypes")
 			Map map = new ObjectMapper().readValue(jsonStr, Map.class);
@@ -37,6 +40,10 @@ public class AccessToken {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public String getJson() {
+		return json;
 	}
 	
 	public boolean isAvailable() {
