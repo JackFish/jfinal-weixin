@@ -1,0 +1,15 @@
+
+
+http://wiki.fasterxml.com/JacksonInFiveMinutes
+
+
+JSON TYPE				JAVA TYPE
+object					LinkedHashMap<String,Object>
+array					ArrayList<Object>
+string					String
+number (no fraction)	Integer, Long or BigInteger (smallest applicable)
+number (fraction)		Double (configurable to use BigDecimal)
+true|false				Boolean
+null					null
+
+

@@ -6,9 +6,31 @@
 
 package com.jfinal.weixin.sdk.api;
 
+import com.jfinal.weixin.sdk.kit.HttpKit;
+
 /**
- * 向微信服务器发送 menu api 相关请求
+ * menu api
  */
 public class MenuApi {
-
+	
+	private static String getMenu = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=";
+	private static String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=";
+	
+	/**
+	 * 查询菜单
+	 */
+	public ApiResult getMenu() {
+		String jsonResult = HttpKit.get(getMenu + OAuthApi.getAccessToken().getAccessToken());
+		return new ApiResult(jsonResult);
+	}
+	
+	/**
+	 * 创建菜单
+	 */
+	public ApiResult createMenu(String jsonStr) {
+		String jsonResult = HttpKit.post(createMenu + OAuthApi.getAccessToken().getAccessToken(), jsonStr);
+		return new ApiResult(jsonResult);
+	}
 }
+
+
