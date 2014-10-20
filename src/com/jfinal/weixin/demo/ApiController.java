@@ -13,6 +13,9 @@ public class ApiController extends Controller {
 	}
 	*/
 	
+	/**
+	 * 获取公众号菜单
+	 */
 	public void getMenu() {
 		ApiResult apiResult = MenuApi.getMenu();
 		if (apiResult.isSucceed())
@@ -21,6 +24,9 @@ public class ApiController extends Controller {
 			renderText(apiResult.getErrorMsg());
 	}
 	
+	/**
+	 * 获取公众号关注用户
+	 */
 	public void getFollowers() {
 		ApiResult apiResult = UserApi.getFollows();
 		renderText(apiResult.getJson());
