@@ -17,7 +17,7 @@ import com.jfinal.weixin.sdk.kit.ParaMap;
  * 认证并获取 access_token API
  * http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96access_token
  */
-public class OAuthApi {
+public class AccessTokenApi {
 	
 	// "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	private static String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential";
