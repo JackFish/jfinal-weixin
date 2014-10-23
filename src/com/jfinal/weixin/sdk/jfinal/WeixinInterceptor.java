@@ -45,7 +45,15 @@ public class WeixinInterceptor implements Interceptor {
 	 * 检测签名
 	 */
 	private boolean checkSignature(Controller controller) {
-		if (SignatureCheckKit.me.checkSignature(controller)) {
+		String signature = controller.getPara("signature");
+		String timestamp = controller.getPara("timestamp");
+		String nonce = controller.getPara("nonce");
+		if (StrKit.isBlank(signature) || StrKit.isBlank(timestamp) || StrKit.isBlank(nonce)) {
+			controller.renderText("check signature failure");
+			return false;
+		}
+		
+		if (SignatureCheckKit.me.checkSignature(signature, timestamp, nonce)) {
 			return true;
 		}
 		else {
