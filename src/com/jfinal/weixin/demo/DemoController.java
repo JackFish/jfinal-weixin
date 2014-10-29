@@ -170,18 +170,14 @@ public class DemoController extends WeixinController {
 	 * 实现父类抽方法，处理自定义菜单事件
 	 */
 	protected void processInMenuEvent(InMenuEvent inMenuEvent) {
-		OutTextMsg outMsg = new OutTextMsg(inMenuEvent);
-		outMsg.setContent("processInMenuEvent() 方法测试成功");
-		render(outMsg);
+		renderOutTextMsg("processInMenuEvent() 方法测试成功");
 	}
 	
 	/**
 	 * 实现父类抽方法，处理接收语音识别结果
 	 */
 	protected void processInSpeechRecognitionResults(InSpeechRecognitionResults inSpeechRecognitionResults) {
-		OutTextMsg outMsg = new OutTextMsg(inSpeechRecognitionResults);
-		outMsg.setContent("processInSpeechRecognitionResults() 方法测试成功");
-		render(outMsg);
+		renderOutTextMsg("语音识别结果： " + inSpeechRecognitionResults.getRecognition());
 	}
 }
 

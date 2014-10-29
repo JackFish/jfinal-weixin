@@ -29,6 +29,7 @@ public class ApiController extends Controller {
 	 */
 	public void getFollowers() {
 		ApiResult apiResult = UserApi.getFollows();
+		// TODO 用 jackson 解析结果出来
 		renderText(apiResult.getJson());
 	}
 }
