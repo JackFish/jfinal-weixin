@@ -22,6 +22,7 @@ import com.jfinal.weixin.sdk.msg.in.event.InFollowEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InLocationEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
+import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 
 public class InMsgParaser {
 	
@@ -60,7 +61,7 @@ public class InMsgParaser {
         if ("image".equals(msgType))
         	return parseInImageMsg(root, toUserName, fromUserName, createTime, msgType);
         if ("voice".equals(msgType))
-        	return parseInVoiceMsg(root, toUserName, fromUserName, createTime, msgType);
+        	return parseInVoiceMsgAndInSpeechRecognitionResults(root, toUserName, fromUserName, createTime, msgType);
         if ("video".equals(msgType))
         	return parseInVideoMsg(root, toUserName, fromUserName, createTime, msgType);
         if ("location".equals(msgType))
@@ -87,12 +88,23 @@ public class InMsgParaser {
 		return msg;
 	}
 	
-	private static InMsg parseInVoiceMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
-		InVoiceMsg msg = new InVoiceMsg(toUserName, fromUserName, createTime, msgType);
-		msg.setMediaId(root.elementText("MediaId"));
-		msg.setFormat(root.elementText("Format"));
-		msg.setMsgId(root.elementText("MsgId"));
-		return msg;
+	private static InMsg parseInVoiceMsgAndInSpeechRecognitionResults(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		String recognition = root.elementText("Recognition");
+		if (StrKit.isBlank(recognition)) {
+			InVoiceMsg msg = new InVoiceMsg(toUserName, fromUserName, createTime, msgType);
+			msg.setMediaId(root.elementText("MediaId"));
+			msg.setFormat(root.elementText("Format"));
+			msg.setMsgId(root.elementText("MsgId"));
+			return msg;
+		}
+		else {
+			InSpeechRecognitionResults msg = new InSpeechRecognitionResults(toUserName, fromUserName, createTime, msgType);
+			msg.setMediaId(root.elementText("MediaId"));
+			msg.setFormat(root.elementText("Format"));
+			msg.setMsgId(root.elementText("MsgId"));
+			msg.setRecognition(recognition);			// 与 InVoiceMsg 唯一的不同之处
+			return msg;
+		}
 	}
 	
 	private static InMsg parseInVideoMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {

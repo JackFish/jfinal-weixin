@@ -10,7 +10,7 @@ import com.jfinal.weixin.sdk.msg.in.InMsg;
 
 
 /**
-	接收语音识别结果
+	接收语音识别结果，与 InVoiceMsg 唯一的不同是多了一个 Recognition 标记
 	<xml>
 		<ToUserName><![CDATA[toUser]]></ToUserName>
 		<FromUserName><![CDATA[fromUser]]></FromUserName>
