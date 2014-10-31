@@ -68,7 +68,7 @@ public class HttpKit {
 	private static SSLSocketFactory initSSLSocketFactory() {
 		try {
 			TrustManager[] tm = {new HttpKit().new TrustAnyTrustManager() };  
-			SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");  
+			SSLContext sslContext = SSLContext.getInstance("TLS", "SunJSSE");  
 			sslContext.init(null, tm, new java.security.SecureRandom());  
 			return sslContext.getSocketFactory();
 		}
