@@ -19,14 +19,14 @@ import com.jfinal.weixin.sdk.api.ApiConfig;
 
 public class WeixinConfig extends JFinalConfig {
 	
-	public Properties loadPropertyFile(String pro, String dev) {
-		try {return super.loadPropertyFile(pro);}
+	public Properties loadProp(String pro, String dev) {
+		try {return loadPropertyFile(pro);}
 		catch (Exception e)
-			{return super.loadPropertyFile(dev);}
+			{return loadPropertyFile(dev);}
 	}
 	
 	public void configConstant(Constants me) {
-		loadPropertyFile("a_little_config_pro.txt", "a_little_config.txt");
+		loadProp("a_little_config_pro.txt", "a_little_config.txt");
 		me.setDevMode(getPropertyToBoolean("devMode", false));
 		
 		// 配置微信 API 相关常量

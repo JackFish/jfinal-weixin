@@ -8,6 +8,7 @@ url=http://weixin-dev.jfinal.com/weixin
 token=__my__token__
 
 # 测试用的账号
-appId=wx9803d1188fa5fbda
-appSecret=db859c968763c582794e7c3d003c3d87
+appId=yourAppId
+appSecret=yourAppSecret
+
 
