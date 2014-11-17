@@ -10,7 +10,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.log.Logger;
 import com.jfinal.weixin.sdk.api.ApiConfig;
-import com.jfinal.weixin.sdk.kit.HttpKit;
+import com.jfinal.kit.HttpKit;
 import com.jfinal.weixin.sdk.msg.InMsgParaser;
 import com.jfinal.weixin.sdk.msg.OutMsgXmlBuilder;
 import com.jfinal.weixin.sdk.msg.in.InImageMsg;

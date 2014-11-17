@@ -6,7 +6,7 @@
 
 package com.jfinal.weixin.sdk.api;
 
-import com.jfinal.weixin.sdk.kit.HttpKit;
+import com.jfinal.kit.HttpKit;
 import com.jfinal.weixin.sdk.kit.ParaMap;
 
 /**
