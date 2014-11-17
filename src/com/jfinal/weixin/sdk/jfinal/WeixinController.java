@@ -8,6 +8,7 @@ package com.jfinal.weixin.sdk.jfinal;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.ext.interceptor.NotAction;
 import com.jfinal.log.Logger;
 import com.jfinal.weixin.sdk.api.ApiConfig;
 import com.jfinal.kit.HttpKit;

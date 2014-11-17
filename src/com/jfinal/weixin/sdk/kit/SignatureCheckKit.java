@@ -8,6 +8,7 @@ package com.jfinal.weixin.sdk.kit;
 
 import java.util.Arrays;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.EncryptionKit;
 import com.jfinal.weixin.sdk.api.ApiConfig;
 
 /**
