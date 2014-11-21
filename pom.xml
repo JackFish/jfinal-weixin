@@ -100,5 +100,17 @@
 	    <!-- directory>${project.basedir}/target</directory -->
 	    <directory>${project.basedir}/webapp/WEB-INF/target</directory><!-- v i -->
     <finalName>jfinal_weixin</finalName>
+    
+	<plugins>
+		<!-- web.xml 不在默认路径 src/main/webapp/WEB-INF 之下时需要本配置才能 mvn package 打 war 包 -->
+		<plugin>
+			<artifactId>maven-war-plugin</artifactId>
+			<version>2.1.1</version>
+			<configuration>
+				<webXml>webapp/WEB-INF/web.xml</webXml>
+			</configuration>
+      </plugin>
+	</plugins>
+    
   </build>
 </project>
