@@ -28,15 +28,15 @@ public class AccessTokenApi {
 		if (accessToken != null && accessToken.isAvailable())
 			return accessToken;
 		
-		refreshAccesToken();
+		refreshAccessToken();
 		return accessToken;
 	}
 	
-	public static void refreshAccesToken() {
-		accessToken = requestAccesToken();
+	public static void refreshAccessToken() {
+		accessToken = requestAccessToken();
 	}
 	
-	private static synchronized AccessToken requestAccesToken() {
+	private static synchronized AccessToken requestAccessToken() {
 		AccessToken result = null;
 		for (int i=0; i<3; i++) {
 			String appId = ApiConfig.getAppId();
