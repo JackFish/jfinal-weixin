@@ -11,4 +11,6 @@ token=__my__token__
 appId=yourAppId
 appSecret=yourAppSecret
 
-
+#是否对消息进行加密，是否对消息进行加密，对应于微信平台的消息加解密方式，false支持明文模式及兼容模式，true支持安全模式
+#encryptMessage=true
+#encodingAesKey=yourEncodingAesKey

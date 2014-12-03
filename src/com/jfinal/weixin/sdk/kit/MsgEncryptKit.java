@@ -12,14 +12,19 @@ import com.jfinal.weixin.sdk.encrypt.WXBizMsgCrypt;
 
 /**
  * 对微信平台官方给出的加密解析代码进行再次封装
+ * 
+ * 设置为消息加密模式后 JFinal Action Report 中有如下参数：
+ * timestamp=1417610658
+ * encrypt_type=aes
+ * nonce=132155339
+ * msg_signature=8ed2a14146c924153743162ab2c0d28eaf30a323
+ * signature=1a3fad9a528869b1a73faf4c8054b7eeda2463d3
  */
 public class MsgEncryptKit {
 	
-	private static String nonce = "jfinal";
-	private static final String timestamp = "1509199518";
 	private static final String format = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[%1$s]]></Encrypt></xml>";
 	
-	public static String encrypt(String msg) {
+	public static String encrypt(String msg, String timestamp, String nonce) {
 		try {
 			WXBizMsgCrypt pc = new WXBizMsgCrypt(ApiConfig.getToken(), ApiConfig.getEncodingAesKey(), ApiConfig.getAppId());
 			return pc.encryptMsg(msg, timestamp, nonce);
@@ -29,10 +34,8 @@ public class MsgEncryptKit {
 		}
 	}
 	
-	public static String decrypt(String encryptedMsg) {
+	public static String decrypt(String encryptedMsg, String timestamp, String nonce, String msgSignature) {
 		try {
-			WXBizMsgCrypt pc = new WXBizMsgCrypt(ApiConfig.getToken(), ApiConfig.getEncodingAesKey(), ApiConfig.getAppId());
-			
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			StringReader sr = new StringReader(encryptedMsg);
@@ -41,39 +44,23 @@ public class MsgEncryptKit {
 			
 			Element root = document.getDocumentElement();
 			NodeList nodelist1 = root.getElementsByTagName("Encrypt");
-			NodeList nodelist2 = root.getElementsByTagName("MsgSignature");
+			// NodeList nodelist2 = root.getElementsByTagName("MsgSignature");
 			
 			String encrypt = nodelist1.item(0).getTextContent();
-			String msgSignature = nodelist2.item(0).getTextContent();
+			// String msgSignature = nodelist2.item(0).getTextContent();
 			
 			String fromXML = String.format(format, encrypt);
 			
+			String encodingAesKey = ApiConfig.getEncodingAesKey();
+			if (encodingAesKey == null)
+				throw new IllegalStateException("encodingAesKey can not be null, config encodingAesKey first.");
+			
+			WXBizMsgCrypt pc = new WXBizMsgCrypt(ApiConfig.getToken(), encodingAesKey, ApiConfig.getAppId());
 			return pc.decryptMsg(msgSignature, timestamp, nonce, fromXML);	// 此处 timestamp 如果与加密前的不同则报签名不正确的异常
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-	
-	public static void main(String[] args) {
-		ApiConfig.setToken("myToken");
-		ApiConfig.setEncodingAesKey("abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG");
-		ApiConfig.setAppId("wxb11529c136998cb6");
-		String original = "中文<xml><ToUserName><![CDATA[oia2TjjewbmiOUlr6X-1crbLOvLw]]></ToUserName><FromUserName><![CDATA[gh_7f083739789a]]></FromUserName><CreateTime>1407743423</CreateTime><MsgType><![CDATA[video]]></MsgType><Video><MediaId><![CDATA[eYJ1MbwPRJtOvIEabaxHs7TX2D-HV71s79GUxqdUkjm6Gs2Ed1KF3ulAOA9H1xG0]]></MediaId><Title><![CDATA[testCallBackReplyVideo]]></Title><Description><![CDATA[testCallBackReplyVideo]]></Description></Video></xml>";
-		
-		System.out.println("加密前 -----------");
-		System.out.println(original);
-		
-		System.out.println("\n加密后 -----------");
-		String afterEncript = encrypt(original);
-		System.out.println(afterEncript);
-		
-		System.out.println("\n解密后 -----------");
-		String afterDecript = decrypt(afterEncript);
-		System.out.println(afterDecript);
-		
-		System.out.println("\n解密后与原文对比 -----------");
-		System.out.println(afterDecript.equals(original));
 	}
 }
 

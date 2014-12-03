@@ -12,6 +12,7 @@ import com.jfinal.ext.interceptor.NotAction;
 import com.jfinal.log.Logger;
 import com.jfinal.weixin.sdk.api.ApiConfig;
 import com.jfinal.kit.HttpKit;
+import com.jfinal.weixin.sdk.kit.MsgEncryptKit;
 import com.jfinal.weixin.sdk.msg.InMsgParaser;
 import com.jfinal.weixin.sdk.msg.OutMsgXmlBuilder;
 import com.jfinal.weixin.sdk.msg.in.InImageMsg;
@@ -88,6 +89,12 @@ public abstract class WeixinController extends Controller {
 			System.out.println(outMsgXml);
 			System.out.println("--------------------------------------------------------------------------------\n");
 		}
+		
+		// 是否需要加密消息
+		if (ApiConfig.isEncryptMessage()) {
+			outMsgXml = MsgEncryptKit.encrypt(outMsgXml, getPara("timestamp"), getPara("nonce"));
+		}
+		
 		renderText(outMsgXml, "text/xml");
 	}
 	
@@ -99,8 +106,14 @@ public abstract class WeixinController extends Controller {
 	
 	@Before(NotAction.class)
 	public String getInMsgXml() {
-		if (inMsgXml == null)
+		if (inMsgXml == null) {
 			inMsgXml = HttpKit.readIncommingRequestData(getRequest());
+			
+			// 是否需要解密消息
+			if (ApiConfig.isEncryptMessage()) {
+				inMsgXml = MsgEncryptKit.decrypt(inMsgXml, getPara("timestamp"), getPara("nonce"), getPara("msg_signature"));
+			}
+		}
 		return inMsgXml;
 	}
 	
