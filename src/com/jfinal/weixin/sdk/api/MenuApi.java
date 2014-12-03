@@ -20,6 +20,15 @@ public class MenuApi {
 	 * 查询菜单
 	 */
 	public static ApiResult getMenu() {
+		ApiResult result =  doGetMenu();
+		if (result.isAccessTokenInvalid()) {
+			AccessTokenApi.refreshAccesToken();		// 刷新 access_token
+			result = doGetMenu();
+		}
+		return result;
+	}
+	
+	private static ApiResult doGetMenu() {
 		String jsonResult = HttpKit.get(getMenu + AccessTokenApi.getAccessToken().getAccessToken());
 		return new ApiResult(jsonResult);
 	}
@@ -28,6 +37,15 @@ public class MenuApi {
 	 * 创建菜单
 	 */
 	public ApiResult createMenu(String jsonStr) {
+		ApiResult result = doCreateMenu(jsonStr);
+		if (result.isAccessTokenInvalid()) {
+			AccessTokenApi.refreshAccesToken();		// 刷新 access_token
+			result = doCreateMenu(jsonStr);
+		}
+		return result;
+	}
+	
+	private ApiResult doCreateMenu(String jsonStr) {
 		String jsonResult = HttpKit.post(createMenu + AccessTokenApi.getAccessToken().getAccessToken(), jsonStr);
 		return new ApiResult(jsonResult);
 	}

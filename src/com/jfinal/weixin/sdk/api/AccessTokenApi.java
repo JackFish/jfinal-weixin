@@ -28,20 +28,27 @@ public class AccessTokenApi {
 		if (accessToken != null && accessToken.isAvailable())
 			return accessToken;
 		
-		for (int i=0; i<3; i++) {
-			accessToken = requestAccesToken();
-			if (accessToken.isAvailable())
-				break;
-		}
+		refreshAccesToken();
 		return accessToken;
 	}
 	
-	private static AccessToken requestAccesToken() {
-		final String appId = ApiConfig.getAppId();
-		final String appSecret = ApiConfig.getAppSecret();
-		Map<String, String> queryParas = ParaMap.create("appid", appId).put("secret", appSecret).getData();
-		String json = HttpKit.get(url, queryParas);
-		return new AccessToken(json);
+	public static void refreshAccesToken() {
+		accessToken = requestAccesToken();
+	}
+	
+	private static synchronized AccessToken requestAccesToken() {
+		AccessToken result = null;
+		for (int i=0; i<3; i++) {
+			String appId = ApiConfig.getAppId();
+			String appSecret = ApiConfig.getAppSecret();
+			Map<String, String> queryParas = ParaMap.create("appid", appId).put("secret", appSecret).getData();
+			String json = HttpKit.get(url, queryParas);
+			result = new AccessToken(json);
+			
+			if (result.isAvailable())
+				break;
+		}
+		return result;
 	}
 	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {

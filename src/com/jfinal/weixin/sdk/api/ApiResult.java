@@ -94,4 +94,17 @@ public class ApiResult {
 	public ArrayList<Object> getList(String name) {
 		return (ArrayList<Object>)attrs.get(name);
 	}
+	
+	/**
+	 * 判断 API 请求结果失败是否由于 access_token 无效引起的
+	 * 无效可能的情况 error_code 值：
+	 * 40001 = 获取access_token时AppSecret错误，或者access_token无效(刷新后也可以引起老access_token失效)
+	 * 42001 = access_token超时
+	 * 42002 = refresh_token超时
+	 * 40014 = 不合法的access_token
+	 */
+	public boolean isAccessTokenInvalid() {
+		Integer ec = getErrorCode();
+		return ec != null && (ec == 40001 || ec == 42001 || ec == 42002 || ec == 40014);
+	}
 }
