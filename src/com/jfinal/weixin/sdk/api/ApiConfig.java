@@ -6,12 +6,17 @@
 
 package com.jfinal.weixin.sdk.api;
 
+/**
+ * 支持多公众账号使用 ThreadLocal<ApiConfig> 与 全局 Interceptor 
+ * 中动态操作此 ThreadLocal 即可
+ */
 public class ApiConfig {
 	
 	private static String url = null;
 	private static String token = null;
 	private static String appId = null;
 	private static String appSecret = null;
+	private static String encodingAesKey = null;
 	
 	// 开发模式将输出消息交互 xml 到控制台
 	private static boolean devMode = false;
@@ -83,8 +88,17 @@ public class ApiConfig {
 			throw new IllegalArgumentException("appSecret can not be null");
 		ApiConfig.appSecret = appSecret;
 	}
+	
+	public static String getEncodingAesKey() {
+		return encodingAesKey;
+	}
+	
+	public static void setEncodingAesKey(String encodingAesKey) {
+		if (encodingAesKey == null)
+			throw new IllegalArgumentException("encodingAesKey can not be null");
+		ApiConfig.encodingAesKey = encodingAesKey;
+	}
 }
-
 
 
 
