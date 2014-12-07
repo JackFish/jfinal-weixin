@@ -6,13 +6,25 @@
 
 package com.jfinal.weixin.sdk.api;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * 封装 API 响应结果
+ * 封装 API 响应结果，将 json 字符串转换成 java 数据类型
+ * 
+ * jackson 中 json 类型与 java 类型对应关系如下：
+	http://wiki.fasterxml.com/JacksonInFiveMinutes
+	JSON TYPE				JAVA TYPE
+	object					LinkedHashMap<String,Object>
+	array					ArrayList<Object>
+	string					String
+	number (no fraction)	Integer, Long or BigInteger (smallest applicable)
+	number (fraction)		Double (configurable to use BigDecimal)
+	true|false				Boolean
+	null					null
  */
 public class ApiResult {
 	
@@ -50,6 +62,10 @@ public class ApiResult {
 	
 	public String getJson() {
 		return json;
+	}
+	
+	public String toString() {
+		return getJson();
 	}
 	
 	/**
@@ -100,13 +116,22 @@ public class ApiResult {
 		return (Double)attrs.get(name);
 	}
 	
+	public BigDecimal getBigDecimal(String name) {
+		return (BigDecimal)attrs.get(name);
+	}
+	
 	public Boolean getBoolean(String name) {
 		return (Boolean)attrs.get(name);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public ArrayList<Object> getList(String name) {
-		return (ArrayList<Object>)attrs.get(name);
+	@SuppressWarnings("rawtypes")
+	public List getList(String name) {
+		return (List)attrs.get(name);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public Map getMap(String name) {
+		return (Map)attrs.get(name);
 	}
 	
 	/**
@@ -122,3 +147,12 @@ public class ApiResult {
 		return ec != null && (ec == 40001 || ec == 42001 || ec == 42002 || ec == 40014);
 	}
 }
+
+
+
+
+
+
+
+
+
