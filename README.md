@@ -8,17 +8,13 @@ public class WeixinConfig extends JFinalConfig {
 		loadPropertyFile("a_little_config.txt");
 		me.setDevMode(getPropertyToBoolean("devMode", false));
 		
-		// 配置微信 API 相关常量
-		ApiConfig.setDevMode(me.getDevMode());
-		ApiConfig.setUrl(getProperty("url"));
-		ApiConfig.setToken(getProperty("token"));
-		ApiConfig.setAppId(getProperty("appId"));
-		ApiConfig.setAppSecret(getProperty("appSecret"));
+		// ApiConfigKit 设为开发模式可以在开发阶段输出请求交互的 xml 与 json 数据
+		ApiConfigKit.setDevMode(me.getDevMode());
 	}
 	
 	public void configRoute(Routes me) {
-		me.add("/weixin", DemoController.class);
-		me.add("/api", ApiController.class, "/api");
+		me.add("/msg", WeixinMsgController.class);
+		me.add("/api", WeixinApiController.class, "/api");
 	}
 	
 	public void configPlugin(Plugins me) {}
@@ -26,11 +22,11 @@ public class WeixinConfig extends JFinalConfig {
 	public void configHandler(Handlers me) {}
 }
 ```
-通过 ApiConfig 提供 Weixin 公众平台所需的相关配置，并在configRoute 方法配置路由
+通过 configRoute 方法配置路由，项目启动后，在微信服以务器上配置 url：http://域名/msg
 
-## 2、DemoController
+## 2、WeixinMsgController
 ``` java
-public class DemoController extends WeixinController {
+public class WeixinMsgController extends MsgController {
 	protected void processInTextMsg(InTextMsg inTextMsg) {
 		String msgContent = inTextMsg.getContent().trim();
 		// 帮助提示
@@ -142,13 +138,35 @@ public class DemoController extends WeixinController {
 		outMsg.setContent("processInSpeechRecognitionResults() 方法测试成功");
 		render(outMsg);
 	}
+	
+	/**
+	 * 如果要支持多公众账号，只需要在此返回各个公众号对应的  ApiConfig 对象即可
+	 * 可以通过在请求 url 中挂参数来动态从数据库中获取 ApiConfig 属性值
+	 */
+	public ApiConfig getApiConfig() {
+		ApiConfig ac = new ApiConfig();
+		
+		// 配置微信 API 相关常量
+		ac.setToken(PropKit.get("token"));
+		ac.setAppId(PropKit.get("appId"));
+		ac.setAppSecret(PropKit.get("appSecret"));
+		
+		/**
+		 *  是否对消息进行加密，对应于微信平台的消息加解密方式：
+		 *  1：true进行加密且必须配置 encodingAesKey
+		 *  2：false采用明文模式，同时也支持混合模式
+		 */
+		ac.setEncryptMessage(PropKit.getBoolean("encryptMessage", false));
+		ac.setEncodingAesKey(PropKit.get("encodingAesKey", "setting it in config file"));
+		return ac;
+	}
 }
 ```
 DemoController 通过继承自 WeixinController 便拥有了接收消息和发送消息的便利方法
 
-## 3、ApiController
+## 3、WeixinApiController
 ``` java
-public class ApiController extends Controller {
+public class WeixinApiController extends ApiController {
 	public void index() {
 		render("/api/index.html");
 	}
@@ -170,6 +188,28 @@ public class ApiController extends Controller {
 	public void getFollowers() {
 		ApiResult apiResult = UserApi.getFollows();
 		renderText(apiResult.getJson());
+	}
+	
+	/**
+	 * 如果要支持多公众账号，只需要在此返回各个公众号对应的  ApiConfig 对象即可
+	 * 可以通过在请求 url 中挂参数来动态从数据库中获取 ApiConfig 属性值
+	 */
+	public ApiConfig getApiConfig() {
+		ApiConfig ac = new ApiConfig();
+		
+		// 配置微信 API 相关常量
+		ac.setToken(PropKit.get("token"));
+		ac.setAppId(PropKit.get("appId"));
+		ac.setAppSecret(PropKit.get("appSecret"));
+		
+		/**
+		 *  是否对消息进行加密，对应于微信平台的消息加解密方式：
+		 *  1：true进行加密且必须配置 encodingAesKey
+		 *  2：false采用明文模式，同时也支持混合模式
+		 */
+		ac.setEncryptMessage(PropKit.getBoolean("encryptMessage", false));
+		ac.setEncodingAesKey(PropKit.get("encodingAesKey", "setting it in config file"));
+		return ac;
 	}
 }
 
