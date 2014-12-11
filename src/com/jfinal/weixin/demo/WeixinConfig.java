@@ -15,7 +15,7 @@ import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.core.JFinal;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
-import com.jfinal.weixin.sdk.api.ApiConfig;
+import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 public class WeixinConfig extends JFinalConfig {
 	
@@ -30,25 +30,13 @@ public class WeixinConfig extends JFinalConfig {
 		loadProp("a_little_config_pro.txt", "a_little_config.txt");
 		me.setDevMode(getPropertyToBoolean("devMode", false));
 		
-		// 配置微信 API 相关常量
-		ApiConfig.setDevMode(me.getDevMode());
-		ApiConfig.setUrl(getProperty("url"));
-		ApiConfig.setToken(getProperty("token"));
-		ApiConfig.setAppId(getProperty("appId"));
-		ApiConfig.setAppSecret(getProperty("appSecret"));
-		
-		/**
-		 *  是否对消息进行加密，对应于微信平台的消息加解密方式：
-		 *  1：true进行加密且必须配置 encodingAesKey
-		 *  2：false采用明文模式，同时也支持混合模式
-		 */
-		ApiConfig.setEncryptMessage(getPropertyToBoolean("encryptMessage", false));
-		ApiConfig.setEncodingAesKey(getProperty("encodingAesKey", "setting it in config file"));
+		// ApiConfigKit 设为开发模式可以在开发阶段输出请求交互的 xml 与 json 数据
+		ApiConfigKit.setDevMode(me.getDevMode());
 	}
 	
 	public void configRoute(Routes me) {
-		me.add("/weixin", DemoController.class);
-		me.add("/api", ApiController.class, "/api");
+		me.add("/msg", WeixinMsgController.class);
+		me.add("/api", WeixinApiController.class, "/api");
 	}
 	
 	public void configPlugin(Plugins me) {

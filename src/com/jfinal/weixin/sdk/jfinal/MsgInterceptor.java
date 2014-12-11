@@ -11,33 +11,46 @@ import com.jfinal.core.ActionInvocation;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Logger;
+import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import com.jfinal.weixin.sdk.kit.SignatureCheckKit;
 
 /**
- * 微信拦截器
- * 1：响应开发者中心服务器配置 URL 与 Token 请求
- * 2：签名检测
- * 注意： WeixinController 的继承类如果覆盖了 index 方法，则需要对该 index 方法声明该拦截器
+ * Msg 拦截器
+ * 1：通过 MsgController.getApiConfig() 得到 ApiConfig 对象，并将其绑定到当前线程之上(利用了 ApiConfigKit 中的 ThreadLocal 对象)
+ * 2：响应开发者中心服务器配置 URL 与 Token 请求
+ * 3：签名检测
+ * 注意： MsgController 的继承类如果覆盖了 index 方法，则需要对该 index 方法声明该拦截器
  * 		因为子类覆盖父类方法会使父类方法配置的拦截器失效，从而失去本拦截器的功能
  */
-public class WeixinInterceptor implements Interceptor {
+public class MsgInterceptor implements Interceptor {
 	
-	private static final Logger log =  Logger.getLogger(WeixinInterceptor.class);
+	private static final Logger log =  Logger.getLogger(MsgInterceptor.class);
 	
 	public void intercept(ActionInvocation ai) {
-		// 如果是服务器配置请求，则配置服务器并返回
 		Controller controller = ai.getController();
-		if (isConfigServerRequest(controller)) {
-			configServer(controller);
-			return ;
-		}
+		if (controller instanceof MsgController == false)
+			throw new RuntimeException("控制器需要继承 MsgInterceptor");
 		
-		// 签名检测
-		if (checkSignature(controller)) {
-			ai.invoke();
+		try {
+			// 将 ApiConfig 对象与当前线程绑定，以便在后续操作中方便获取该对象： ApiConfigKit.getApiConfig();
+			ApiConfigKit.setThreadLocalApiConfig(((MsgController)controller).getApiConfig());
+			
+			// 如果是服务器配置请求，则配置服务器并返回
+			if (isConfigServerRequest(controller)) {
+				configServer(controller);
+				return ;
+			}
+			
+			// 签名检测
+			if (checkSignature(controller)) {
+				ai.invoke();
+			}
+			else {
+				controller.renderText("check signature failure");
+			}
 		}
-		else {
-			controller.renderText("check signature failure");
+		finally {
+			ApiConfigKit.removeThreadLocalApiConfig();
 		}
 	}
 	
@@ -90,7 +103,6 @@ public class WeixinInterceptor implements Interceptor {
 			log.error("验证失败：configServer");
 	}
 }
-
 
 
 

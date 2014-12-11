@@ -7,104 +7,87 @@
 package com.jfinal.weixin.sdk.api;
 
 /**
- * 支持多公众账号使用 ThreadLocal<ApiConfig> 与 全局 Interceptor 
- * 中动态操作此 ThreadLocal 即可
+ * 存放 Weixin 服务号需要用到的各个参数
  */
 public class ApiConfig {
 	
-	private static String url = null;
-	private static String token = null;
-	private static String appId = null;
-	private static String appSecret = null;
-	private static String encodingAesKey = null;
-	private static boolean messageEncrypt = false;	// 消息加密与否
+	private String token = null;
+	private String appId = null;
+	private String appSecret = null;
+	private String encodingAesKey = null;
+	private boolean messageEncrypt = false;	// 消息加密与否
 	
-	// 开发模式将输出消息交互 xml 到控制台
-	private static boolean devMode = false;
-	
-	public static void setDevMode(boolean devMode) {
-		ApiConfig.devMode = devMode;
+	public ApiConfig() {
+		
 	}
 	
-	public static boolean isDevMode() {
-		return devMode;
-	}
-	
-	public static void init(String url, String token) {
-		setUrl(url);
+	public ApiConfig(String token) {
 		setToken(token);
 	}
 	
-	public static void init(String url, String token, String appId, String appSecret) {
-		setUrl(url);
+	public ApiConfig(String token, String appId, String appSecret) {
 		setToken(token);
 		setAppId(appId);
 		setAppSecret(appSecret);
 	}
 	
-	public static String getUrl() {
-		if (url == null)
-			throw new RuntimeException("init ApiConfig.setUrl(...) first");
-		return url;
+	public ApiConfig(String token, String appId, String appSecret, boolean messageEncrypt, String encodingAesKey) {
+		setToken(token);
+		setAppId(appId);
+		setAppSecret(appSecret);
+		setEncryptMessage(messageEncrypt);
+		setEncodingAesKey(encodingAesKey);
 	}
 	
-	public static void setUrl(String url) {
-		if (url == null)
-			throw new IllegalArgumentException("url can not be null");
-		ApiConfig.url = url;
-	}
-	
-	public static String getToken() {
+	public String getToken() {
 		if (token == null)
-			throw new RuntimeException("init ApiConfig.setToken(...) first");
+			throw new IllegalStateException("token 未被赋值");
 		return token;
 	}
 	
-	public static void setToken(String token) {
+	public void setToken(String token) {
 		if (token == null)
-			throw new IllegalArgumentException("token can not be null");
-		ApiConfig.token = token;
+			throw new IllegalArgumentException("token 值不能为 null");
+		this.token = token;
 	}
 	
-	public static String getAppId() {
+	public String getAppId() {
 		if (appId == null)
-			throw new RuntimeException("init ApiConfig.setAppId(...) first");
+			throw new IllegalStateException("appId 未被赋值");
 		return appId;
 	}
 	
-	public static void setAppId(String appId) {
+	public void setAppId(String appId) {
 		if (appId == null)
-			throw new IllegalArgumentException("appId can not be null");
-		ApiConfig.appId = appId;
+			throw new IllegalArgumentException("appId 值不能为 null");
+		this.appId = appId;
 	}
 	
-	public static String getAppSecret() {
+	public String getAppSecret() {
 		if (appSecret == null)
-			throw new RuntimeException("init ApiConfig.setAppSecret(...) first");
+			throw new IllegalStateException("appSecret 未被赋值");
 		return appSecret;
 	}
 	
-	public static void setAppSecret(String appSecret) {
+	public void setAppSecret(String appSecret) {
 		if (appSecret == null)
-			throw new IllegalArgumentException("appSecret can not be null");
-		ApiConfig.appSecret = appSecret;
+			throw new IllegalArgumentException("appSecret 值不能为 null");
+		this.appSecret = appSecret;
 	}
 	
-	public static String getEncodingAesKey() {
+	public String getEncodingAesKey() {
+		if (encodingAesKey == null)
+			throw new IllegalStateException("encodingAesKey 未被赋值");
 		return encodingAesKey;
 	}
 	
-	public static void setEncodingAesKey(String encodingAesKey) {
+	public void setEncodingAesKey(String encodingAesKey) {
 		if (encodingAesKey == null)
-			throw new IllegalArgumentException("encodingAesKey can not be null");
-		ApiConfig.encodingAesKey = encodingAesKey;
+			throw new IllegalArgumentException("encodingAesKey 值不能为 null");
+		this.encodingAesKey = encodingAesKey;
 	}
 	
-	public static boolean isEncryptMessage() {
-		return messageEncrypt;
-	}
-	
-	public static boolean getMessageEncrypt() {
+	public boolean isEncryptMessage() {
 		return messageEncrypt;
 	}
 	
@@ -113,10 +96,9 @@ public class ApiConfig {
 	 *  1：true进行加密且必须配置 encodingAesKey
 	 *  2：false采用明文模式，同时也支持混合模式
 	 */
-	public static void setEncryptMessage(boolean messageEncrypt) {
-		ApiConfig.messageEncrypt = messageEncrypt;
+	public void setEncryptMessage(boolean messageEncrypt) {
+		this.messageEncrypt = messageEncrypt;
 	}
 }
-
 
 

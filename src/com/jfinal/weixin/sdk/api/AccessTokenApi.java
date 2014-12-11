@@ -38,9 +38,10 @@ public class AccessTokenApi {
 	
 	private static synchronized AccessToken requestAccessToken() {
 		AccessToken result = null;
+		ApiConfig ac = ApiConfigKit.getApiConfig();
 		for (int i=0; i<3; i++) {
-			String appId = ApiConfig.getAppId();
-			String appSecret = ApiConfig.getAppSecret();
+			String appId = ac.getAppId();
+			String appSecret = ac.getAppSecret();
 			Map<String, String> queryParas = ParaMap.create("appid", appId).put("secret", appSecret).getData();
 			String json = HttpKit.get(url, queryParas);
 			result = new AccessToken(json);
@@ -52,8 +53,10 @@ public class AccessTokenApi {
 	}
 	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
-		ApiConfig.setAppId("wx9803d1188fa5fbda");
-		ApiConfig.setAppSecret("db859c968763c582794e7c3d003c3d87");
+		ApiConfig ac = new ApiConfig();
+		ac.setAppId("wx9803d1188fa5fbda");
+		ac.setAppSecret("db859c968763c582794e7c3d003c3d87");
+		ApiConfigKit.setThreadLocalApiConfig(ac);
 		
 		AccessToken at = getAccessToken();
 		if (at.isAvailable())

@@ -9,7 +9,7 @@ package com.jfinal.weixin.sdk.kit;
 import java.util.Arrays;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.EncryptionKit;
-import com.jfinal.weixin.sdk.api.ApiConfig;
+import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 /**
  * 测试用的账号：
@@ -42,7 +42,7 @@ public class SignatureCheckKit {
 	 * @return
 	 */
 	public boolean checkSignature(String signature, String timestamp, String nonce) {
-		String TOKEN = ApiConfig.getToken();
+		String TOKEN = ApiConfigKit.getApiConfig().getToken();
 		String array[] = {TOKEN, timestamp, nonce};
 		Arrays.sort(array);
 		String tempStr = new StringBuilder().append(array[0] + array[1] + array[2]).toString();

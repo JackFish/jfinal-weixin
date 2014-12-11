@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import com.jfinal.weixin.sdk.api.ApiConfig;
+import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import com.jfinal.weixin.sdk.encrypt.WXBizMsgCrypt;
 
 /**
@@ -34,7 +35,8 @@ public class MsgEncryptKit {
 	
 	public static String encrypt(String msg, String timestamp, String nonce) {
 		try {
-			WXBizMsgCrypt pc = new WXBizMsgCrypt(ApiConfig.getToken(), ApiConfig.getEncodingAesKey(), ApiConfig.getAppId());
+			ApiConfig ac = ApiConfigKit.getApiConfig();
+			WXBizMsgCrypt pc = new WXBizMsgCrypt(ac.getToken(), ac.getEncodingAesKey(), ac.getAppId());
 			return pc.encryptMsg(msg, timestamp, nonce);
 		}
 		catch (Exception e) {
@@ -44,6 +46,8 @@ public class MsgEncryptKit {
 	
 	public static String decrypt(String encryptedMsg, String timestamp, String nonce, String msgSignature) {
 		try {
+			ApiConfig ac = ApiConfigKit.getApiConfig();
+			
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			StringReader sr = new StringReader(encryptedMsg);
@@ -59,11 +63,11 @@ public class MsgEncryptKit {
 			
 			String fromXML = String.format(format, encrypt);
 			
-			String encodingAesKey = ApiConfig.getEncodingAesKey();
+			String encodingAesKey = ac.getEncodingAesKey();
 			if (encodingAesKey == null)
 				throw new IllegalStateException("encodingAesKey can not be null, config encodingAesKey first.");
 			
-			WXBizMsgCrypt pc = new WXBizMsgCrypt(ApiConfig.getToken(), encodingAesKey, ApiConfig.getAppId());
+			WXBizMsgCrypt pc = new WXBizMsgCrypt(ac.getToken(), encodingAesKey, ac.getAppId());
 			return pc.decryptMsg(msgSignature, timestamp, nonce, fromXML);	// 此处 timestamp 如果与加密前的不同则报签名不正确的异常
 		}
 		catch (Exception e) {

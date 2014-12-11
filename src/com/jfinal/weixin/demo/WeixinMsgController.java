@@ -6,7 +6,9 @@
 
 package com.jfinal.weixin.demo;
 
-import com.jfinal.weixin.sdk.jfinal.WeixinController;
+import com.jfinal.kit.PropKit;
+import com.jfinal.weixin.sdk.api.ApiConfig;
+import com.jfinal.weixin.sdk.jfinal.MsgController;
 import com.jfinal.weixin.sdk.msg.in.InImageMsg;
 import com.jfinal.weixin.sdk.msg.in.InLinkMsg;
 import com.jfinal.weixin.sdk.msg.in.InLocationMsg;
@@ -30,9 +32,31 @@ import com.jfinal.weixin.sdk.msg.out.OutVoiceMsg;
  * DemoController 继承自父类 WeixinController 的 index
  * 方法即可直接运行看效果，在此基础之上修改相关的方法即可进行实际项目开发
  */
-public class DemoController extends WeixinController {
+public class WeixinMsgController extends MsgController {
 	
 	private static final String helpStr = "\t发送 help 可获得帮助，发送 \"美女\" 可看美女，发送 news 可看新闻，发送 music 可听音乐，你还可以试试发送图片、语音、位置、收藏等信息，看会有什么 。公众号持续更新中，想要更多惊喜欢迎每天关注 ^_^";
+	
+	/**
+	 * 如果要支持多公众账号，只需要在此返回各个公众号对应的  ApiConfig 对象即可
+	 * 可以通过在请求 url 中挂参数来动态从数据库中获取 ApiConfig 属性值
+	 */
+	public ApiConfig getApiConfig() {
+		ApiConfig ac = new ApiConfig();
+		
+		// 配置微信 API 相关常量
+		ac.setToken(PropKit.get("token"));
+		ac.setAppId(PropKit.get("appId"));
+		ac.setAppSecret(PropKit.get("appSecret"));
+		
+		/**
+		 *  是否对消息进行加密，对应于微信平台的消息加解密方式：
+		 *  1：true进行加密且必须配置 encodingAesKey
+		 *  2：false采用明文模式，同时也支持混合模式
+		 */
+		ac.setEncryptMessage(PropKit.getBoolean("encryptMessage", false));
+		ac.setEncodingAesKey(PropKit.get("encodingAesKey", "setting it in config file"));
+		return ac;
+	}
 	
 	/**
 	 * 实现父类抽方法，处理文本消息
