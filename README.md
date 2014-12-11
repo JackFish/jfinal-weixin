@@ -1,5 +1,5 @@
 # Jfinal Weixin 极速开发
-JFinal Weixin 是基于 JFinal 的微信公众号极速开发 SDK，只需浏览 Demo 代码即可进行极速开发
+JFinal Weixin 是基于 JFinal 的微信公众号极速开发 SDK，只需浏览 Demo 代码即可进行极速开发，自 JFinal Weixin 1.2 版本开始已添加对多公众号支持。
 
 ## 1、WeixinConfig
 ```java
@@ -22,7 +22,7 @@ public class WeixinConfig extends JFinalConfig {
 	public void configHandler(Handlers me) {}
 }
 ```
-通过 configRoute 方法配置路由，项目启动后，在微信服以务器上配置 url：http://域名/msg
+以上通过 configRoute 方法配置了访问路由 "/msg" 与 "/api"。项目启动后，在微信服以务器上配置 url：http://域名/msg
 
 ## 2、WeixinMsgController
 ``` java
