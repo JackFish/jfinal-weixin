@@ -16,9 +16,9 @@
 	<repositories>
 	</repositories>
 	<scm>
-		<connection>scm:git:http://git.oschina.net/jfinal/jfinal-weixin.git</connection>
-		<developerConnection>scm:git:http://git.oschina.net/jfinal/jfinal-weixin.git</developerConnection>
-		<url>http://git.oschina.net/jfinal/jfinal-weixin.git</url>
+		<connection>scm:git:git@git.oschina.net:jfinal/jfinal-weixin.git</connection>
+		<developerConnection>scm:git:git@git.oschina.net:jfinal/jfinal-weixin.git</developerConnection>
+		<url>git@git.oschina.net:jfinal/jfinal-weixin.git</url>
 	</scm>
 	
   <dependencies>
@@ -180,4 +180,5 @@
     
   </build>
 </project>
+
 
