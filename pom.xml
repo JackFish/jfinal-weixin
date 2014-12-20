@@ -1,13 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.jfinal</groupId>
   <artifactId>jfinal_weixin</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <name>jfinal_weixin</name>
   <url>http://www.jfinal.com</url>
   <properties><project.build.sourceEncoding>UTF-8</project.build.sourceEncoding></properties>
   
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+	
+	<repositories>
+	</repositories>
+	
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -166,4 +174,10 @@
 	</plugins>
     
   </build>
+
+  <scm>
+    <connection>scm:svn:http://svn.sonatype.org/spice/tags/jfinal_weixin-1.2</connection>
+    <developerConnection>scm:svn:https://svn.sonatype.org/spice/tags/jfinal_weixin-1.2</developerConnection>
+    <url>http://svn.sonatype.org/spice/tags/jfinal_weixin-1.2</url>
+  </scm>
 </project>
