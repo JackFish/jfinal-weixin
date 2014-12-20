@@ -15,6 +15,11 @@
 	
 	<repositories>
 	</repositories>
+	<scm>
+		<connection>scm:git:git@http://git.oschina.net/jfinal/jfinal-weixin.git</connection>
+		<developerConnection>scm:git:http://git.oschina.net/jfinal/jfinal-weixin.git</developerConnection>
+		<url>http://git.oschina.net/jfinal/jfinal-weixin.git</url>
+	</scm>
 	
   <dependencies>
     <dependency>
@@ -174,10 +179,4 @@
 	</plugins>
     
   </build>
-
-  <scm>
-    <connection>scm:svn:http://svn.sonatype.org/spice/tags/jfinal_weixin-1.2</connection>
-    <developerConnection>scm:svn:https://svn.sonatype.org/spice/tags/jfinal_weixin-1.2</developerConnection>
-    <url>http://svn.sonatype.org/spice/tags/jfinal_weixin-1.2</url>
-  </scm>
 </project>
