@@ -89,7 +89,7 @@
 	    <resources>
 	      <resource>
 	        <!-- directory>${project.basedir}/resources</directory -->
-	        <directory>${project.basedir}/src</directory>
+	        <directory>${project.basedir}/res</directory>
 	        <excludes><exclude>**/*.java</exclude></excludes>
 	      </resource>
 	    </resources>
