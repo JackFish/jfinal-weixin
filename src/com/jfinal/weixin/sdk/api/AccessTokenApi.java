@@ -32,11 +32,10 @@ public class AccessTokenApi {
 	public static AccessToken getAccessToken() {
 		String appId = ApiConfigKit.getApiConfig().getAppId();
 		AccessToken result = map.get(appId);
-		if (result != null && result.getAccessToken() != null && result.isAvailable())
+		if (result != null && result.isAvailable())
 			return result;
 		
 		refreshAccessToken();
-		
 		return map.get(appId);
 	}
 	
@@ -45,18 +44,20 @@ public class AccessTokenApi {
 	 */
 	public static synchronized void refreshAccessToken() {
 		ApiConfig ac = ApiConfigKit.getApiConfig();
-		for (int i=0; i<3; i++) {
+		AccessToken result = null;
+		for (int i=0; i<3; i++) {	// 最多三次请求
 			String appId = ac.getAppId();
 			String appSecret = ac.getAppSecret();
 			Map<String, String> queryParas = ParaMap.create("appid", appId).put("secret", appSecret).getData();
 			String json = HttpKit.get(url, queryParas);
-			AccessToken at = new AccessToken(json);
+			result = new AccessToken(json);
 			
-			if (at.isAvailable()) {
-				map.put(ac.getAppId(), at);
+			if (result.isAvailable())
 				break;
-			}
 		}
+		
+		// 三次请求如果仍然返回了不可用的 access token 仍然 put 进去，便于上层通过 AccessToken 中的属性判断底层的情况
+		map.put(ac.getAppId(), result);
 	}
 	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
