@@ -8,6 +8,7 @@ package com.jfinal.weixin.sdk.api;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.jfinal.kit.HttpKit;
@@ -22,34 +23,32 @@ public class AccessTokenApi {
 	// "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	private static String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential";
 	
-	private static AccessToken accessToken;
+	// 利用 appId 与 accessToken 建立关联，支持多账户
+	private static Map<String, AccessToken> map = new ConcurrentHashMap<String, AccessToken>();	// private static AccessToken accessToken;
 	
 	public static AccessToken getAccessToken() {
-		if (accessToken != null && accessToken.isAvailable())
-			return accessToken;
+		AccessToken result = map.get(ApiConfigKit.getApiConfig());
+		if (result != null && result.getAccessToken() != null && result.isAvailable())
+			return result;
 		
 		refreshAccessToken();
-		return accessToken;
+		return result;
 	}
 	
-	public static void refreshAccessToken() {
-		accessToken = requestAccessToken();
-	}
-	
-	private static synchronized AccessToken requestAccessToken() {
-		AccessToken result = null;
+	 public static synchronized void refreshAccessToken() {
 		ApiConfig ac = ApiConfigKit.getApiConfig();
 		for (int i=0; i<3; i++) {
 			String appId = ac.getAppId();
 			String appSecret = ac.getAppSecret();
 			Map<String, String> queryParas = ParaMap.create("appid", appId).put("secret", appSecret).getData();
 			String json = HttpKit.get(url, queryParas);
-			result = new AccessToken(json);
+			AccessToken at = new AccessToken(json);
 			
-			if (result.isAvailable())
+			if (at.isAvailable()) {
+				map.put(ac.getAppId(), at);
 				break;
+			}
 		}
-		return result;
 	}
 	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
