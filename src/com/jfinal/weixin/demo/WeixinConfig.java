@@ -14,7 +14,6 @@ import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.core.JFinal;
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 public class WeixinConfig extends JFinalConfig {
@@ -50,8 +49,8 @@ public class WeixinConfig extends JFinalConfig {
 		// C3p0Plugin c3p0Plugin = new C3p0Plugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password").trim());
 		// me.add(c3p0Plugin);
 		
-		EhCachePlugin ecp = new EhCachePlugin();
-		me.add(ecp);
+		// EhCachePlugin ecp = new EhCachePlugin();
+		// me.add(ecp);
 	}
 	
 	public void configInterceptor(Interceptors me) {

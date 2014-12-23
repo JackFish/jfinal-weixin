@@ -26,16 +26,24 @@ public class AccessTokenApi {
 	// 利用 appId 与 accessToken 建立关联，支持多账户
 	private static Map<String, AccessToken> map = new ConcurrentHashMap<String, AccessToken>();	// private static AccessToken accessToken;
 	
+	/**
+	 * 从缓存中获取 access token，如果未取到或者 access token 不可用则先更新再获取
+	 */
 	public static AccessToken getAccessToken() {
-		AccessToken result = map.get(ApiConfigKit.getApiConfig());
+		String appId = ApiConfigKit.getApiConfig().getAppId();
+		AccessToken result = map.get(appId);
 		if (result != null && result.getAccessToken() != null && result.isAvailable())
 			return result;
 		
 		refreshAccessToken();
-		return result;
+		
+		return map.get(appId);
 	}
 	
-	 public static synchronized void refreshAccessToken() {
+	/**
+	 * 强制更新 access token 值
+	 */
+	public static synchronized void refreshAccessToken() {
 		ApiConfig ac = ApiConfigKit.getApiConfig();
 		for (int i=0; i<3; i++) {
 			String appId = ac.getAppId();
