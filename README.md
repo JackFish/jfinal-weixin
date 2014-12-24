@@ -5,8 +5,8 @@ JFinal Weixin 是基于 JFinal 的微信公众号极速开发 SDK，只需浏览
 ```java
 public class WeixinConfig extends JFinalConfig {
 	public void configConstant(Constants me) {
-		loadPropertyFile("a_little_config.txt");
-		me.setDevMode(getPropertyToBoolean("devMode", false));
+		PropKit.use("a_little_config.txt");
+		me.setDevMode(PropKit.getBoolean("devMode", false));
 		
 		// ApiConfigKit 设为开发模式可以在开发阶段输出请求交互的 xml 与 json 数据
 		ApiConfigKit.setDevMode(me.getDevMode());
