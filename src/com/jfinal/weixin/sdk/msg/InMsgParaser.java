@@ -22,6 +22,7 @@ import com.jfinal.weixin.sdk.msg.in.event.InFollowEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InLocationEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InTemplateMsgEvent;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 
 public class InMsgParaser {
@@ -186,6 +187,14 @@ public class InMsgParaser {
 			InMenuEvent e = new InMenuEvent(toUserName, fromUserName, createTime, msgType);
 			e.setEvent(event);
 			e.setEventKey(eventKey);
+			return e;
+		}
+		// 模板消息是否送达成功通知事件
+		if ("TEMPLATESENDJOBFINISH".equals(event)) {
+			InTemplateMsgEvent e = new InTemplateMsgEvent(toUserName, fromUserName, createTime, msgType);
+			e.setEvent(event);
+			e.setMsgId(root.elementText("MsgID"));
+			e.setStatus(root.elementText("Status"));
 			return e;
 		}
 		

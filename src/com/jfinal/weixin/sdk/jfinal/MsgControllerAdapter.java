@@ -16,6 +16,7 @@ import com.jfinal.weixin.sdk.msg.in.event.InFollowEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InLocationEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InTemplateMsgEvent;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 
 /**
@@ -59,6 +60,10 @@ public abstract class MsgControllerAdapter extends MsgController {
 	}
 	
 	protected void processInSpeechRecognitionResults(InSpeechRecognitionResults inSpeechRecognitionResults) {
+		
+	}
+	
+	protected void processInTemplateMsgEvent(InTemplateMsgEvent inTemplateMsgEvent) {
 		
 	}
 }

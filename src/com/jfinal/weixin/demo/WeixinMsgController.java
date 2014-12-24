@@ -19,6 +19,7 @@ import com.jfinal.weixin.sdk.msg.in.event.InFollowEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InLocationEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InTemplateMsgEvent;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 import com.jfinal.weixin.sdk.msg.out.OutImageMsg;
 import com.jfinal.weixin.sdk.msg.out.OutMusicMsg;
@@ -98,9 +99,7 @@ public class WeixinMsgController extends MsgController {
 		}
 		// 其它文本消息直接返回原值 + 帮助提示
 		else {
-			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
-			outMsg.setContent("\t文本消息已成功接收，内容为： " + inTextMsg.getContent() + "\n\n" + helpStr);
-			render(outMsg);
+			renderOutTextMsg("\t文本消息已成功接收，内容为： " + inTextMsg.getContent() + "\n\n" + helpStr);
 		}
 	}
 	
@@ -204,6 +203,12 @@ public class WeixinMsgController extends MsgController {
 	 */
 	protected void processInSpeechRecognitionResults(InSpeechRecognitionResults inSpeechRecognitionResults) {
 		renderOutTextMsg("语音识别结果： " + inSpeechRecognitionResults.getRecognition());
+	}
+	
+	// 处理接收到的模板消息是否送达成功通知事件
+	protected void processInTemplateMsgEvent(InTemplateMsgEvent inTemplateMsgEvent) {
+		String status = inTemplateMsgEvent.getStatus();
+		renderOutTextMsg("模板消息是否接收成功：" + status);
 	}
 }
 

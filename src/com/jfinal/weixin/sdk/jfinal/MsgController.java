@@ -27,6 +27,7 @@ import com.jfinal.weixin.sdk.msg.in.event.InFollowEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InLocationEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InTemplateMsgEvent;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 import com.jfinal.weixin.sdk.msg.out.OutMsg;
 import com.jfinal.weixin.sdk.msg.out.OutTextMsg;
@@ -77,6 +78,8 @@ public abstract class MsgController extends Controller {
 			processInMenuEvent((InMenuEvent)msg);
 		else if (msg instanceof InSpeechRecognitionResults)
 			processInSpeechRecognitionResults((InSpeechRecognitionResults)msg);
+		else if (msg instanceof InTemplateMsgEvent)
+			processInTemplateMsgEvent((InTemplateMsgEvent)msg);
 		else
 			log.error("未能识别的消息类型。 消息 xml 内容为：\n" + getInMsgXml());
 	}
@@ -159,6 +162,9 @@ public abstract class MsgController extends Controller {
 	
 	// 处理接收到的语音识别结果
 	protected abstract void processInSpeechRecognitionResults(InSpeechRecognitionResults inSpeechRecognitionResults);
+	
+	// 处理接收到的模板消息是否送达成功通知事件
+	protected abstract void processInTemplateMsgEvent(InTemplateMsgEvent inTemplateMsgEvent);
 }
 
 
