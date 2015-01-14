@@ -29,7 +29,7 @@ public class MsgInterceptor implements Interceptor {
 	public void intercept(ActionInvocation ai) {
 		Controller controller = ai.getController();
 		if (controller instanceof MsgController == false)
-			throw new RuntimeException("控制器需要继承 MsgInterceptor");
+			throw new RuntimeException("控制器需要继承 MsgController");
 		
 		try {
 			// 将 ApiConfig 对象与当前线程绑定，以便在后续操作中方便获取该对象： ApiConfigKit.getApiConfig();
