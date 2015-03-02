@@ -68,7 +68,7 @@ public class WeixinMsgController extends MsgController {
 	protected void processInTextMsg(InTextMsg inTextMsg) {
 		String msgContent = inTextMsg.getContent().trim();
 		// 帮助提示
-		if ("help".equalsIgnoreCase(msgContent)) {
+		if ("help".equalsIgnoreCase(msgContent) || "帮助".equals(msgContent)) {
 			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
 			outMsg.setContent(helpStr);
 			render(outMsg);
@@ -81,7 +81,7 @@ public class WeixinMsgController extends MsgController {
 			render(outMsg);
 		}
 		// 音乐消息测试
-		else if ("music".equalsIgnoreCase(msgContent)) {
+		else if ("music".equalsIgnoreCase(msgContent) || "音乐".equals(msgContent)) {
 			OutMusicMsg outMsg = new OutMusicMsg(inTextMsg);
 			outMsg.setTitle("Listen To Your Heart");
 			outMsg.setDescription("建议在 WIFI 环境下流畅欣赏此音乐");
@@ -92,7 +92,11 @@ public class WeixinMsgController extends MsgController {
 		}
 		else if ("美女".equalsIgnoreCase(msgContent)) {
 			OutNewsMsg outMsg = new OutNewsMsg(inTextMsg);
-			outMsg.addNews("我们只看美女", "又一大波美女来袭，我们只看美女 ^_^", "https://mmbiz.qlogo.cn/mmbiz/zz3Q6WSrzq3DmIGiadDEicRIp69r1iccicwKEUOKuLhYgjibyU96ia581gCf5o3kicqz6ZLdsDyUtLib0q0hdgHtZOf4Wg/0", "http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=202080887&idx=1&sn=0649c67de565e2d863bf3b8feee24da0#rd");
+			outMsg.addNews(
+					"JFinal 宝贝更新喽",
+					"jfinal 宝贝更新喽，我们只看美女 ^_^",
+					"https://mmbiz.qlogo.cn/mmbiz/KJoUl0sqZFRmRDKeyviaOhQwG7MLcFb9pJTO3kDu9icmxj9uGDaXnvF5ue3GsS9flibV2sH7gFr63UjTbc69Cfkzw/0",
+					"http://mp.weixin.qq.com/s?__biz=MzA4NjM4Mjk2Mw==&mid=206873450&idx=1&sn=07531f67919bc2402f0e146e22632c9f#rd");
 			// outMsg.addNews("秀色可餐", "JFinal Weixin 极速开发就是这么爽，有木有 ^_^", "http://mmbiz.qpic.cn/mmbiz/zz3Q6WSrzq2GJLC60ECD7rE7n1cvKWRNFvOyib4KGdic3N5APUWf4ia3LLPxJrtyIYRx93aPNkDtib3ADvdaBXmZJg/0", "http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=200987822&idx=1&sn=7eb2918275fb0fa7b520768854fb7b80#rd");
 			
 			render(outMsg);
@@ -168,7 +172,7 @@ public class WeixinMsgController extends MsgController {
 	 */
 	protected void processInFollowEvent(InFollowEvent inFollowEvent) {
 		OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
-		outMsg.setContent("感谢关注 JFinal Weixin 极速开发，为您节约更多时间，去陪恋人、家人和朋友 :) \n\n\n " + helpStr);
+		outMsg.setContent("感谢关注 JFinal Weixin 极速开发服务号，为您节约更多时间，去陪恋人、家人和朋友 :) \n\n\n " + helpStr);
 		// 如果为取消关注事件，将无法接收到传回的信息
 		render(outMsg);
 	}
