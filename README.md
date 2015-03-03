@@ -216,10 +216,14 @@ public class WeixinApiController extends ApiController {
 ```
 通过调用 MenuApi、UserApi 等 Api 的相关方法即可获取封装成 ApiResult 对象的结果，使用 render 系列方法即可快捷输出结果
 
+## 4、非Maven用户得到所有依赖 jar 包两种方法
+- 将项目导入eclipse jee中，使用 export 功能导出 war包，其中的 WEB-INF/lib 下面会自动生成 jar 包
+- 让使用 maven 的朋友使用 mvn package 打出 war包，其中的 WEB-INF/lib 下面会自动生成 jar 包
+- 以上两种方法注意要先将pom.xml中的导出类型设置为 war，添加 <packaging>war</packaging> 内容进去即可
 
-## 4、更多支持
+## 5、更多支持
 - JFinal 官方网站  [http://www.jfinal.com](http://www.jfinal.com/) 
 - 关注官方微信号马上体验 demo 功能  
-![JFinal Weixin SDK](http://static.oschina.net/uploads/space/2013/0413/131804_6faj_201137.jpg)
+![JFinal Weixin SDK](http://static.oschina.net/uploads/space/2015/0211/181947_2431_201137.jpg)
 
 
