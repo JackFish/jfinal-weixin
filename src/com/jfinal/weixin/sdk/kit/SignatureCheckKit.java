@@ -8,7 +8,7 @@ package com.jfinal.weixin.sdk.kit;
 
 import java.util.Arrays;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.EncryptionKit;
+import com.jfinal.kit.HashKit;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 /**
@@ -46,7 +46,7 @@ public class SignatureCheckKit {
 		String array[] = {TOKEN, timestamp, nonce};
 		Arrays.sort(array);
 		String tempStr = new StringBuilder().append(array[0] + array[1] + array[2]).toString();
-		tempStr = EncryptionKit.sha1Encrypt(tempStr);
+		tempStr = HashKit.sha1(tempStr);
 		return tempStr.equalsIgnoreCase(signature);
 	}
 	

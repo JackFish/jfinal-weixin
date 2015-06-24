@@ -7,7 +7,7 @@
 package com.jfinal.weixin.sdk.jfinal;
 
 import com.jfinal.aop.Interceptor;
-import com.jfinal.core.ActionInvocation;
+import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Logger;
@@ -26,8 +26,8 @@ public class MsgInterceptor implements Interceptor {
 	
 	private static final Logger log =  Logger.getLogger(MsgInterceptor.class);
 	
-	public void intercept(ActionInvocation ai) {
-		Controller controller = ai.getController();
+	public void intercept(Invocation inv) {
+		Controller controller = inv.getController();
 		if (controller instanceof MsgController == false)
 			throw new RuntimeException("控制器需要继承 MsgController");
 		
@@ -43,10 +43,10 @@ public class MsgInterceptor implements Interceptor {
 			
 			// 签名检测
 			if (checkSignature(controller)) {
-				ai.invoke();
+				inv.invoke();
 			}
 			else {
-				controller.renderText("check signature failure");
+				controller.renderText("签名验证失败，请确定是微信服务器在发送消息过来");
 			}
 		}
 		finally {

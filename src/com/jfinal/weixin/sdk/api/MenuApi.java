@@ -27,7 +27,7 @@ public class MenuApi {
 	/**
 	 * 创建菜单
 	 */
-	public ApiResult createMenu(String jsonStr) {
+	public static ApiResult createMenu(String jsonStr) {
 		String jsonResult = HttpKit.post(createMenu + AccessTokenApi.getAccessToken().getAccessToken(), jsonStr);
 		return new ApiResult(jsonResult);
 	}
