@@ -84,10 +84,10 @@ public class WeixinMsgController extends MsgController {
 		// 音乐消息测试
 		else if ("music".equalsIgnoreCase(msgContent) || "音乐".equals(msgContent)) {
 			OutMusicMsg outMsg = new OutMusicMsg(inTextMsg);
-			outMsg.setTitle("Listen To Your Heart");
+			outMsg.setTitle("When The Stars Go Blue-Venke Knutson");
 			outMsg.setDescription("建议在 WIFI 环境下流畅欣赏此音乐");
-			outMsg.setMusicUrl("http://www.jfinal.com/Listen_To_Your_Heart.mp3");
-			outMsg.setHqMusicUrl("http://www.jfinal.com/Listen_To_Your_Heart.mp3");
+			outMsg.setMusicUrl("http://www.jfinal.com/When_The_Stars_Go_Blue-Venke_Knutson.mp3");
+			outMsg.setHqMusicUrl("http://www.jfinal.com/When_The_Stars_Go_Blue-Venke_Knutson.mp3");
 			outMsg.setFuncFlag(true);
 			render(outMsg);
 		}
