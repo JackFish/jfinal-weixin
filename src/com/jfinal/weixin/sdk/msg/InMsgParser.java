@@ -6,6 +6,7 @@
 
 package com.jfinal.weixin.sdk.msg;
 
+import com.jfinal.weixin.sdk.msg.in.event.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -18,11 +19,6 @@ import com.jfinal.weixin.sdk.msg.in.InMsg;
 import com.jfinal.weixin.sdk.msg.in.InTextMsg;
 import com.jfinal.weixin.sdk.msg.in.InVideoMsg;
 import com.jfinal.weixin.sdk.msg.in.InVoiceMsg;
-import com.jfinal.weixin.sdk.msg.in.event.InFollowEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InLocationEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InTemplateMsgEvent;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 
 public class InMsgParser {
@@ -197,8 +193,20 @@ public class InMsgParser {
 			e.setStatus(root.elementText("Status"));
 			return e;
 		}
-		
-		throw new RuntimeException("无法识别的事件类型，请查阅微信公众平台开发文档");
+		// 群发任务结束时是否送达成功通知事件
+		if ("MASSSENDJOBFINISH".equals(event)) {
+			InMassEvent e = new InMassEvent(toUserName, fromUserName, createTime, msgType);
+			e.setEvent(event);
+			e.setMsgId(root.elementText("MsgID"));
+			e.setStatus(root.elementText("Status"));
+			e.setTotalCount(root.elementText("TotalCount"));
+			e.setFilterCount(root.elementText("FilterCount"));
+			e.setSentCount(root.elementText("SentCount"));
+			e.setErrorCount(root.elementText("ErrorCount"));
+			return e;
+		}
+
+		throw new RuntimeException("无法识别的事件类型" + event + "，请查阅微信公众平台开发文档");
 	}
 	
 	@SuppressWarnings("unused")

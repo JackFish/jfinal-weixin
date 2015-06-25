@@ -10,13 +10,8 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import com.jfinal.weixin.sdk.msg.out.OutImageMsg;
-import com.jfinal.weixin.sdk.msg.out.OutMsg;
-import com.jfinal.weixin.sdk.msg.out.OutMusicMsg;
-import com.jfinal.weixin.sdk.msg.out.OutNewsMsg;
-import com.jfinal.weixin.sdk.msg.out.OutTextMsg;
-import com.jfinal.weixin.sdk.msg.out.OutVideoMsg;
-import com.jfinal.weixin.sdk.msg.out.OutVoiceMsg;
+
+import com.jfinal.weixin.sdk.msg.out.*;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
@@ -99,6 +94,8 @@ public class OutMsgXmlBuilder {
 		loader.putTemplate(OutVideoMsg.class.getSimpleName(), OutVideoMsg.TEMPLATE);
 		// music 音乐消息
 		loader.putTemplate(OutMusicMsg.class.getSimpleName(), OutMusicMsg.TEMPLATE);
+		// 转发多客服消息
+		loader.putTemplate(OutCustomMsg.class.getSimpleName(), OutCustomMsg.TEMPLATE);
 	}
 	
 	public static void setEncoding(String encoding) {
