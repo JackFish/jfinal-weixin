@@ -96,8 +96,8 @@ public class WeixinMsgController extends MsgController {
 			outMsg.addNews(
 					"JFinal 宝贝更新喽",
 					"jfinal 宝贝更新喽，我们只看美女 ^_^",
-					"https://mmbiz.qlogo.cn/mmbiz/KJoUl0sqZFRmRDKeyviaOhQwG7MLcFb9pJTO3kDu9icmxj9uGDaXnvF5ue3GsS9flibV2sH7gFr63UjTbc69Cfkzw/0",
-					"http://mp.weixin.qq.com/s?__biz=MzA4NjM4Mjk2Mw==&mid=206873450&idx=1&sn=07531f67919bc2402f0e146e22632c9f#rd");
+					"https://mmbiz.qlogo.cn/mmbiz/KJoUl0sqZFRHa3VrmibqAXRfYPNdiamFnpPTOvXoxsFlRoOHbVibGhmHOEUQiboD3qXWszKuzWpibFxsVW1RmNB9hPw/0?wx_fmt=jpeg",
+					"http://mp.weixin.qq.com/s?__biz=MzA4NjM4Mjk2Mw==&mid=211356950&idx=1&sn=6315a1a2848aa8cb0694bf1f4accfb07#rd");
 			// outMsg.addNews("秀色可餐", "JFinal Weixin 极速开发就是这么爽，有木有 ^_^", "http://mmbiz.qpic.cn/mmbiz/zz3Q6WSrzq2GJLC60ECD7rE7n1cvKWRNFvOyib4KGdic3N5APUWf4ia3LLPxJrtyIYRx93aPNkDtib3ADvdaBXmZJg/0", "http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=200987822&idx=1&sn=7eb2918275fb0fa7b520768854fb7b80#rd");
 			
 			render(outMsg);
