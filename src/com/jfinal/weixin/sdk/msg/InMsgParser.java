@@ -25,9 +25,9 @@ import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
 import com.jfinal.weixin.sdk.msg.in.event.InTemplateMsgEvent;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 
-public class InMsgParaser {
+public class InMsgParser {
 	
-	private InMsgParaser() {}
+	private InMsgParser() {}
 	
 	/**
 	 * 从 xml 中解析出各类消息与事件
@@ -71,7 +71,7 @@ public class InMsgParaser {
         	return parseInLinkMsg(root, toUserName, fromUserName, createTime, msgType);
         if ("event".equals(msgType))
         	return parseInEvent(root, toUserName, fromUserName, createTime, msgType);
-        throw new RuntimeException("无法识别的消息类型，请查阅微信公众平台开发文档");
+        throw new RuntimeException("无法识别的消息类型 " + msgType + "，请查阅微信公众平台开发文档");
 	}
 	
 	private static InMsg parseInTextMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {

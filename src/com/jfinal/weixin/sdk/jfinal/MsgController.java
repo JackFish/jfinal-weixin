@@ -14,7 +14,7 @@ import com.jfinal.weixin.sdk.api.ApiConfig;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.weixin.sdk.kit.MsgEncryptKit;
-import com.jfinal.weixin.sdk.msg.InMsgParaser;
+import com.jfinal.weixin.sdk.msg.InMsgParser;
 import com.jfinal.weixin.sdk.msg.OutMsgXmlBuilder;
 import com.jfinal.weixin.sdk.msg.in.InImageMsg;
 import com.jfinal.weixin.sdk.msg.in.InLinkMsg;
@@ -126,7 +126,7 @@ public abstract class MsgController extends Controller {
 	@Before(NotAction.class)
 	public InMsg getInMsg() {
 		if (inMsg == null)
-			inMsg = InMsgParaser.parse(getInMsgXml()); 
+			inMsg = InMsgParser.parse(getInMsgXml()); 
 		return inMsg;
 	}
 	
