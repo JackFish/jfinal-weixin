@@ -14,10 +14,10 @@ import com.jfinal.kit.HttpKit;
  */
 public class QrcodeApi
 {
-	private static String createQrcode = "https://api.weixin.qq.com/cgi-bin/qrcode/create";
+	private static String apiUrl = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=";
 
-	public static ApiResult createQrcode(String jsonStr) {
-		String jsonResult = HttpKit.post(createQrcode + AccessTokenApi.getAccessToken().getAccessToken(), jsonStr);
+	public static ApiResult create(String jsonStr) {
+		String jsonResult = HttpKit.post(apiUrl + AccessTokenApi.getAccessToken().getAccessToken(), jsonStr);
 		return new ApiResult(jsonResult);
 	}
 }
