@@ -6,8 +6,6 @@
 
 package com.jfinal.weixin.sdk.msg.in.event;
 
-import com.jfinal.weixin.sdk.msg.in.InMsg;
-
 /**
 	扫描带参数二维码事件
 	1. 用户未关注时，进行关注后的事件推送
@@ -32,29 +30,22 @@ import com.jfinal.weixin.sdk.msg.in.InMsg;
 			<Ticket><![CDATA[TICKET]]></Ticket>
 	</xml>
  */
-public class InQrCodeEvent extends InMsg {
+public class InQrCodeEvent extends EventInMsg {
 	
 	// 1. 用户未关注时，进行关注后的事件推送： subscribe
+	public static final String EVENT_INQRCODE_SUBSCRIBE = "subscribe";
 	// 2. 用户已关注时的事件推送： SCAN
-	private String event;
+	public static final String EVENT_INQRCODE_SCAN = "SCAN";
 	
 	// 1. 用户未关注时，进行关注后的事件推送： qrscene_123123
 	// 2. 用户已关注时的事件推送： SCENE_VALUE
 	private String eventKey;
 	private String ticket;
 	
-	public InQrCodeEvent(String toUserName, String fromUserName, Integer createTime, String msgType) {
-		super(toUserName, fromUserName, createTime, msgType);
+	public InQrCodeEvent(String toUserName, String fromUserName, Integer createTime, String msgType, String event) {
+		super(toUserName, fromUserName, createTime, msgType, event);
 	}
-	
-	public String getEvent() {
-		return event;
-	}
-	
-	public void setEvent(String event) {
-		this.event = event;
-	}
-	
+
 	public String getEventKey() {
 		return eventKey;
 	}

@@ -6,8 +6,6 @@
 
 package com.jfinal.weixin.sdk.msg.in.event;
 
-import com.jfinal.weixin.sdk.msg.in.InMsg;
-
 /**
 	自定义菜单事件
 	1： 点击菜单拉取消息时的事件推送
@@ -30,22 +28,18 @@ import com.jfinal.weixin.sdk.msg.in.InMsg;
 			<EventKey><![CDATA[www.qq.com]]></EventKey>
 	</xml>
  */
-public class InMenuEvent extends InMsg {
-	private String event;
+public class InMenuEvent extends EventInMsg {
+	// 1. 点击菜单拉取消息时的事件推送： CLICK
+	public static final String EVENT_INMENU_CLICK = "CLICK";
+	// 2. 点击菜单跳转链接时的事件推送： VIEW
+	public static final String EVENT_INMENU_VIEW = "VIEW";
+
 	private String eventKey;
 	
-	public InMenuEvent(String toUserName, String fromUserName, Integer createTime, String msgType) {
-		super(toUserName, fromUserName, createTime, msgType);
+	public InMenuEvent(String toUserName, String fromUserName, Integer createTime, String msgType,String event) {
+		super(toUserName, fromUserName, createTime, msgType,event);
 	}
-	
-	public String getEvent() {
-		return event;
-	}
-	
-	public void setEvent(String event) {
-		this.event = event;
-	}
-	
+
 	public String getEventKey() {
 		return eventKey;
 	}
