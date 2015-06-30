@@ -201,6 +201,25 @@ public class InMsgParser {
 			e.setErrorCount(root.elementText("ErrorCount"));
 			return e;
 		}
+        // 多客服接入会话事件
+        if ("kf_create_session".equals(event)) {
+            InCustomEvent e = new InCustomEvent(toUserName, fromUserName, createTime, msgType, event);
+            e.setKfAccount(root.elementText("KfAccount"));
+            return e;
+        }
+        // 多客服关闭会话事件
+        if ("kf_close_session".equals(event)) {
+            InCustomEvent e = new InCustomEvent(toUserName, fromUserName, createTime, msgType, event);
+            e.setKfAccount(root.elementText("KfAccount"));
+            return e;
+        }
+        // 多客服转接会话事件
+        if ("kf_switch_session".equals(event)) {
+            InCustomEvent e = new InCustomEvent(toUserName, fromUserName, createTime, msgType, event);
+            e.setKfAccount(root.elementText("KfAccount"));
+            e.setToKfAccount(root.elementText("ToKfAccount"));
+            return e;
+        }
 
 		throw new RuntimeException("无法识别的事件类型" + event + "，请查阅微信公众平台开发文档");
 	}
