@@ -9,17 +9,8 @@ package com.jfinal.weixin.demo;
 import com.jfinal.kit.PropKit;
 import com.jfinal.weixin.sdk.api.ApiConfig;
 import com.jfinal.weixin.sdk.jfinal.MsgController;
-import com.jfinal.weixin.sdk.msg.in.InImageMsg;
-import com.jfinal.weixin.sdk.msg.in.InLinkMsg;
-import com.jfinal.weixin.sdk.msg.in.InLocationMsg;
-import com.jfinal.weixin.sdk.msg.in.InTextMsg;
-import com.jfinal.weixin.sdk.msg.in.InVideoMsg;
-import com.jfinal.weixin.sdk.msg.in.InVoiceMsg;
-import com.jfinal.weixin.sdk.msg.in.event.InFollowEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InLocationEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InTemplateMsgEvent;
+import com.jfinal.weixin.sdk.msg.in.*;
+import com.jfinal.weixin.sdk.msg.in.event.*;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 import com.jfinal.weixin.sdk.msg.out.OutImageMsg;
 import com.jfinal.weixin.sdk.msg.out.OutMusicMsg;
@@ -147,7 +138,15 @@ public class WeixinMsgController extends MsgController {
 		outMsg.setContent("\t视频消息已成功接收，该视频的 mediaId 为: " + inVideoMsg.getMediaId());
 		render(outMsg);
 	}
-	
+
+	@Override
+	protected void processInShortVideoMsg(InShortVideoMsg inShortVideoMsg)
+	{
+		OutTextMsg outMsg = new OutTextMsg(inShortVideoMsg);
+		outMsg.setContent("\t视频消息已成功接收，该视频的 mediaId 为: " + inShortVideoMsg.getMediaId());
+		render(outMsg);
+	}
+
 	/**
 	 * 实现父类抽方法，处理地址位置消息
 	 */
@@ -170,7 +169,13 @@ public class WeixinMsgController extends MsgController {
 		outMsg.addNews("链接消息已成功接收", "链接使用图文消息的方式发回给你，还可以使用文本方式发回。点击图文消息可跳转到链接地址页面，是不是很好玩 :)" , "http://mmbiz.qpic.cn/mmbiz/zz3Q6WSrzq1ibBkhSA1BibMuMxLuHIvUfiaGsK7CC4kIzeh178IYSHbYQ5eg9tVxgEcbegAu22Qhwgl5IhZFWWXUw/0", inLinkMsg.getUrl());
 		render(outMsg);
 	}
-	
+
+	@Override
+	protected void processInCustomEvent(InCustomEvent inCustomEvent)
+	{
+		System.out.println("processInCustomEvent() 方法测试成功");
+	}
+
 	/**
 	 * 实现父类抽方法，处理关注/取消关注消息
 	 */
@@ -198,7 +203,13 @@ public class WeixinMsgController extends MsgController {
 		outMsg.setContent("processInLocationEvent() 方法测试成功");
 		render(outMsg);
 	}
-	
+
+	@Override
+	protected void processInMassEvent(InMassEvent inMassEvent)
+	{
+		System.out.println("processInMassEvent() 方法测试成功");
+	}
+
 	/**
 	 * 实现父类抽方法，处理自定义菜单事件
 	 */

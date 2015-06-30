@@ -16,18 +16,8 @@ import com.jfinal.kit.HttpKit;
 import com.jfinal.weixin.sdk.kit.MsgEncryptKit;
 import com.jfinal.weixin.sdk.msg.InMsgParser;
 import com.jfinal.weixin.sdk.msg.OutMsgXmlBuilder;
-import com.jfinal.weixin.sdk.msg.in.InImageMsg;
-import com.jfinal.weixin.sdk.msg.in.InLinkMsg;
-import com.jfinal.weixin.sdk.msg.in.InLocationMsg;
-import com.jfinal.weixin.sdk.msg.in.InMsg;
-import com.jfinal.weixin.sdk.msg.in.InTextMsg;
-import com.jfinal.weixin.sdk.msg.in.InVideoMsg;
-import com.jfinal.weixin.sdk.msg.in.InVoiceMsg;
-import com.jfinal.weixin.sdk.msg.in.event.InFollowEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InLocationEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InTemplateMsgEvent;
+import com.jfinal.weixin.sdk.msg.in.*;
+import com.jfinal.weixin.sdk.msg.in.event.*;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 import com.jfinal.weixin.sdk.msg.out.OutMsg;
 import com.jfinal.weixin.sdk.msg.out.OutTextMsg;
@@ -57,27 +47,33 @@ public abstract class MsgController extends Controller {
 		// 解析消息并根据消息类型分发到相应的处理方法
 		InMsg msg = getInMsg();
 		if (msg instanceof InTextMsg)
-			processInTextMsg((InTextMsg)msg);
+			processInTextMsg((InTextMsg) msg);
 		else if (msg instanceof InImageMsg)
-			processInImageMsg((InImageMsg)msg);
+			processInImageMsg((InImageMsg) msg);
 		else if (msg instanceof InVoiceMsg)
-			processInVoiceMsg((InVoiceMsg)msg);
+			processInVoiceMsg((InVoiceMsg) msg);
 		else if (msg instanceof InVideoMsg)
-			processInVideoMsg((InVideoMsg)msg);
+			processInVideoMsg((InVideoMsg) msg);
+		else if (msg instanceof InShortVideoMsg)   //支持小视频
+			processInShortVideoMsg((InShortVideoMsg) msg);
 		else if (msg instanceof InLocationMsg)
-			processInLocationMsg((InLocationMsg)msg);
+			processInLocationMsg((InLocationMsg) msg);
 		else if (msg instanceof InLinkMsg)
-			processInLinkMsg((InLinkMsg)msg);
+			processInLinkMsg((InLinkMsg) msg);
+        else if (msg instanceof InCustomEvent)
+            processInCustomEvent((InCustomEvent) msg);
 		else if (msg instanceof InFollowEvent)
-			processInFollowEvent((InFollowEvent)msg);
+			processInFollowEvent((InFollowEvent) msg);
 		else if (msg instanceof InQrCodeEvent)
-			processInQrCodeEvent((InQrCodeEvent)msg);
+			processInQrCodeEvent((InQrCodeEvent) msg);
 		else if (msg instanceof InLocationEvent)
-			processInLocationEvent((InLocationEvent)msg);
+			processInLocationEvent((InLocationEvent) msg);
+        else if (msg instanceof InMassEvent)
+            processInMassEvent((InMassEvent) msg);
 		else if (msg instanceof InMenuEvent)
-			processInMenuEvent((InMenuEvent)msg);
+			processInMenuEvent((InMenuEvent) msg);
 		else if (msg instanceof InSpeechRecognitionResults)
-			processInSpeechRecognitionResults((InSpeechRecognitionResults)msg);
+			processInSpeechRecognitionResults((InSpeechRecognitionResults) msg);
 		else if (msg instanceof InTemplateMsgEvent)
 			processInTemplateMsgEvent((InTemplateMsgEvent)msg);
 		else
@@ -141,13 +137,19 @@ public abstract class MsgController extends Controller {
 	
 	// 处理接收到的视频消息
 	protected abstract void processInVideoMsg(InVideoMsg inVideoMsg);
+
+	// 处理接收到的视频消息
+	protected abstract void processInShortVideoMsg(InShortVideoMsg inShortVideoMsg);
 	
 	// 处理接收到的地址位置消息
 	protected abstract void processInLocationMsg(InLocationMsg inLocationMsg);
 
 	// 处理接收到的链接消息
 	protected abstract void processInLinkMsg(InLinkMsg inLinkMsg);
-	
+
+    // 处理接收到的多客服管理事件
+    protected abstract void processInCustomEvent(InCustomEvent inCustomEvent);
+
 	// 处理接收到的关注/取消关注事件
 	protected abstract void processInFollowEvent(InFollowEvent inFollowEvent);
 	
@@ -156,7 +158,10 @@ public abstract class MsgController extends Controller {
 	
 	// 处理接收到的上报地理位置事件
 	protected abstract void processInLocationEvent(InLocationEvent inLocationEvent);
-	
+
+    // 处理接收到的群发任务结束时通知事件
+    protected abstract void processInMassEvent(InMassEvent inMassEvent);
+
 	// 处理接收到的自定义菜单事件
 	protected abstract void processInMenuEvent(InMenuEvent inMenuEvent);
 	

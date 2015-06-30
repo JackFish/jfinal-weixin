@@ -6,19 +6,13 @@
 
 package com.jfinal.weixin.sdk.msg;
 
+import com.jfinal.weixin.sdk.msg.in.*;
 import com.jfinal.weixin.sdk.msg.in.event.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import com.jfinal.kit.StrKit;
-import com.jfinal.weixin.sdk.msg.in.InImageMsg;
-import com.jfinal.weixin.sdk.msg.in.InLinkMsg;
-import com.jfinal.weixin.sdk.msg.in.InLocationMsg;
-import com.jfinal.weixin.sdk.msg.in.InMsg;
-import com.jfinal.weixin.sdk.msg.in.InTextMsg;
-import com.jfinal.weixin.sdk.msg.in.InVideoMsg;
-import com.jfinal.weixin.sdk.msg.in.InVoiceMsg;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 
 public class InMsgParser {
@@ -42,6 +36,7 @@ public class InMsgParser {
 	 * 2：image 图片消息
 	 * 3：voice 语音消息
 	 * 4：video 视频消息
+	 *    shortvideo 小视频消息
 	 * 5：location 地址位置消息
 	 * 6：link 链接消息
 	 * 7：event 事件
@@ -61,6 +56,8 @@ public class InMsgParser {
         	return parseInVoiceMsgAndInSpeechRecognitionResults(root, toUserName, fromUserName, createTime, msgType);
         if ("video".equals(msgType))
         	return parseInVideoMsg(root, toUserName, fromUserName, createTime, msgType);
+		if ("shortvideo".equals(msgType))     //支持小视频
+			return parseInShortVideoMsg(root, toUserName, fromUserName, createTime, msgType);
         if ("location".equals(msgType))
         	return parseInLocationMsg(root, toUserName, fromUserName, createTime, msgType);
         if ("link".equals(msgType))
@@ -111,7 +108,15 @@ public class InMsgParser {
 		msg.setMsgId(root.elementText("MsgId"));
 		return msg;
 	}
-	
+
+	private static InMsg parseInShortVideoMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
+		InShortVideoMsg msg = new InShortVideoMsg(toUserName, fromUserName, createTime, msgType);
+		msg.setMediaId(root.elementText("MediaId"));
+		msg.setThumbMediaId(root.elementText("ThumbMediaId"));
+		msg.setMsgId(root.elementText("MsgId"));
+		return msg;
+	}
+
 	private static InMsg parseInLocationMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
 		InLocationMsg msg = new InLocationMsg(toUserName, fromUserName, createTime, msgType);
 		msg.setLocation_X(root.elementText("Location_X"));
@@ -131,7 +136,7 @@ public class InMsgParser {
 		return msg;
 	}
 	
-	// 解析四种事件
+	// 解析各种事件
 	private static InMsg parseInEvent(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
 		String event = root.elementText("Event");
 		String eventKey = root.elementText("EventKey");
