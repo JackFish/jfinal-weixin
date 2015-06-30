@@ -224,6 +224,6 @@ public class WeixinApiController extends ApiController {
 ## 5、更多支持
 - JFinal 官方网站  [http://www.jfinal.com](http://www.jfinal.com/) 
 - 关注官方微信号马上体验 demo 功能  
-![JFinal Weixin SDK](http://static.oschina.net/uploads/space/2015/0211/181947_2431_201137.jpg)
+![JFinal Weixin SDK](http://static.oschina.net/uploads/space/2015/0211/181947_2431_201137.jpg) 
 
 
