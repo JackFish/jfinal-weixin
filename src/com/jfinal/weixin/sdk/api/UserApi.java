@@ -17,7 +17,8 @@ public class UserApi {
 	
 	private static String getUserInfo = "https://api.weixin.qq.com/cgi-bin/user/info";
 	private static String getFollowers = "https://api.weixin.qq.com/cgi-bin/user/get";
-	
+	private static String batchGetUserInfo = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=";
+
 	public static ApiResult getUserInfo(String openId) {
 		ParaMap pm = ParaMap.create("access_token", AccessTokenApi.getAccessToken().getAccessToken()).put("openid", openId).put("lang", "zh_CN");
 		return new ApiResult(HttpKit.get(getUserInfo, pm.getData()));
@@ -32,5 +33,13 @@ public class UserApi {
 	
 	public static ApiResult getFollows() {
 		return getFollowers(null);
+	}
+
+	/**
+	 * 批量获取用户基本信息, by Unas
+	 */
+	public static ApiResult batchGetUserInfo(String jsonStr) {
+		String jsonResult = HttpKit.post(batchGetUserInfo + AccessTokenApi.getAccessToken().getAccessToken(), jsonStr);
+		return new ApiResult(jsonResult);
 	}
 }
