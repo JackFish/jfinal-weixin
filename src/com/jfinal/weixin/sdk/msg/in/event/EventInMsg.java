@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2015, Unas Сǿ�� (unas@qq.com).
+ * Copyright (c) 2011-2015, Unas 小强哥 (unas@qq.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
