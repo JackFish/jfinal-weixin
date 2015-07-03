@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.jfinal</groupId>
   <artifactId>jfinal-weixin</artifactId>
-  <version>1.4</version>
+  <version>1.5-SNAPSHOT</version>
   <name>jfinal_weixin</name>
   <url>http://www.jfinal.com</url>
   <properties><project.build.sourceEncoding>UTF-8</project.build.sourceEncoding></properties>
