@@ -49,6 +49,13 @@ public class ApiResult {
 	}
 	
 	/**
+	 * 通过 json 创建 ApiResult 对象，等价于 new ApiResult(jsonStr)
+	 */
+	public static ApiResult create(String jsonStr) {
+		return new ApiResult(jsonStr);
+	}
+	
+	/**
 	 * 如果 api 调用返回结果表明 access_token 无效，则刷新它
 	 * 正常情况下不会出现使用本方法刷新 access_token 的操作，除非以下情况发生：
 	 * 1：另一程序重新获取了该公众号的 access_token
