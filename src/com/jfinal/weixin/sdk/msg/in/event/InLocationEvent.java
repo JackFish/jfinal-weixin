@@ -6,8 +6,6 @@
 
 package com.jfinal.weixin.sdk.msg.in.event;
 
-import com.jfinal.weixin.sdk.msg.in.InMsg;
-
 /**
 	上报地理位置事件
 	<xml>
