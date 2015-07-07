@@ -3,7 +3,7 @@
   <groupId>com.jfinal</groupId>
   <artifactId>jfinal-weixin</artifactId>
   <version>1.5-SNAPSHOT</version>
-  <name>jfinal_weixin</name>
+  <name>jfinal-weixin</name>
   <url>http://www.jfinal.com</url>
   <properties><project.build.sourceEncoding>UTF-8</project.build.sourceEncoding></properties>
   
@@ -101,7 +101,7 @@
 	    </testResources>
 	    <!-- directory>${project.basedir}/target</directory -->
 	    <directory>${project.basedir}/webapp/WEB-INF/target</directory><!-- v i -->
-    <finalName>jfinal_weixin</finalName>
+    <finalName>jfinal-weixin</finalName>
     
 	<plugins>
 		<!-- web.xml 不在默认路径 src/main/webapp/WEB-INF 之下时需要本配置才能 mvn package 打 war 包 -->
