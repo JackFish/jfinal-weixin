@@ -22,6 +22,7 @@ public class SnsAccessToken
     private String refresh_token;    //
     private String openid;    //
     private String scope;    //
+    private String unionid;    //
     private Integer errcode;        // 出错时有值
     private String errmsg;            // 出错时有值
 
@@ -40,6 +41,7 @@ public class SnsAccessToken
             expires_in = (Integer) map.get("expires_in");
             refresh_token = (String) map.get("refresh_token");
             openid = (String) map.get("openid");
+            unionid = (String) map.get("unionid");
             scope = (String) map.get("scope");
             errcode = (Integer) map.get("errcode");
             errmsg = (String) map.get("errmsg");
@@ -123,5 +125,15 @@ public class SnsAccessToken
                 return result;
         }
         return errmsg;
+    }
+
+    public String getUnionid()
+    {
+        return unionid;
+    }
+
+    public void setUnionid(String unionid)
+    {
+        this.unionid = unionid;
     }
 }
