@@ -16,9 +16,15 @@ public class SnsApi
 {
     private static String getUserInfo = "https://api.weixin.qq.com/sns/userinfo";
 
-    public static ApiResult getUserInfo(String code, String openId)
+    /**
+     * 获取用户个人信
+     * @param accessToken 调用凭证access_token
+     * @param openId 普通用户的标识，对当前开发者帐号唯一
+     * @return ApiResult
+     */
+    public static ApiResult getUserInfo(String accessToken, String openId)
     {
-        ParaMap pm = ParaMap.create("access_token", SnsAccessTokenApi.getAccessToken(code).getAccessToken()).put("openid", openId).put("lang", "zh_CN");
+        ParaMap pm = ParaMap.create("access_token", accessToken).put("openid", openId).put("lang", "zh_CN");
         return new ApiResult(HttpKit.get(getUserInfo, pm.getData()));
     }
 }

@@ -10,54 +10,34 @@ import com.jfinal.kit.HttpKit;
 import com.jfinal.weixin.sdk.kit.ParaMap;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 网页授权获取 access_token API
  */
 public class SnsAccessTokenApi
 {
-
-    // https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
     private static String url = "https://api.weixin.qq.com/sns/oauth2/access_token?grant_type=authorization_code";
 
-    // 利用 appId 与 accessToken 建立关联，支持多账户
-    private static Map<String, SnsAccessToken> map = new ConcurrentHashMap<String, SnsAccessToken>();    // private static AccessToken accessToken;
-
     /**
-     * 从缓存中获取 access token，如果未取到或者 access token 不可用则先更新再获取
+     * 通过code获取access_token
+     *
+     * @param code   第一步获取的code参数
+     * @param appId  应用唯一标识
+     * @param secret 应用密钥AppSecret
+     * @return SnsAccessToken
      */
-    public static SnsAccessToken getAccessToken(String code)
+    public static SnsAccessToken getSnsAccessToken(String appId, String secret, String code)
     {
-        String appId = ApiConfigKit.getApiConfig().getAppId();
-        SnsAccessToken result = map.get(appId);
-        if (result != null && result.isAvailable())
-            return result;
-
-        refreshAccessToken(code);
-        return map.get(appId);
-    }
-
-    /**
-     * 强制更新 access token 值
-     */
-    public static synchronized void refreshAccessToken(String code)
-    {
-        ApiConfig ac = ApiConfigKit.getApiConfig();
         SnsAccessToken result = null;
         for (int i = 0; i < 3; i++)
         {    // 最多三次请求
-            String appId = ac.getAppId();
-            String appSecret = ac.getAppSecret();
-            Map<String, String> queryParas = ParaMap.create("appid", appId).put("secret", appSecret).put("code", code).getData();
+            Map<String, String> queryParas = ParaMap.create("appid", appId).put("secret", secret).put("code", code).getData();
             String json = HttpKit.get(url, queryParas);
             result = new SnsAccessToken(json);
 
             if (result.isAvailable())
                 break;
         }
-
-        // 三次请求如果仍然返回了不可用的 access token 仍然 put 进去，便于上层通过 SnsAccessToken 中的属性判断底层的情况
-        map.put(ac.getAppId(), result);
+        return result;
     }
 }
