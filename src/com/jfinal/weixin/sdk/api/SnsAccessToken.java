@@ -6,9 +6,6 @@
 
 package com.jfinal.weixin.sdk.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.Map;
 
 /**
  * SnsAccessToken
@@ -35,16 +32,15 @@ public class SnsAccessToken
 
         try
         {
-            @SuppressWarnings("rawtypes")
-            Map map = new ObjectMapper().readValue(jsonStr, Map.class);
-            access_token = (String) map.get("access_token");
-            expires_in = (Integer) map.get("expires_in");
-            refresh_token = (String) map.get("refresh_token");
-            openid = (String) map.get("openid");
-            unionid = (String) map.get("unionid");
-            scope = (String) map.get("scope");
-            errcode = (Integer) map.get("errcode");
-            errmsg = (String) map.get("errmsg");
+            ApiResult ar = new ApiResult(jsonStr);
+            access_token = ar.getStr("access_token");
+            expires_in = ar.getInt("expires_in");
+            refresh_token = ar.getStr("refresh_token");
+            openid = ar.getStr("openid");
+            unionid = ar.getStr("unionid");
+            scope = ar.getStr("scope");
+            errcode = ar.getInt("errcode");
+            errmsg = ar.getStr("errmsg");
 
             if (expires_in != null)
                 expiredTime = System.currentTimeMillis() + ((expires_in - 5) * 1000);
