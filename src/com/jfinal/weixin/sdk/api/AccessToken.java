@@ -6,9 +6,6 @@
 
 package com.jfinal.weixin.sdk.api;
 
-import java.util.Map;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 封装 access_token
@@ -27,12 +24,11 @@ public class AccessToken {
 		this.json = jsonStr;
 		
 		try {
-			@SuppressWarnings("rawtypes")
-			Map map = new ObjectMapper().readValue(jsonStr, Map.class);
-			access_token = (String)map.get("access_token");
-			expires_in = (Integer)map.get("expires_in");
-			errcode = (Integer)map.get("errcode");
-			errmsg = (String)map.get("errmsg");
+			ApiResult ar = new ApiResult(jsonStr);
+			access_token = ar.getStr("access_token");
+			expires_in = ar.getInt("expires_in");
+			errcode = ar.getInt("errcode");
+			errmsg = ar.getStr("errmsg");
 			
 			if (expires_in != null)
 				expiredTime = System.currentTimeMillis() + ((expires_in -5) * 1000);

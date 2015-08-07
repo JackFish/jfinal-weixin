@@ -6,11 +6,9 @@
 
 package com.jfinal.weixin.sdk.api;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+
 import com.jfinal.kit.HttpKit;
 import com.jfinal.weixin.sdk.kit.ParaMap;
 
@@ -59,17 +57,5 @@ public class AccessTokenApi {
 		// 三次请求如果仍然返回了不可用的 access token 仍然 put 进去，便于上层通过 AccessToken 中的属性判断底层的情况
 		map.put(ac.getAppId(), result);
 	}
-	
-	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
-		ApiConfig ac = new ApiConfig();
-		ac.setAppId("wx9803d1188fa5fbda");
-		ac.setAppSecret("db859c968763c582794e7c3d003c3d87");
-		ApiConfigKit.setThreadLocalApiConfig(ac);
-		
-		AccessToken at = getAccessToken();
-		if (at.isAvailable())
-			System.out.println("access_token : " + at.getAccessToken());
-		else
-			System.out.println(at.getErrorCode() + " : " + at.getErrorMsg());
-	}
+
 }
