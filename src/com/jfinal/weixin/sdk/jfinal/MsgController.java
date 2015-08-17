@@ -76,6 +76,8 @@ public abstract class MsgController extends Controller {
 			processInSpeechRecognitionResults((InSpeechRecognitionResults) msg);
 		else if (msg instanceof InTemplateMsgEvent)
 			processInTemplateMsgEvent((InTemplateMsgEvent)msg);
+		else if (msg instanceof InShakearoundUserShakeEvent)
+			processInShakearoundUserShakeEvent((InShakearoundUserShakeEvent)msg);
 		else
 			log.error("未能识别的消息类型。 消息 xml 内容为：\n" + getInMsgXml());
 	}
@@ -170,6 +172,9 @@ public abstract class MsgController extends Controller {
 	
 	// 处理接收到的模板消息是否送达成功通知事件
 	protected abstract void processInTemplateMsgEvent(InTemplateMsgEvent inTemplateMsgEvent);
+
+	// 处理微信摇一摇事件
+	protected abstract void processInShakearoundUserShakeEvent(InShakearoundUserShakeEvent inShakearoundUserShakeEvent);
 }
 
 

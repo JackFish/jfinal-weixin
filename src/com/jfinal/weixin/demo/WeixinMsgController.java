@@ -25,7 +25,7 @@ public class WeixinMsgController extends MsgController {
 
 	static Logger logger = Logger.getLogger(WeixinMsgController.class);
 	private static final String helpStr = "\t发送 help 可获得帮助，发送\"视频\" 可获取视频教程，发送 \"美女\" 可看美女，发送 music 可听音乐 ，发送新闻可看JFinal新版本消息。公众号功能持续完善中";
-	
+
 	/**
 	 * 如果要支持多公众账号，只需要在此返回各个公众号对应的  ApiConfig 对象即可
 	 * 可以通过在请求 url 中挂参数来动态从数据库中获取 ApiConfig 属性值
@@ -187,6 +187,13 @@ public class WeixinMsgController extends MsgController {
 		renderNull();
 	}
 
+	@Override
+	protected void processInShakearoundUserShakeEvent(InShakearoundUserShakeEvent inShakearoundUserShakeEvent) {
+		logger.debug("摇一摇周边设备信息通知事件：" + inShakearoundUserShakeEvent.getFromUserName());
+		OutTextMsg outMsg = new OutTextMsg(inShakearoundUserShakeEvent);
+		outMsg.setContent("摇一摇周边设备信息通知事件UUID：" + inShakearoundUserShakeEvent.getUuid());
+		render(outMsg);
+	}
 
 //	/**
 //	 * 实现父类抽方法，处理文本消息
