@@ -15,7 +15,7 @@ import com.jfinal.weixin.sdk.kit.ParaMap;
  */
 public class JsTicketApi
 {
-	private static String apiUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=";
+	private static String apiUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket";
 
 	public static ApiResult getTicket() {
 		ParaMap pm = ParaMap.create("access_token", AccessTokenApi.getAccessToken().getAccessToken()).put("type", "wx_card");
