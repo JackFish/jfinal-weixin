@@ -69,4 +69,8 @@ public abstract class MsgControllerAdapter extends MsgController {
 	protected void processInCustomEvent(InCustomEvent inCustomEvent) {
 
 	}
+
+	protected void processInShakearoundUserShakeEvent(InShakearoundUserShakeEvent inShakearoundUserShakeEvent) {
+
+	}
 }
