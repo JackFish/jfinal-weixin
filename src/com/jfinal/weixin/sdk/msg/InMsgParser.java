@@ -6,13 +6,33 @@
 
 package com.jfinal.weixin.sdk.msg;
 
-import com.jfinal.weixin.sdk.msg.in.*;
-import com.jfinal.weixin.sdk.msg.in.event.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+
 import com.jfinal.kit.StrKit;
+import com.jfinal.weixin.sdk.msg.in.InImageMsg;
+import com.jfinal.weixin.sdk.msg.in.InLinkMsg;
+import com.jfinal.weixin.sdk.msg.in.InLocationMsg;
+import com.jfinal.weixin.sdk.msg.in.InMsg;
+import com.jfinal.weixin.sdk.msg.in.InShortVideoMsg;
+import com.jfinal.weixin.sdk.msg.in.InTextMsg;
+import com.jfinal.weixin.sdk.msg.in.InVideoMsg;
+import com.jfinal.weixin.sdk.msg.in.InVoiceMsg;
+import com.jfinal.weixin.sdk.msg.in.event.InCustomEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InFollowEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InLocationEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InMassEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InShakearoundUserShakeEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InShakearoundUserShakeEvent.AroundBeacon;
+import com.jfinal.weixin.sdk.msg.in.event.InTemplateMsgEvent;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 
 public class InMsgParser {
@@ -36,35 +56,35 @@ public class InMsgParser {
 	 * 2：image 图片消息
 	 * 3：voice 语音消息
 	 * 4：video 视频消息
-	 *    shortvideo 小视频消息
+	 *	shortvideo 小视频消息
 	 * 5：location 地址位置消息
 	 * 6：link 链接消息
 	 * 7：event 事件
 	 */
 	private static InMsg doParse(String xml) throws DocumentException {
 		Document doc = DocumentHelper.parseText(xml);
-        Element root = doc.getRootElement();
-        String toUserName = root.elementText("ToUserName");
-        String fromUserName = root.elementText("FromUserName");
-        Integer createTime = Integer.parseInt(root.elementText("CreateTime"));
-        String msgType = root.elementText("MsgType");
-        if ("text".equals(msgType))
-        	return parseInTextMsg(root, toUserName, fromUserName, createTime, msgType);
-        if ("image".equals(msgType))
-        	return parseInImageMsg(root, toUserName, fromUserName, createTime, msgType);
-        if ("voice".equals(msgType))
-        	return parseInVoiceMsgAndInSpeechRecognitionResults(root, toUserName, fromUserName, createTime, msgType);
-        if ("video".equals(msgType))
-        	return parseInVideoMsg(root, toUserName, fromUserName, createTime, msgType);
-		if ("shortvideo".equals(msgType))     //支持小视频
+		Element root = doc.getRootElement();
+		String toUserName = root.elementText("ToUserName");
+		String fromUserName = root.elementText("FromUserName");
+		Integer createTime = Integer.parseInt(root.elementText("CreateTime"));
+		String msgType = root.elementText("MsgType");
+		if ("text".equals(msgType))
+			return parseInTextMsg(root, toUserName, fromUserName, createTime, msgType);
+		if ("image".equals(msgType))
+			return parseInImageMsg(root, toUserName, fromUserName, createTime, msgType);
+		if ("voice".equals(msgType))
+			return parseInVoiceMsgAndInSpeechRecognitionResults(root, toUserName, fromUserName, createTime, msgType);
+		if ("video".equals(msgType))
+			return parseInVideoMsg(root, toUserName, fromUserName, createTime, msgType);
+		if ("shortvideo".equals(msgType))	 //支持小视频
 			return parseInShortVideoMsg(root, toUserName, fromUserName, createTime, msgType);
-        if ("location".equals(msgType))
-        	return parseInLocationMsg(root, toUserName, fromUserName, createTime, msgType);
-        if ("link".equals(msgType))
-        	return parseInLinkMsg(root, toUserName, fromUserName, createTime, msgType);
-        if ("event".equals(msgType))
-        	return parseInEvent(root, toUserName, fromUserName, createTime, msgType);
-        throw new RuntimeException("无法识别的消息类型 " + msgType + "，请查阅微信公众平台开发文档");
+		if ("location".equals(msgType))
+			return parseInLocationMsg(root, toUserName, fromUserName, createTime, msgType);
+		if ("link".equals(msgType))
+			return parseInLinkMsg(root, toUserName, fromUserName, createTime, msgType);
+		if ("event".equals(msgType))
+			return parseInEvent(root, toUserName, fromUserName, createTime, msgType);
+		throw new RuntimeException("无法识别的消息类型 " + msgType + "，请查阅微信公众平台开发文档");
 	}
 	
 	private static InMsg parseInTextMsg(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
@@ -135,7 +155,7 @@ public class InMsgParser {
 		msg.setMsgId(root.elementText("MsgId"));
 		return msg;
 	}
-	
+
 	// 解析各种事件
 	private static InMsg parseInEvent(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
 		String event = root.elementText("Event");
@@ -201,62 +221,54 @@ public class InMsgParser {
 			e.setErrorCount(root.elementText("ErrorCount"));
 			return e;
 		}
-        // 多客服接入会话事件
-        if ("kf_create_session".equals(event)) {
-            InCustomEvent e = new InCustomEvent(toUserName, fromUserName, createTime, msgType, event);
-            e.setKfAccount(root.elementText("KfAccount"));
-            return e;
-        }
-        // 多客服关闭会话事件
-        if ("kf_close_session".equals(event)) {
-            InCustomEvent e = new InCustomEvent(toUserName, fromUserName, createTime, msgType, event);
-            e.setKfAccount(root.elementText("KfAccount"));
-            return e;
-        }
-        // 多客服转接会话事件
-        if ("kf_switch_session".equals(event)) {
-            InCustomEvent e = new InCustomEvent(toUserName, fromUserName, createTime, msgType, event);
-            e.setKfAccount(root.elementText("KfAccount"));
-            e.setToKfAccount(root.elementText("ToKfAccount"));
-            return e;
-        }
+		// 多客服接入会话事件
+		if ("kf_create_session".equals(event)) {
+			InCustomEvent e = new InCustomEvent(toUserName, fromUserName, createTime, msgType, event);
+			e.setKfAccount(root.elementText("KfAccount"));
+			return e;
+		}
+		// 多客服关闭会话事件
+		if ("kf_close_session".equals(event)) {
+			InCustomEvent e = new InCustomEvent(toUserName, fromUserName, createTime, msgType, event);
+			e.setKfAccount(root.elementText("KfAccount"));
+			return e;
+		}
+		// 多客服转接会话事件
+		if ("kf_switch_session".equals(event)) {
+			InCustomEvent e = new InCustomEvent(toUserName, fromUserName, createTime, msgType, event);
+			e.setKfAccount(root.elementText("KfAccount"));
+			e.setToKfAccount(root.elementText("ToKfAccount"));
+			return e;
+		}
+		// 微信摇一摇事件
+		if ("ShakearoundUserShake".equals(event)){
+			InShakearoundUserShakeEvent e = new InShakearoundUserShakeEvent(toUserName, fromUserName, createTime, msgType);
+			e.setEvent(event);
+			Element c = root.element("ChosenBeacon");
+			e.setUuid(c.elementText("Uuid"));
+			e.setMajor(Integer.parseInt(c.elementText("Major")));
+			e.setMinor(Integer.parseInt(c.elementText("Minor")));
+			e.setDistance(Float.parseFloat(c.elementText("Distance")));
+
+			List list = root.elements("AroundBeacon");
+			if (list != null && list.size() > 0) {
+				AroundBeacon aroundBeacon = null;
+				List<AroundBeacon> aroundBeacons = new ArrayList<AroundBeacon>();
+				for (Iterator it = list.iterator(); it.hasNext();) {
+					Element elm = (Element) it.next();
+					aroundBeacon = new AroundBeacon();
+					aroundBeacon.setUuid(elm.elementText("Uuid"));
+					aroundBeacon.setMajor(Integer.parseInt(elm.elementText("Major")));
+					aroundBeacon.setMinor(Integer.parseInt(elm.elementText("Minor")));
+					aroundBeacon.setDistance(Float.parseFloat(elm.elementText("Distance")));
+					aroundBeacons.add(aroundBeacon);
+				}
+				e.setAroundBeaconList(aroundBeacons);
+			}
+			return e;
+		 }
 
 		throw new RuntimeException("无法识别的事件类型" + event + "，请查阅微信公众平台开发文档");
 	}
-	
-	@SuppressWarnings("unused")
-	public static void main(String[] args) throws DocumentException {
-		String xml = 
-			"<xml>\n" +
-				"<ToUserName><![CDATA[James]]></ToUserName>\n" +
-				"<FromUserName><![CDATA[JFinal]]></FromUserName>\n" +
-				"<CreateTime>1348831860</CreateTime>\n" +
-				"<MsgType><![CDATA[text]]></MsgType>\n" +
-					"<Content><![CDATA[this is a test]]></Content>\n" +
-					"<MsgId>1234567890123456</MsgId>\n" +
-			"</xml>";
-		
-//		InTextMsg msg = (InTextMsg)parse(xml);
-//		System.out.println(msg.getToUserName());
-//		System.out.println(msg.getFromUserName());
-//		System.out.println(msg.getContent());
-		
-		
-		String xml_2 = 
-				"<xml>\n" +
-					"<ToUserName><![CDATA[James]]></ToUserName>\n" +
-					"<FromUserName><![CDATA[JFinal]]></FromUserName>\n" +
-					"<CreateTime>1348831860</CreateTime>\n" +
-					"<MsgType><![CDATA[text]]></MsgType>\n" +
-						"<Content><![CDATA[this is a test]]></Content>\n" +
-						"<MsgId>1234567890123456</MsgId>\n" +
-				"</xml>";
-		
-		Document doc = DocumentHelper.parseText(xml_2);
-        Element root = doc.getRootElement();
-        String value = root.elementText("abc");
-        System.out.println(value);
-	}
+
 }
-
-

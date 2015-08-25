@@ -6,6 +6,10 @@
 
 package com.jfinal.weixin.sdk.api;
 
+import java.util.Map;
+
+import com.jfinal.weixin.sdk.utils.JsonUtils;
+
 
 /**
  * SnsAccessToken
@@ -32,15 +36,16 @@ public class SnsAccessToken
 
         try
         {
-            ApiResult ar = new ApiResult(jsonStr);
-            access_token = ar.getStr("access_token");
-            expires_in = ar.getInt("expires_in");
-            refresh_token = ar.getStr("refresh_token");
-            openid = ar.getStr("openid");
-            unionid = ar.getStr("unionid");
-            scope = ar.getStr("scope");
-            errcode = ar.getInt("errcode");
-            errmsg = ar.getStr("errmsg");
+            @SuppressWarnings("unchecked")
+            Map<String, Object> temp = JsonUtils.decode(jsonStr, Map.class);
+            access_token = (String) temp.get("access_token");
+            expires_in = (Integer) temp.get("expires_in");
+            refresh_token = (String) temp.get("refresh_token");
+            openid = (String) temp.get("openid");
+            unionid = (String) temp.get("unionid");
+            scope = (String) temp.get("scope");
+            errcode = (Integer) temp.get("errcode");
+            errmsg = (String) temp.get("errmsg");
 
             if (expires_in != null)
                 expiredTime = System.currentTimeMillis() + ((expires_in - 5) * 1000);
