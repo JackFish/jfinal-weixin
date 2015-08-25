@@ -6,17 +6,8 @@
 
 package com.jfinal.weixin.sdk.jfinal;
 
-import com.jfinal.weixin.sdk.msg.in.InImageMsg;
-import com.jfinal.weixin.sdk.msg.in.InLinkMsg;
-import com.jfinal.weixin.sdk.msg.in.InLocationMsg;
-import com.jfinal.weixin.sdk.msg.in.InTextMsg;
-import com.jfinal.weixin.sdk.msg.in.InVideoMsg;
-import com.jfinal.weixin.sdk.msg.in.InVoiceMsg;
-import com.jfinal.weixin.sdk.msg.in.event.InFollowEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InLocationEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InMenuEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent;
-import com.jfinal.weixin.sdk.msg.in.event.InTemplateMsgEvent;
+import com.jfinal.weixin.sdk.msg.in.*;
+import com.jfinal.weixin.sdk.msg.in.event.*;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 
 /**
@@ -64,6 +55,18 @@ public abstract class MsgControllerAdapter extends MsgController {
 	}
 	
 	protected void processInTemplateMsgEvent(InTemplateMsgEvent inTemplateMsgEvent) {
-		
+
+	}
+
+	protected void processInMassEvent(InMassEvent inMassEvent) {
+
+	}
+
+	protected void processInShortVideoMsg(InShortVideoMsg inShortVideoMsg) {
+
+	}
+
+	protected void processInCustomEvent(InCustomEvent inCustomEvent) {
+
 	}
 }
