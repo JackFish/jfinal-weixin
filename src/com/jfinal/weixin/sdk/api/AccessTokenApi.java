@@ -16,6 +16,13 @@ import com.jfinal.weixin.sdk.kit.ParaMap;
 /**
  * 认证并获取 access_token API
  * http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96access_token
+ * 
+ * AccessToken默认存储于内存中，可设置存储于redis或者实现IAccessTokenCache到数据库中实现分布式可用
+ * 
+ * 具体配置：
+ * <pre>
+ * ApiConfigKit.setAccessTokenCache(new RedisAccessTokenCache());
+ * </pre>
  */
 public class AccessTokenApi {
 	
