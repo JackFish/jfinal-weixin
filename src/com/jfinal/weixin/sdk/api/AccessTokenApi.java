@@ -7,9 +7,10 @@
 package com.jfinal.weixin.sdk.api;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.jfinal.kit.HttpKit;
+import com.jfinal.weixin.sdk.cache.DefaultAccessTokenCache;
+import com.jfinal.weixin.sdk.cache.IAccessTokenCache;
 import com.jfinal.weixin.sdk.kit.ParaMap;
 
 /**
@@ -22,19 +23,19 @@ public class AccessTokenApi {
 	private static String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential";
 	
 	// 利用 appId 与 accessToken 建立关联，支持多账户
-	private static Map<String, AccessToken> map = new ConcurrentHashMap<String, AccessToken>();	// private static AccessToken accessToken;
+	static IAccessTokenCache accessTokenCache = new DefaultAccessTokenCache();
 	
 	/**
 	 * 从缓存中获取 access token，如果未取到或者 access token 不可用则先更新再获取
 	 */
 	public static AccessToken getAccessToken() {
 		String appId = ApiConfigKit.getApiConfig().getAppId();
-		AccessToken result = map.get(appId);
+		AccessToken result = accessTokenCache.get(appId);
 		if (result != null && result.isAvailable())
 			return result;
 		
 		refreshAccessToken();
-		return map.get(appId);
+		return accessTokenCache.get(appId);
 	}
 	
 	/**
@@ -55,7 +56,7 @@ public class AccessTokenApi {
 		}
 		
 		// 三次请求如果仍然返回了不可用的 access token 仍然 put 进去，便于上层通过 AccessToken 中的属性判断底层的情况
-		map.put(ac.getAppId(), result);
+		accessTokenCache.set(ac.getAppId(), result);
 	}
 
 }

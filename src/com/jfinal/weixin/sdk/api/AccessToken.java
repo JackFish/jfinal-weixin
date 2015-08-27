@@ -6,6 +6,7 @@
 
 package com.jfinal.weixin.sdk.api;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.jfinal.weixin.sdk.utils.JsonUtils;
@@ -14,7 +15,9 @@ import com.jfinal.weixin.sdk.utils.JsonUtils;
 /**
  * 封装 access_token
  */
-public class AccessToken {
+public class AccessToken implements Serializable {
+	
+	private static final long serialVersionUID = -822464425433824314L;
 	
 	private String access_token;	// 正确获取到 access_token 时有值
 	private Integer expires_in;		// 正确获取到 access_token 时有值
