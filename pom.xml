@@ -80,6 +80,18 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.9</version>
 		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.7.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.ruedigermoeller</groupId>
+			<artifactId>fst</artifactId>
+			<version>2.29</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
