@@ -39,8 +39,8 @@ public class CustomServiceApi {
      * @param message
      * @return ApiResult
      */
-    private ApiResult sendMsg(Map<String, Object> message) {
-    	String accessToken = AccessTokenApi.getAccessToken().getAccessToken();
+    private static ApiResult sendMsg(Map<String, Object> message) {
+        String accessToken = AccessTokenApi.getAccessToken().getAccessToken();
         String jsonResult = HttpKit.post(customMessageUrl + accessToken, JsonUtils.toJson(message));
         return new ApiResult(jsonResult);
     }
@@ -50,7 +50,7 @@ public class CustomServiceApi {
      * @param openId
      * @param text
      */
-    public ApiResult sendText(String openId, String text) {
+    public static ApiResult sendText(String openId, String text) {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("touser", openId);
         json.put("msgtype", "text");
@@ -68,7 +68,7 @@ public class CustomServiceApi {
      * @param media_id
      * @return
      */
-    public ApiResult sendImage(String openId, String media_id) {
+    public static ApiResult sendImage(String openId, String media_id) {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("touser", openId);
         json.put("msgtype", "image");
@@ -86,7 +86,7 @@ public class CustomServiceApi {
      * @param media_id
      * @return
      */
-    public ApiResult sendVoice(String openId, String media_id) {
+    public static ApiResult sendVoice(String openId, String media_id) {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("touser", openId);
         json.put("msgtype", "voice");
@@ -106,7 +106,7 @@ public class CustomServiceApi {
      * @param description
      * @return
      */
-    public ApiResult sendVideo(String openId, String media_id, String title, String description) {
+    public static ApiResult sendVideo(String openId, String media_id, String title, String description) {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("touser", openId);
         json.put("msgtype", "video");
@@ -130,7 +130,7 @@ public class CustomServiceApi {
      * @param description
      * @return
      */
-    public ApiResult sendMusic(String openId, String musicurl, String hqmusicurl, String thumb_media_id, String title, String description) {
+    public static ApiResult sendMusic(String openId, String musicurl, String hqmusicurl, String thumb_media_id, String title, String description) {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("touser", openId);
         json.put("msgtype", "music");
@@ -152,7 +152,7 @@ public class CustomServiceApi {
      * @param articles
      * @return
      */
-    public ApiResult sendNews(String openId, List<News> articles) {
+    public static ApiResult sendNews(String openId, List<News> articles) {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("touser", openId);
         json.put("msgtype", "news");
@@ -171,7 +171,7 @@ public class CustomServiceApi {
      * @param card_ext 详情及签名规则: http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html#.E9.99.84.E5.BD.954-.E5.8D.A1.E5.88.B8.E6.89.A9.E5.B1.95.E5.AD.97.E6.AE.B5.E5.8F.8A.E7.AD.BE.E5.90.8D.E7.94.9F.E6.88.90.E7.AE.97.E6.B3.95
      * @return
      */
-    public ApiResult sendCoupon(String openId, String card_id, String card_ext) {
+    public static ApiResult sendCoupon(String openId, String card_id, String card_ext) {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("touser", openId);
         json.put("msgtype", "wxcard");
