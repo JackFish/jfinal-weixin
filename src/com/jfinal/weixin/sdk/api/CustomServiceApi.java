@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.jfinal.kit.HttpKit;
-import com.jfinal.weixin.sdk.msg.out.News;
 import com.jfinal.weixin.sdk.utils.JsonUtils;
 
 /**
@@ -152,7 +151,7 @@ public class CustomServiceApi {
      * @param articles
      * @return
      */
-    public static ApiResult sendNews(String openId, List<News> articles) {
+    public static ApiResult sendNews(String openId, List<Articles> articles) {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("touser", openId);
         json.put("msgtype", "news");
@@ -162,6 +161,41 @@ public class CustomServiceApi {
 
         json.put("news", news);
         return sendMsg(json);
+    }
+
+    /**
+     * 客户消息图文封装和 `News` 又略微区别，无法公用
+     */
+    public static class Articles {
+        private String title;
+        private String description;
+        private String url;
+        private String picurl;
+
+        public String getTitle() {
+            return title;
+        }
+        public void setTitle(String title) {
+            this.title = title;
+        }
+        public String getDescription() {
+            return description;
+        }
+        public void setDescription(String description) {
+            this.description = description;
+        }
+        public String getUrl() {
+            return url;
+        }
+        public void setUrl(String url) {
+            this.url = url;
+        }
+        public String getPicurl() {
+            return picurl;
+        }
+        public void setPicurl(String picurl) {
+            this.picurl = picurl;
+        }
     }
 
     /**
