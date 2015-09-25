@@ -9,7 +9,6 @@ package com.jfinal.weixin.sdk.api;
 import java.util.Map;
 
 import com.jfinal.kit.HttpKit;
-import com.jfinal.weixin.sdk.cache.DefaultAccessTokenCache;
 import com.jfinal.weixin.sdk.cache.IAccessTokenCache;
 import com.jfinal.weixin.sdk.kit.ParaMap;
 
@@ -30,7 +29,7 @@ public class AccessTokenApi {
 	private static String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential";
 	
 	// 利用 appId 与 accessToken 建立关联，支持多账户
-	static IAccessTokenCache accessTokenCache = new DefaultAccessTokenCache();
+	static IAccessTokenCache accessTokenCache = ApiConfigKit.getAccessTokenCache();
 	
 	/**
 	 * 从缓存中获取 access token，如果未取到或者 access token 不可用则先更新再获取

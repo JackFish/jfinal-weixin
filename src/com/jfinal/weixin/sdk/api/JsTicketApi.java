@@ -7,6 +7,7 @@
 package com.jfinal.weixin.sdk.api;
 
 import com.jfinal.kit.HttpKit;
+import com.jfinal.weixin.sdk.cache.IAccessTokenCache;
 import com.jfinal.weixin.sdk.kit.ParaMap;
 
 /**
@@ -20,6 +21,8 @@ import com.jfinal.weixin.sdk.kit.ParaMap;
 public class JsTicketApi {
 
 	private static String apiUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket";
+
+	static IAccessTokenCache accessTokenCache = ApiConfigKit.getAccessTokenCache();
 
 	/**
 	 * JSApi的类型
@@ -38,11 +41,19 @@ public class JsTicketApi {
 	 * http GET请求获得jsapi_ticket（有效期7200秒，开发者必须在自己的服务全局缓存jsapi_ticket）
 	 * 
 	 * @param jsApiType
-	 * @return ApiResult
+	 * @return JsTicket
 	 */
-	public static ApiResult getTicket(JsApiType jsApiType) {
-		ParaMap pm = ParaMap.create("access_token", AccessTokenApi.getAccessToken().getAccessToken()).put("type", jsApiType.name());
-		return new ApiResult(HttpKit.get(apiUrl, pm.getData()));
+	public static JsTicket getTicket(JsApiType jsApiType) {
+		String access_token = AccessTokenApi.getAccessToken().getAccessToken();
+		String key = access_token + ':' + jsApiType.name();
+
+		JsTicket jsTicket = accessTokenCache.get(key);
+		if (null == jsTicket || !jsTicket.isAvailable()) {
+			ParaMap pm = ParaMap.create("access_token", access_token).put("type", jsApiType.name());
+			jsTicket = new JsTicket(HttpKit.get(apiUrl, pm.getData()));
+			accessTokenCache.set(key, jsTicket);
+		}
+		return jsTicket;
 	}
 
 }

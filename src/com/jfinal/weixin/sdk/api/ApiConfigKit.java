@@ -1,5 +1,6 @@
 package com.jfinal.weixin.sdk.api;
 
+import com.jfinal.weixin.sdk.cache.DefaultAccessTokenCache;
 import com.jfinal.weixin.sdk.cache.IAccessTokenCache;
 
 /**
@@ -39,11 +40,13 @@ public class ApiConfigKit {
 		return result;
 	}
 	
+	static IAccessTokenCache accessTokenCache = new DefaultAccessTokenCache();
+	
 	public static void setAccessTokenCache(IAccessTokenCache accessTokenCache) {
-		AccessTokenApi.accessTokenCache = accessTokenCache;
+		ApiConfigKit.accessTokenCache = accessTokenCache;
 	}
 	
 	public static IAccessTokenCache getAccessTokenCache() {
-		return AccessTokenApi.accessTokenCache;
+		return ApiConfigKit.accessTokenCache;
 	}
 }

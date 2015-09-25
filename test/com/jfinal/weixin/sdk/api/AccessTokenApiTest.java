@@ -3,10 +3,6 @@ package com.jfinal.weixin.sdk.api;
 import java.io.IOException;
 
 import com.jfinal.plugin.redis.RedisPlugin;
-import com.jfinal.weixin.sdk.api.AccessToken;
-import com.jfinal.weixin.sdk.api.AccessTokenApi;
-import com.jfinal.weixin.sdk.api.ApiConfig;
-import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import com.jfinal.weixin.sdk.cache.RedisAccessTokenCache;
 
 /**
@@ -28,7 +24,7 @@ public class AccessTokenApiTest {
 	}
 
 	public static void useRedis() {
-		new RedisPlugin("main", "localhost").start(); 
+		new RedisPlugin("main", "127.0.0.1").start();
 		ApiConfigKit.setAccessTokenCache(new RedisAccessTokenCache());
 	}
 
