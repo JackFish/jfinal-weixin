@@ -202,7 +202,7 @@ public class WeixinMsgController extends MsgController {
 		outMsg.setContent("资质认证成功通知事件：" + inVerifySuccessEvent.getExpiredTime());
 		render(outMsg);
 	}
-	
+
 	@Override
 	protected void processInVerifyFailEvent(InVerifyFailEvent inVerifyFailEvent){
 		logger.debug("资质认证失败通知事件：" + inVerifyFailEvent.getFromUserName());
