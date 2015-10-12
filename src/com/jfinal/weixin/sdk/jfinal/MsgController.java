@@ -175,6 +175,12 @@ public abstract class MsgController extends Controller {
 
 	// 处理微信摇一摇事件
 	protected abstract void processInShakearoundUserShakeEvent(InShakearoundUserShakeEvent inShakearoundUserShakeEvent);
+
+	// 资质认证成功 || 名称认证成功 || 年审通知 || 认证过期失效通知
+	protected abstract void processInVerifySuccessEvent(InVerifySuccessEvent inVerifySuccessEvent);
+
+	// 资质认证失败 || 名称认证失败
+	protected abstract void processInVerifyFailEvent(InVerifyFailEvent inVerifyFailEvent);
 }
 
 

@@ -73,4 +73,12 @@ public abstract class MsgControllerAdapter extends MsgController {
 	protected void processInShakearoundUserShakeEvent(InShakearoundUserShakeEvent inShakearoundUserShakeEvent) {
 
 	}
+
+	protected void processInVerifySuccessEvent(InVerifySuccessEvent inVerifySuccessEvent) {
+
+	}
+
+	protected void processInVerifyFailEvent(InVerifyFailEvent inVerifyFailEvent){
+
+	}
 }

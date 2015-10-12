@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.jfinal.weixin.sdk.msg.in.event.InVerifyFailEvent;
+import com.jfinal.weixin.sdk.msg.in.event.InVerifySuccessEvent;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -267,6 +269,21 @@ public class InMsgParser {
 			}
 			return e;
 		 }
+
+		// 资质认证成功 || 名称认证成功 || 年审通知 || 认证过期失效通知
+		if ("qualification_verify_success".equals(event) || "naming_verify_success".equals(event)
+				 || "annual_renew".equals(event) || "verify_expired".equals(event)) {
+			InVerifySuccessEvent e = new InVerifySuccessEvent(toUserName, fromUserName, createTime, msgType, event);
+			e.setExpiredTime(root.elementText("expiredTime"));
+			return e;
+		}
+		// 资质认证失败 || 名称认证失败
+		if ("qualification_verify_fail".equals(event) || "naming_verify_fail".equals(event)) {
+			InVerifyFailEvent e = new InVerifyFailEvent(toUserName, fromUserName, createTime, msgType, event);
+			e.setFailTime(root.elementText("failTime"));
+			e.setFailReason(root.elementText("failReason"));
+			return e;
+		}
 
 		throw new RuntimeException("无法识别的事件类型" + event + "，请查阅微信公众平台开发文档");
 	}

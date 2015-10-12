@@ -195,6 +195,22 @@ public class WeixinMsgController extends MsgController {
 		render(outMsg);
 	}
 
+	@Override
+	protected void processInVerifySuccessEvent(InVerifySuccessEvent inVerifySuccessEvent) {
+		logger.debug("资质认证成功通知事件：" + inVerifySuccessEvent.getFromUserName());
+		OutTextMsg outMsg = new OutTextMsg(inVerifySuccessEvent);
+		outMsg.setContent("资质认证成功通知事件：" + inVerifySuccessEvent.getExpiredTime());
+		render(outMsg);
+	}
+	
+	@Override
+	protected void processInVerifyFailEvent(InVerifyFailEvent inVerifyFailEvent){
+		logger.debug("资质认证失败通知事件：" + inVerifyFailEvent.getFromUserName());
+		OutTextMsg outMsg = new OutTextMsg(inVerifyFailEvent);
+		outMsg.setContent("资质认证失败通知事件：" + inVerifyFailEvent.getFailReason());
+		render(outMsg);
+	}
+
 //	/**
 //	 * 实现父类抽方法，处理文本消息
 //	 * 本例子中根据消息中的不同文本内容分别做出了不同的响应，同时也是为了测试 jfinal weixin sdk的基本功能：
