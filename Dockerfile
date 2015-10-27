@@ -66,7 +66,7 @@ ADD pom.xml /opt/jfinal-weixin/pom.xml
 RUN cd /opt/jfinal-weixin/
 
 # configure the container to run jenkins, mapping container port 8080 to that host port
-ENTRYPOINT ["mvn", "jetty:run-war"]
+ENTRYPOINT ["mvn", "jetty:run-war","-DskipTests"]
 EXPOSE 80
 
 CMD [""]
