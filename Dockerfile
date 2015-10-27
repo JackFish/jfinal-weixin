@@ -1,4 +1,4 @@
-﻿# Ubuntu 14.04 LTS
+# Ubuntu 14.04 LTS
 # Oracle Java 1.8.0_11 64 bit
 # Maven 3.3.3
 # git 1.9.1
