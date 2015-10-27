@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{15} - %msg%n
+			</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+    <logger name="com.jfinal.plugin.activerecord.SqlReporter" level="DEBUG" />
+	<logger name="com.alibaba.druid.pool.DruidDataSource" level="DEBUG" />
+	<logger name="com.jfinal.weixin" level="DEBUG" />
+	<root level="ERROR">
+		<appender-ref ref="CONSOLE" />
+	</root>
+</configuration>
