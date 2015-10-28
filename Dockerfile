@@ -1,7 +1,7 @@
 # Ubuntu 14.04 LTS
 # Oracle Java 1.8.0_11 64 bit
 # Maven 3.3.3
-# git 1.9.1
+
 
 # extend the most recent long term support Ubuntu version
 FROM ubuntu:latest
@@ -30,8 +30,6 @@ RUN ln -s /opt/maven/bin/mvn /usr/local/bin
 RUN rm -f /tmp/apache-maven-3.3.3.tar.gz
 ENV MAVEN_HOME /opt/maven
 
-# install git
-RUN apt-get install -y git
 
 #install java
 #RUN apt-get install -y default-jdk
@@ -62,6 +60,8 @@ RUN mkdir /opt/jfinal-weixin/
 ADD res/ /opt/jfinal-weixin/res/
 ADD src/ /opt/jfinal-weixin/src/
 ADD pom.xml /opt/jfinal-weixin/pom.xml
+
+RUN mvn -f /opt/jfinal-weixin/ install
 
 # configure the container to run weixn, mapping container port 80 to that host port
 ENTRYPOINT  mvn -f /opt/jfinal-weixin/ jetty:run-war
