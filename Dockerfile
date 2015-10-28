@@ -59,6 +59,7 @@ RUN mkdir /opt/jfinal-weixin/
 # Copy source to docker vm
 ADD res/ /opt/jfinal-weixin/res/
 ADD src/ /opt/jfinal-weixin/src/
+ADD webapp /opt/jfinal-weixin/webapp
 ADD pom.xml /opt/jfinal-weixin/pom.xml
 
 RUN mvn -f /opt/jfinal-weixin/ install
