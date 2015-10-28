@@ -62,10 +62,17 @@ ADD src/ /opt/jfinal-weixin/src/
 ADD webapp/ /opt/jfinal-weixin/webapp/
 ADD pom.xml /opt/jfinal-weixin/pom.xml
 
+#build war
 RUN mvn -f /opt/jfinal-weixin/ install
 
-# configure the container to run weixn, mapping container port 80 to that host port
+#set debug mode
+ENV MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8088,server=y,suspend=n
+
+# configure the container to run weixn
 ENTRYPOINT  mvn -f /opt/jfinal-weixin/ jetty:run-war
+# web port, mapping container port 80 to that host port
 EXPOSE 80
+# java debug port, mapping container port 8088 to that host port
+EXPOSE 8088
 
 CMD [""]
