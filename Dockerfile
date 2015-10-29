@@ -66,7 +66,7 @@ ADD pom.xml /opt/jfinal-weixin/pom.xml
 #RUN mvn -f /opt/jfinal-weixin/ install
 
 #set debug mode
-ENV MAVEN_OPTS -Xms128m -Xmx512m -Xdebug -Xnoagent -Dsettings.localRepository=/mnt/diskA -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8088,server=y,suspend=n
+ENV MAVEN_OPTS "-Xms128m -Xmx512m -Xdebug -Xnoagent -Dsettings.localRepository=/mnt/diskA -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8088,server=y,suspend=n"
 
 
 # Install OpenSSH
