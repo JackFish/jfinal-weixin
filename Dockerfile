@@ -63,10 +63,10 @@ ADD webapp/ /opt/jfinal-weixin/webapp/
 ADD pom.xml /opt/jfinal-weixin/pom.xml
 
 #build war
-RUN mvn -f /opt/jfinal-weixin/ install
+#RUN mvn -f /opt/jfinal-weixin/ install
 
 #set debug mode
-ENV MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8088,server=y,suspend=n
+ENV MAVEN_OPTS -Xms128m -Xmx512m -Xdebug -Xnoagent -Dsettings.localRepository=/mnt/diskA -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8088,server=y,suspend=n
 
 
 # Install OpenSSH
@@ -83,7 +83,7 @@ RUN mkdir /var/run/sshd && \
   rm sshRootPd.txt
 
 # configure the container to run weixn
-ENTRYPOINT  mvn -f /opt/jfinal-weixin/ jetty:run-war
+ENTRYPOINT  ["/usr/sbin/sshd", "-D"]
 
 # Expose web port
 EXPOSE 80
@@ -93,4 +93,4 @@ EXPOSE 8088
 EXPOSE 22
 
 # Run SSH server without detaching
-CMD ["/usr/sbin/sshd", "-D"]
+CMD mvn -f /opt/jfinal-weixin/ jetty:run-war
