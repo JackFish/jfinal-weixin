@@ -83,7 +83,7 @@ RUN mkdir /var/run/sshd && \
   rm sshRootPd.txt
 
 # configure the container to run weixn
-ENTRYPOINT  ["/usr/sbin/sshd", "-D"]
+ENTRYPOINT mvn -f /opt/jfinal-weixin/ jetty:run-war
 
 # Expose web port
 EXPOSE 80
@@ -93,4 +93,4 @@ EXPOSE 8088
 EXPOSE 22
 
 # Run SSH server without detaching
-CMD mvn -f /opt/jfinal-weixin/ jetty:run-war
+CMD ["/usr/sbin/sshd", "-D"]
