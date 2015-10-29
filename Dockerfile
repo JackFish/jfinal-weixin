@@ -72,7 +72,7 @@ ENV MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_soc
 # Install OpenSSH
 RUN apt-get update && apt-get install -y openssh-server
 # Set password
-ADD password.txt .
+ADD sshRootPd.txt .
 RUN mkdir /var/run/sshd && \
   echo "root:`cat sshRootPd.txt`" | chpasswd && \
   # Allow root login with password
