@@ -68,11 +68,29 @@ RUN mvn -f /opt/jfinal-weixin/ install
 #set debug mode
 ENV MAVEN_OPTS -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8088,server=y,suspend=n
 
+
+# Install OpenSSH
+RUN apt-get update && apt-get install -y openssh-server
+# Set password
+ADD password.txt .
+RUN mkdir /var/run/sshd && \
+  echo "root:`cat sshRootPd.txt`" | chpasswd && \
+  # Allow root login with password
+  sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+  # Prevent user being kicked off after login
+  sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd && \
+  # Clean up
+  rm sshRootPd.txt
+
 # configure the container to run weixn
 ENTRYPOINT  mvn -f /opt/jfinal-weixin/ jetty:run-war
-# web port, mapping container port 80 to that host port
-EXPOSE 80
-# java debug port, mapping container port 8088 to that host port
-EXPOSE 8088
 
-CMD [""]
+# Expose web port
+EXPOSE 80
+# Expose java debug port
+EXPOSE 8088
+# Expose SSH port
+EXPOSE 22
+
+# Run SSH server without detaching
+CMD ["/usr/sbin/sshd", "-D"]
