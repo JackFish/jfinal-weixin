@@ -70,7 +70,7 @@ ENV MAVEN_OPTS "-Xms128m -Xmx512m -Xdebug -Xnoagent -Dsettings.localRepository=/
 
 
 # Install OpenSSH
-RUN apt-get update && apt-get install -y openssh-server
+RUN apt-get install -y openssh-server
 # Set password
 ADD sshRootPd.txt .
 RUN mkdir /var/run/sshd && \
