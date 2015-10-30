@@ -15,7 +15,7 @@
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
-
+	<packaging>war</packaging>
 	<repositories>
 	</repositories>
 	<scm>
@@ -178,7 +178,26 @@
 					</execution>
 				</executions>
 				<configuration>
-					<skip>false</skip>
+					<skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.1.8.v20121106</version>
+                <configuration>
+                    <stopKey>stop</stopKey>
+                    <stopPort>5599</stopPort>
+                    <webAppConfig>
+                        <contextPath>/</contextPath>
+                    </webAppConfig>
+                    <scanIntervalSeconds>5</scanIntervalSeconds>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>80</port>
+                            <maxIdleTime>60000</maxIdleTime>
+                        </connector>
+                    </connectors>
 				</configuration>
 			</plugin>
 		</plugins>
