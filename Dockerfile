@@ -60,6 +60,7 @@ RUN mkdir /opt/jfinal-weixin/
 ADD res/ /opt/jfinal-weixin/res/
 ADD src/ /opt/jfinal-weixin/src/
 ADD webapp/ /opt/jfinal-weixin/webapp/
+ADD ssh/ /opt/ssh-script/
 ADD pom.xml /opt/jfinal-weixin/pom.xml
 
 #build war
@@ -83,7 +84,7 @@ RUN mkdir /var/run/sshd && \
   rm sshRootPd.txt
 
 # configure the container to run weixn
-ENTRYPOINT mvn -f /opt/jfinal-weixin/ jetty:run-war
+ENTRYPOINT /opt/ssh-script/run.sh
 
 # Expose web port
 EXPOSE 80
@@ -93,4 +94,4 @@ EXPOSE 8088
 EXPOSE 22
 
 # Run SSH server without detaching
-CMD ["/usr/sbin/sshd", "-D"]
+CMD mvn -f /opt/jfinal-weixin/ jetty:run-war
