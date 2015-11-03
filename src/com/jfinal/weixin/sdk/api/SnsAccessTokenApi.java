@@ -8,7 +8,9 @@ package com.jfinal.weixin.sdk.api;
 
 import com.jfinal.kit.HttpKit;
 import com.jfinal.weixin.sdk.kit.ParaMap;
+import com.jfinal.weixin.sdk.kit.PaymentKit;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,7 +19,30 @@ import java.util.Map;
 public class SnsAccessTokenApi
 {
     private static String url = "https://api.weixin.qq.com/sns/oauth2/access_token?grant_type=authorization_code";
-
+    private static String authorize_uri = "http://open.weixin.qq.com/connect/oauth2/authorize";
+    
+    /**
+     * 生成Authorize链接
+     * @param base
+     * @return
+     */
+    public static String getAuthorizeURL(String appId, String redirect_uri, boolean snsapiBase) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("appid", appId);
+        params.put("response_type", "code");
+        params.put("redirect_uri", redirect_uri);
+        // snsapi_base（不弹出授权页面，只能拿到用户openid）
+        // snsapi_userinfo（弹出授权页面，这个可以通过 openid 拿到昵称、性别、所在地）
+        if (snsapiBase) {
+            params.put("scope", "snsapi_base");
+        } else {
+            params.put("scope", "snsapi_userinfo");
+        }
+        params.put("state", "wx#wechat_redirect");
+        String para = PaymentKit.packageSign(params, false);
+        return authorize_uri + "?" + para;
+    }
+    
     /**
      * 通过code获取access_token
      *
