@@ -19,14 +19,14 @@ ADD pom.xml /opt/jfinal-weixin/pom.xml
 ENV MAVEN_OPTS "-Xms128m -Xmx512m -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8088,server=y,suspend=n"
 
 # configure the container to run weixn
-ENTRYPOINT /opt/ssh-script/run.sh
+ENTRYPOINT mvn -f /opt/jfinal-weixin/ jetty:run-war
 
 # Expose web port
 EXPOSE 80
 # Expose java debug port
 EXPOSE 8088
 # Expose SSH port
-EXPOSE 22
+# EXPOSE 22
 
 # Run SSH server without detaching
-CMD mvn -f /opt/jfinal-weixin/ jetty:run-war
+# CMD
