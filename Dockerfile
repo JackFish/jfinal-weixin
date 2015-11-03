@@ -16,7 +16,7 @@ ADD pom.xml /opt/jfinal-weixin/pom.xml
 #RUN mvn -f /opt/jfinal-weixin/ install
 
 #set debug mode
-ENV MAVEN_OPTS "-Xms128m -Xmx512m -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8088,server=y,suspend=n"
+ENV MAVEN_OPTS "-Xms128m -Xmx512m -Xdebug -Xnoagent -Djava.compiler=NONE -Dfile.encoding=UTF-8 -Xrunjdwp:transport=dt_socket,address=8088,server=y,suspend=n"
 
 # configure the container to run weixn
 ENTRYPOINT mvn -f /opt/jfinal-weixin/ jetty:run-war
