@@ -100,8 +100,8 @@ public class MsgInterceptor implements Interceptor {
 		// 通过 echostr 判断请求是否为配置微信服务器回调所需的 url 与 token
 		String echostr = c.getPara("echostr");
 		String signature = c.getPara("signature");
-        String timestamp = c.getPara("timestamp");
-        String nonce = c.getPara("nonce");
+		String timestamp = c.getPara("timestamp");
+		String nonce = c.getPara("nonce");
 		boolean isOk = SignatureCheckKit.me.checkSignature(signature, timestamp, nonce);
 		if (isOk)
 			c.renderText(echostr);
