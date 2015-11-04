@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -96,7 +96,6 @@
 
 	<build>
 		<sourceDirectory>${project.basedir}/src</sourceDirectory>
-		<scriptSourceDirectory>${project.basedir}/scripts</scriptSourceDirectory>
 		<testSourceDirectory>${project.basedir}/test</testSourceDirectory>
 		<outputDirectory>${project.basedir}/webapp/WEB-INF/classes</outputDirectory>
 		<testOutputDirectory>${project.basedir}/webapp/WEB-INF/test-classes</testOutputDirectory>
@@ -126,7 +125,6 @@
 				包 -->
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1.1</version>
 				<configuration>
 					<webXml>webapp/WEB-INF/web.xml</webXml>
 				</configuration>
@@ -134,7 +132,6 @@
 
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.2</version>
 				<executions>
 					<execution>
 						<id>default-jar</id>
@@ -157,7 +154,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
