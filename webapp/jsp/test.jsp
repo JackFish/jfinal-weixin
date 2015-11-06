@@ -108,7 +108,7 @@
   </div>
   </body>
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script type="text/javascript" src="http://www.meitimao.com/static/js_sdk.jsp"></script>
+<script type="text/javascript" src="js_sdk.jsp"></script>
 <script type="text/javascript">
 wx.ready(function () {
   // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
