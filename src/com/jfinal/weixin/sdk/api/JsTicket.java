@@ -12,6 +12,7 @@ public class JsTicket implements Serializable {
 
 	private static final long serialVersionUID = 6600179487477942329L;
 
+	private String appId; //方便参数传递使用
 	private String ticket; // 正确获取到 ticket 时有值
 	private Integer expires_in; // 正确获取到 access_token 时有值
 	private Integer errcode; // 出错时有值
@@ -77,6 +78,14 @@ public class JsTicket implements Serializable {
 				return result;
 		}
 		return errmsg;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
 
 	/**
