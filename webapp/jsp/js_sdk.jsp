@@ -8,7 +8,7 @@
 //-----------------------------------------------------------------------------//
 //下面为配置的覆盖，应该考虑更优的参数覆盖方式
 <script type="text/javascript">
-var wxShareData = {
+var shareData = {
     title: shareTitle,
     desc: config.content,
     link: shareURL,
@@ -18,7 +18,6 @@ var wxShareData = {
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript" src="http://xxxx/js_sdk.jsp"></script>
 //-----------------------------------------------------------------------------//
-
  --%>
 <%@page import="java.util.UUID"%>
 <%@page import="com.jfinal.weixin.sdk.api.JsTicket"%>
@@ -122,13 +121,13 @@ wx.error(function (res) {
     alert(res.errMsg);
 });
 --%>
-
-var shareData = typeof(wxShareData) === 'undefined' ? {
+<%-- 默认分享数据 --%>
+var shareData = typeof(shareData) === 'undefined' ? {
     title: '微信JS-SDK Demo测试',
     desc: '微信JS-SDK,帮助第三方为用户提供更优质的移动web服务',
     link: 'http://www.jfinal.com/',
     imgUrl: 'http://www.jfinal.com/img/weixin_142X142.jpg'
-} : wxShareData;
+} : shareData;
 
 <%--新版微信--%>
 wx.ready(function () {
