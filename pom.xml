@@ -30,7 +30,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -119,6 +119,7 @@
 
     <build>
         <sourceDirectory>${project.basedir}/src</sourceDirectory>
+        <scriptSourceDirectory>${project.basedir}/scripts</scriptSourceDirectory>
         <testSourceDirectory>${project.basedir}/test</testSourceDirectory>
         <outputDirectory>${project.basedir}/webapp/WEB-INF/classes</outputDirectory>
         <testOutputDirectory>${project.basedir}/webapp/WEB-INF/test-classes</testOutputDirectory>
