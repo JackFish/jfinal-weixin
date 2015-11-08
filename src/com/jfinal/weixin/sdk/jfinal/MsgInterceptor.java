@@ -10,9 +10,9 @@ import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
-import com.jfinal.log.Logger;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import com.jfinal.weixin.sdk.kit.SignatureCheckKit;
+import org.slf4j.LoggerFactory;
 
 /**
  * Msg 拦截器
@@ -23,8 +23,8 @@ import com.jfinal.weixin.sdk.kit.SignatureCheckKit;
  * 		因为子类覆盖父类方法会使父类方法配置的拦截器失效，从而失去本拦截器的功能
  */
 public class MsgInterceptor implements Interceptor {
-	
-	private static final Logger log =  Logger.getLogger(MsgInterceptor.class);
+
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MsgInterceptor.class);
 	
 	public void intercept(Invocation inv) {
 		Controller controller = inv.getController();
@@ -44,7 +44,7 @@ public class MsgInterceptor implements Interceptor {
 					configServer(controller);
 					return ;
 				}
-				
+
 				// 签名检测
 				if (checkSignature(controller)) {
 					inv.invoke();
@@ -53,7 +53,7 @@ public class MsgInterceptor implements Interceptor {
 					controller.renderText("签名验证失败，请确定是微信服务器在发送消息过来");
 				}
 			}
-			
+
 		}
 		finally {
 			ApiConfigKit.removeThreadLocalApiConfig();
@@ -76,7 +76,7 @@ public class MsgInterceptor implements Interceptor {
 			return true;
 		}
 		else {
-			log.error("check signature failure: " +
+			logger.error("check signature failure: " +
 					" signature = " + controller.getPara("signature") +
 					" timestamp = " + controller.getPara("timestamp") +
 					" nonce = " + controller.getPara("nonce"));
@@ -106,7 +106,7 @@ public class MsgInterceptor implements Interceptor {
 		if (isOk)
 			c.renderText(echostr);
 		else
-			log.error("验证失败：configServer");
+			logger.error("验证失败：configServer");
 	}
 }
 

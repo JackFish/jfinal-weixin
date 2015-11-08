@@ -7,13 +7,15 @@
 package com.jfinal.weixin.demo;
 
 import com.jfinal.kit.PropKit;
-import com.jfinal.log.Logger;
 import com.jfinal.weixin.sdk.api.ApiConfig;
 import com.jfinal.weixin.sdk.jfinal.MsgController;
 import com.jfinal.weixin.sdk.msg.in.*;
 import com.jfinal.weixin.sdk.msg.in.event.*;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
-import com.jfinal.weixin.sdk.msg.out.*;
+import com.jfinal.weixin.sdk.msg.out.OutCustomMsg;
+import com.jfinal.weixin.sdk.msg.out.OutTextMsg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 将此 DemoController 在YourJFinalConfig 中注册路由，
@@ -23,7 +25,7 @@ import com.jfinal.weixin.sdk.msg.out.*;
  */
 public class WeixinMsgController extends MsgController {
 
-	static Logger logger = Logger.getLogger(WeixinMsgController.class);
+	private static final Logger logger = LoggerFactory.getLogger(WeixinMsgController.class);
 	private static final String helpStr = "\t发送 help 可获得帮助，发送\"视频\" 可获取视频教程，发送 \"美女\" 可看美女，发送 music 可听音乐 ，发送新闻可看JFinal新版本消息。公众号功能持续完善中";
 
 	/**
