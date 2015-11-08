@@ -20,7 +20,7 @@ public class CallbackIpApi
 	 * 获取微信服务器IP地址
 	 */
 	public static ApiResult getCallbackIp() {
-		String jsonResult = HttpKit.get(apiUrl + AccessTokenApi.getAccessToken().getAccessToken());
+		String jsonResult = HttpKit.get(apiUrl + AccessTokenApi.getAccessTokenStr());
 		return new ApiResult(jsonResult);
 	}
 }

@@ -27,7 +27,7 @@ public class CustomServiceApi {
      * 获取客服聊天记录
      */
     public static ApiResult getRecord(String jsonStr) {
-        String jsonResult = HttpKit.post(getRecordUrl + AccessTokenApi.getAccessToken().getAccessToken(), jsonStr);
+        String jsonResult = HttpKit.post(getRecordUrl + AccessTokenApi.getAccessTokenStr(), jsonStr);
         return new ApiResult(jsonResult);
     }
 
@@ -39,7 +39,7 @@ public class CustomServiceApi {
      * @return ApiResult
      */
     private static ApiResult sendMsg(Map<String, Object> message) {
-        String accessToken = AccessTokenApi.getAccessToken().getAccessToken();
+        String accessToken = AccessTokenApi.getAccessTokenStr();
         String jsonResult = HttpKit.post(customMessageUrl + accessToken, JsonUtils.toJson(message));
         return new ApiResult(jsonResult);
     }

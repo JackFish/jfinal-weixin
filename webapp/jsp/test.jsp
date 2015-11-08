@@ -107,7 +107,7 @@
     </div>
   </div>
   </body>
-<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
 <script type="text/javascript" src="js_sdk.jsp"></script>
 <script type="text/javascript">
 wx.ready(function () {
