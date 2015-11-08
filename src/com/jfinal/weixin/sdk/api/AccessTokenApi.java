@@ -45,6 +45,14 @@ public class AccessTokenApi {
 	}
 	
 	/**
+	 * 直接获取 accessToken 字符串，方便使用
+	 * @return String accessToken
+	 */
+	public static String getAccessTokenStr() {
+		return getAccessToken().getAccessToken();
+	}
+	
+	/**
 	 * 强制更新 access token 值
 	 */
 	public static synchronized void refreshAccessToken() {

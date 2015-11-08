@@ -12,11 +12,14 @@ public class TemplateMsgApiTest {
 	public static void main(String[] args) {
 		// 模板消息，发送测试：pass
 		ApiResult result = TemplateMsgApi.send(TemplateData.New()
+			// 消息接收者
 			.setTouser("oOGf-jgjmwxFVU66D-lFO2AFK8ic")
+			// 模板id
 			.setTemplate_id("UsOTFJfm7-XfskPd5p2wlBXYUjdwjUTZxnMXbOfVQ0A")
 			.setTopcolor("#eb414a")
 			.setUrl("http://m.xxxx.cn/qrcode/t/xxxxxx")
-
+			
+			// 模板参数
 			.add("first", "验票成功！\n", "#999")
 			.add("keyword1", "xxxxxx", "#999")
 			.add("keyword2", "2014年12月27日 19:30", "#999")

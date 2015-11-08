@@ -10,7 +10,7 @@ import com.jfinal.kit.HttpKit;
 import com.jfinal.weixin.sdk.kit.ParaMap;
 
 /**
- * 网页授权获取用户基本信息 API
+ * 获取用户基本信息（包括UnionID机制）
  */
 public class SnsApi
 {
@@ -26,5 +26,15 @@ public class SnsApi
     {
         ParaMap pm = ParaMap.create("access_token", accessToken).put("openid", openId).put("lang", "zh_CN");
         return new ApiResult(HttpKit.get(getUserInfo, pm.getData()));
+    }
+    
+    /**
+     * 获取用户个人信
+     * @param openId 普通用户的标识，对当前开发者帐号唯一
+     * @return ApiResult
+     */
+    public static ApiResult getUserInfo(String openId) {
+        String accessToken = AccessTokenApi.getAccessTokenStr();
+        return getUserInfo(accessToken, openId);
     }
 }

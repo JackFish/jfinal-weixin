@@ -10,6 +10,7 @@ import com.jfinal.kit.HttpKit;
 
 /**
  * 模板消息 API
+ * 文档地址：http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html
  */
 public class TemplateMsgApi {
 	

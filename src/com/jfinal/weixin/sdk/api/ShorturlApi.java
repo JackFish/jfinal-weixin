@@ -15,9 +15,10 @@ import com.jfinal.kit.HttpKit;
 public class ShorturlApi
 {
 	private static String apiUrl = "https://api.weixin.qq.com/cgi-bin/shorturl?access_token=";
-
+	
 	public static ApiResult getShorturl(String jsonStr) {
-		String jsonResult = HttpKit.post(apiUrl + AccessTokenApi.getAccessToken().getAccessToken(), jsonStr);
+		String jsonResult = HttpKit.post(apiUrl + AccessTokenApi.getAccessTokenStr(), jsonStr);
 		return new ApiResult(jsonResult);
 	}
+	
 }
