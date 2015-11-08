@@ -61,7 +61,7 @@ public class DatacubeApi {
 	 * 获取图文群发每日数据，最大跨度1天
 	 * @param begin_date 获取数据的起始日期
 	 * @param end_date 获取数据的结束日期
-	 * @return
+	 * @return ApiResult
 	 */
 	public static ApiResult getArticleSummary(String begin_date, String end_date) {
 		String url = getArticleSummaryUrl + AccessTokenApi.getAccessTokenStr();
@@ -74,7 +74,7 @@ public class DatacubeApi {
 	 * 获取图文群发总数据，最大跨度1天
 	 * @param begin_date 获取数据的起始日期
 	 * @param end_date 获取数据的结束日期
-	 * @return
+	 * @return ApiResult
 	 */
 	public static ApiResult getArticlEtotal(String begin_date, String end_date) {
 		String url = getArticlEtotalURL + AccessTokenApi.getAccessTokenStr();
@@ -87,7 +87,7 @@ public class DatacubeApi {
 	 * 获取图文统计数据，最大跨度3天
 	 * @param begin_date 获取数据的起始日期
 	 * @param end_date 获取数据的结束日期
-	 * @return
+	 * @return ApiResult
 	 */
 	public static ApiResult getUserRead(String begin_date, String end_date) {
 		String url = getUserReadURL + AccessTokenApi.getAccessTokenStr();
@@ -100,7 +100,7 @@ public class DatacubeApi {
 	 * 获取图文统计分时数据，最大跨度1天
 	 * @param begin_date 获取数据的起始日期
 	 * @param end_date 获取数据的结束日期
-	 * @return
+	 * @return ApiResult
 	 */
 	public static ApiResult getUserReadHour(String begin_date, String end_date) {
 		String url = getUserReadHourURL + AccessTokenApi.getAccessTokenStr();
@@ -113,7 +113,7 @@ public class DatacubeApi {
 	 * 获取图文分享转发数据，最大跨度7天
 	 * @param begin_date 获取数据的起始日期
 	 * @param end_date 获取数据的结束日期
-	 * @return
+	 * @return ApiResult
 	 */
 	public static ApiResult getUserShare(String begin_date, String end_date) {
 		String url = getUserShareURL + AccessTokenApi.getAccessTokenStr();
@@ -126,10 +126,128 @@ public class DatacubeApi {
 	 * 获取图文分享转发分时数据，最大跨度1天
 	 * @param begin_date 获取数据的起始日期
 	 * @param end_date 获取数据的结束日期
-	 * @return
+	 * @return ApiResult
 	 */
 	public static ApiResult getUserShareHour(String begin_date, String end_date) {
 		String url = getUserShareHourURL + AccessTokenApi.getAccessTokenStr();
+		return getData(url, begin_date, end_date);
+	}
+	
+	private static String getUpStreamMsgURL = "https://api.weixin.qq.com/datacube/getupstreammsg?access_token=";
+	
+	/**
+	 * 获取消息发送概况数据，最大跨度7天
+	 * @param begin_date 获取数据的起始日期
+	 * @param end_date 获取数据的结束日期
+	 * @return ApiResult
+	 */
+	public static ApiResult getUpStreamMsg(String begin_date, String end_date) {
+		String url = getUpStreamMsgURL + AccessTokenApi.getAccessTokenStr();
+		return getData(url, begin_date, end_date);
+	}
+	
+	
+	private static String getUpStreamMsgHourURL = "https://api.weixin.qq.com/datacube/getupstreammsghour?access_token=";
+	
+	/**
+	 * 获取消息分送分时数据，最大跨度1天
+	 * @param begin_date 获取数据的起始日期
+	 * @param end_date 获取数据的结束日期
+	 * @return ApiResult
+	 */
+	public static ApiResult getUpStreamMsgHour(String begin_date, String end_date) {
+		String url = getUpStreamMsgHourURL + AccessTokenApi.getAccessTokenStr();
+		return getData(url, begin_date, end_date);
+	}
+		
+	private static String getUpStreamMsgWeekMsgURL = "https://api.weixin.qq.com/datacube/getupstreammsgweek?access_token=";
+	
+	/**
+	 * 获取消息发送周数据，最大跨度30天
+	 * @param begin_date 获取数据的起始日期
+	 * @param end_date 获取数据的结束日期
+	 * @return ApiResult
+	 */
+	public static ApiResult getUpStreamMsgWeekMsg(String begin_date, String end_date) {
+		String url = getUpStreamMsgWeekMsgURL + AccessTokenApi.getAccessTokenStr();
+		return getData(url, begin_date, end_date);
+	}
+	
+	private static String getUpStreamMsgMonthURL = "https://api.weixin.qq.com/datacube/getupstreammsgmonth?access_token=";
+	
+	/**
+	 * 获取消息发送月数据，最大跨度30天
+	 * @param begin_date 获取数据的起始日期
+	 * @param end_date 获取数据的结束日期
+	 * @return ApiResult
+	 */
+	public static ApiResult getUpStreamMsgMonth(String begin_date, String end_date) {
+		String url = getUpStreamMsgMonthURL + AccessTokenApi.getAccessTokenStr();
+		return getData(url, begin_date, end_date);
+	}
+	
+	private static String getUpStreamMsgDistURL = "https://api.weixin.qq.com/datacube/getupstreammsgdist?access_token=";
+	
+	/**
+	 * 获取消息发送分布数据，最大跨度15天
+	 * @param begin_date 获取数据的起始日期
+	 * @param end_date 获取数据的结束日期
+	 * @return ApiResult
+	 */
+	public static ApiResult getUpStreamMsgDist(String begin_date, String end_date) {
+		String url = getUpStreamMsgDistURL + AccessTokenApi.getAccessTokenStr();
+		return getData(url, begin_date, end_date);
+	}
+	
+	private static String getUpStreamMsgDistWeekURL = "https://api.weixin.qq.com/datacube/getupstreammsgdistweek?access_token=";
+	
+	/**
+	 * 获取消息发送分布周数据，最大跨度30天
+	 * @param begin_date 获取数据的起始日期
+	 * @param end_date 获取数据的结束日期
+	 * @return ApiResult
+	 */
+	public static ApiResult getUpStreamMsgDistWeek(String begin_date, String end_date) {
+		String url = getUpStreamMsgDistWeekURL + AccessTokenApi.getAccessTokenStr();
+		return getData(url, begin_date, end_date);
+	}
+	
+	private static String getUpStreamMsgDistMonthURL = "https://api.weixin.qq.com/datacube/getupstreammsgdistmonth?access_token=";
+	
+	/**
+	 * 获取消息发送分布月数据，最大跨度30天
+	 * @param begin_date 获取数据的起始日期
+	 * @param end_date 获取数据的结束日期
+	 * @return ApiResult
+	 */
+	public static ApiResult getUpStreamMsgDistMonth(String begin_date, String end_date) {
+		String url = getUpStreamMsgDistMonthURL + AccessTokenApi.getAccessTokenStr();
+		return getData(url, begin_date, end_date);
+	}
+	
+	private static String getInterFaceSummaryURL = "https://api.weixin.qq.com/datacube/getinterfacesummary?access_token=";
+	
+	/**
+	 * 获取接口分析数据，最大跨度30天
+	 * @param begin_date 获取数据的起始日期
+	 * @param end_date 获取数据的结束日期
+	 * @return ApiResult
+	 */
+	public static ApiResult getInterFaceSummary(String begin_date, String end_date) {
+		String url = getInterFaceSummaryURL + AccessTokenApi.getAccessTokenStr();
+		return getData(url, begin_date, end_date);
+	}
+	
+	private static String getInterFaceSummaryHourURL = "https://api.weixin.qq.com/datacube/getinterfacesummaryhour?access_token=";
+	
+	/**
+	 * 获取接口分析分时数据，最大跨度1天
+	 * @param begin_date 获取数据的起始日期
+	 * @param end_date 获取数据的结束日期
+	 * @return ApiResult
+	 */
+	public static ApiResult getInterFaceSummaryHour(String begin_date, String end_date) {
+		String url = getInterFaceSummaryHourURL + AccessTokenApi.getAccessTokenStr();
 		return getData(url, begin_date, end_date);
 	}
 	
