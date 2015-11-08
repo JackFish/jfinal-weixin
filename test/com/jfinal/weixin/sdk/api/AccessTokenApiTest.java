@@ -10,10 +10,13 @@ import com.jfinal.weixin.sdk.cache.RedisAccessTokenCache;
  */
 public class AccessTokenApiTest {
 
+	public static String AppID = "wx9803d1188fa5fbda";
+	public static String AppSecret = "db859c968763c582794e7c3d003c3d87";
+	
 	public static void init(){
 		ApiConfig ac = new ApiConfig();
-		ac.setAppId("wx9803d1188fa5fbda");
-		ac.setAppSecret("db859c968763c582794e7c3d003c3d87");
+		ac.setAppId(AppID);
+		ac.setAppSecret(AppSecret);
 		ApiConfigKit.setThreadLocalApiConfig(ac);
 	}
 

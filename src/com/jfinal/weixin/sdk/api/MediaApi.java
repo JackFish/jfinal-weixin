@@ -29,7 +29,7 @@ public class MediaApi {
 	// 新增临时素材
 	private static String upload_url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=";
 	
-	public static ApiResult uploadMedia(MediaType mediaType) {
+	public static ApiResult uploadMedia(MediaType mediaType, File file) {
 		String url = upload_url + AccessTokenApi.getAccessTokenStr() + "&type=" + mediaType.name();
 		return null;
 	}
