@@ -6,7 +6,9 @@
 
 package com.jfinal.weixin.sdk.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.jfinal.kit.HttpKit;
@@ -55,10 +57,31 @@ public class UserApi {
 
 	/**
 	 * 批量获取用户基本信息, by Unas
+	 * @param jsonStr json字符串
+	 * @return ApiResult
 	 */
 	public static ApiResult batchGetUserInfo(String jsonStr) {
 		String jsonResult = HttpKit.post(batchGetUserInfo + AccessTokenApi.getAccessTokenStr(), jsonStr);
 		return new ApiResult(jsonResult);
+	}
+	
+	/**
+	 * 批量获取用户基本信息
+	 * @param openIdList openid列表
+	 * @return ApiResult
+	 */
+	public static ApiResult batchGetUserInfo(List<String> openIdList) {
+		Map<String, List<Map<String, Object>>> userListMap = new HashMap<String, List<Map<String, Object>>>();
+		
+		List<Map<String, Object>> userList = new ArrayList<Map<String,Object>>();
+		for (String openId : openIdList) {
+			Map<String, String> mapData = new HashMap<String, String>();
+			mapData.put("openid", openId);
+			mapData.put("lang", "zh-CN");
+		}
+		userListMap.put("user_list", userList);
+		
+		return batchGetUserInfo(JsonUtils.toJson(userListMap));
 	}
 	
 	private static String updateRemarkUrl = "https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token=";
