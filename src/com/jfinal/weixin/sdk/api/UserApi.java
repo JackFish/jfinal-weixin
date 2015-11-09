@@ -65,8 +65,8 @@ public class UserApi {
 	
 	/**
 	 * 设置备注名
-	 * @param openid
-	 * @param remark
+	 * @param openid 用户标识
+	 * @param remark 新的备注名，长度必须小于30字符
 	 * @return
 	 */
 	public static ApiResult updateRemark(String openid, String remark) {
