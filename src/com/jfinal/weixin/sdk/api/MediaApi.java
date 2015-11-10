@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jfinal.kit.HttpKit;
+import com.jfinal.kit.StrKit;
 import com.jfinal.weixin.sdk.utils.JsonUtils;
 
 /**
@@ -40,6 +42,17 @@ public class MediaApi {
 		}
 	}
 	
+	/**
+	 * 请求类型
+	 */
+	private static enum RequestMethod {
+		GET, POST;
+		
+		public String get() {
+			return this.name();
+		}
+	}
+	
 	// 新增临时素材
 	private static String upload_url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=";
 	
@@ -52,7 +65,7 @@ public class MediaApi {
 	public static ApiResult uploadMedia(MediaType mediaType, File file) {
 		String url = upload_url + AccessTokenApi.getAccessTokenStr() + "&type=" + mediaType.get();
 		try {
-			return uploadMedia(url, file);
+			return uploadMedia(url, file, null);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -103,7 +116,7 @@ public class MediaApi {
 	public static ApiResult uploadImg(File imgFile) {
 		String url = uploadImgUrl + AccessTokenApi.getAccessTokenStr();
 		try {
-			return uploadMedia(url, imgFile);
+			return uploadMedia(url, imgFile, null);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -113,11 +126,36 @@ public class MediaApi {
 	
 	/**
 	 * 新增其他类型永久素材
-	 * @return
+	 * @return ApiResult
 	 */
 	public static ApiResult addMaterial(File file) {
 		String url = addMaterialUrl + AccessTokenApi.getAccessTokenStr();
-		throw new RuntimeException("待完善..." + url);
+		
+		try {
+			return uploadMedia(url, file, null);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * 新增视频永久素材
+	 * 素材的格式大小等要求与公众平台官网一致。
+	 * 具体是，图片大小不超过2M，支持bmp/png/jpeg/jpg/gif格式，语音大小不超过5M，长度不超过60秒，支持mp3/wma/wav/amr格式
+	 * @return ApiResult
+	 */
+	public static ApiResult addMaterial(File file, String title, String introduction) {
+		String url = addMaterialUrl + AccessTokenApi.getAccessTokenStr();
+		
+		Map<String, String> dataMap = new HashMap<String, String>();
+		dataMap.put("title", title);
+		dataMap.put("introduction", introduction);
+		
+		try {
+			return uploadMedia(url, file, JsonUtils.toJson(dataMap));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	// 获取永久素材
@@ -145,8 +183,17 @@ public class MediaApi {
 			break;
 		}
 		
-		String jsonResult = HttpKit.post(url, JsonUtils.toJson(dataMap));
-		return new ApiResult(jsonResult);
+		try {
+			MediaFile file = downloadMaterial(url, JsonUtils.toJson(dataMap));
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+//		String jsonResult = HttpKit.post(url, JsonUtils.toJson(dataMap));
+		return new ApiResult("{}");
 	}
 	
 	// 删除永久素材
@@ -235,10 +282,9 @@ public class MediaApi {
 	 * @return ApiResult
 	 * @throws IOException
 	 */
-	private static ApiResult uploadMedia(String url, File file) throws IOException {
+	private static ApiResult uploadMedia(String url, File file, String params) throws IOException {
 		URL urlGet = new URL(url);
 		HttpURLConnection conn = (HttpURLConnection) urlGet.openConnection();
-		
 		conn.setDoOutput(true);
 		conn.setDoInput(true);
 		conn.setUseCaches(false);
@@ -252,15 +298,12 @@ public class MediaApi {
 		
 		OutputStream out = new DataOutputStream(conn.getOutputStream());
 		// 定义最后数据分隔线
-		byte[] end_data = ("\r\n--" + BOUNDARY + "--\r\n").getBytes();
-		StringBuilder sb = new StringBuilder();
-		sb.append("--");
-		sb.append(BOUNDARY);
-		sb.append("\r\n");
-		sb.append("Content-Disposition: form-data;name=\"media\";filename=\""+ file.getName() + "\"\r\n");
-		sb.append("Content-Type:application/octet-stream\r\n\r\n");
-		byte[] data = sb.toString().getBytes();
-		out.write(data);
+		StringBuilder mediaData = new StringBuilder();
+		mediaData.append("--").append(BOUNDARY).append("\r\n");
+		mediaData.append("Content-Disposition: form-data;name=\"media\";filename=\""+ file.getName() + "\"\r\n");
+		mediaData.append("Content-Type:application/octet-stream\r\n\r\n");
+		byte[] mediaDatas = mediaData.toString().getBytes();
+		out.write(mediaDatas);
 		DataInputStream fs = new DataInputStream(new FileInputStream(file));
 		int bytes = 0;  
 		byte[] bufferOut = new byte[1024];
@@ -270,6 +313,15 @@ public class MediaApi {
 		// 多个文件时，二个文件之间加入这个
 		out.write("\r\n".getBytes());
 		fs.close();
+		if (StrKit.notBlank(params)) {
+			StringBuilder paramData = new StringBuilder();
+			paramData.append("--").append(BOUNDARY).append("\r\n");
+			paramData.append("Content-Disposition: form-data;name=\"description\";");
+			byte[] paramDatas = paramData.toString().getBytes();
+			out.write(paramDatas);
+			out.write(params.getBytes(DEFAULT_CHARSET));
+		}
+		byte[] end_data = ("\r\n--" + BOUNDARY + "--\r\n").getBytes();
 		out.write(end_data);
 		out.flush();
 		out.close();
@@ -292,6 +344,45 @@ public class MediaApi {
 	}
 	
 	/**
+	 * 获取永久素材
+	 * @param url 素材地址
+	 * @return MediaFile
+	 * @throws IOException
+	 */
+	private static MediaFile downloadMaterial(String url, String params) throws IOException {
+		MediaFile mediaFile = new MediaFile();
+		URL _url = new URL(url);
+		HttpURLConnection conn = (HttpURLConnection) _url.openConnection();
+		// 连接超时
+		conn.setConnectTimeout(25000);
+		// 读取超时 --服务器响应比较慢，增大时间
+		conn.setReadTimeout(25000);
+		conn.setRequestMethod("POST");
+		conn.setRequestProperty("Content-Type", "Keep-Alive");
+		conn.setRequestProperty("User-Agent", DEFAULT_USER_AGENT);
+		conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.connect();
+		
+		if (StrKit.notBlank(params)) {
+			OutputStream out = conn.getOutputStream();
+			out.write(params.getBytes(DEFAULT_CHARSET));
+			out.flush();
+			out.close();
+		}
+
+		InputStream inputStream = conn.getInputStream();
+		FileOutputStream os = new FileOutputStream(new File("d://xxx.xx"));
+		int bytesRead = 0;
+		byte[] buffer = new byte[8192];
+		while ((bytesRead = inputStream.read(buffer, 0, 8192)) != -1) {
+			os.write(buffer, 0, bytesRead);
+		}
+//		bis.close();
+		return mediaFile;
+	}
+	
+	/**
 	 * 下载素材，本段代码来自老版本（____′↘夏悸 / wechat），致敬！
 	 * @param url 素材地址
 	 * @return MediaFile
@@ -311,6 +402,7 @@ public class MediaApi {
 		conn.setDoOutput(true);
 		conn.setDoInput(true);
 		conn.connect();
+		
 		if(conn.getContentType().equalsIgnoreCase("text/plain")){
 			// 定义BufferedReader输入流来读取URL的响应  
 			InputStream in = conn.getInputStream();
