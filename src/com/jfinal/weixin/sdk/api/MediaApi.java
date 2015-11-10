@@ -32,7 +32,12 @@ public class MediaApi {
 	 * 上传的临时多媒体文件有格式
 	 */
 	public static enum MediaType {
-		image, voice, video, thumb
+		IMAGE, VOICE, VIDEO, THUMB, NEWS;
+		
+		// 转化成小写形式
+		public String get() {
+			return this.name().toLowerCase();
+		}
 	}
 	
 	// 新增临时素材
@@ -45,7 +50,7 @@ public class MediaApi {
 	 * @return ApiResult 
 	 */
 	public static ApiResult uploadMedia(MediaType mediaType, File file) {
-		String url = upload_url + AccessTokenApi.getAccessTokenStr() + "&type=" + mediaType.name();
+		String url = upload_url + AccessTokenApi.getAccessTokenStr() + "&type=" + mediaType.get();
 		try {
 			return uploadMedia(url, file);
 		} catch (IOException e) {
@@ -121,13 +126,24 @@ public class MediaApi {
 	/**
 	 * 获取永久素材
 	 * @param media_id 要获取的素材的media_id
+	 * @param mediaType 素材分图文消息，视频素材和其他素材
 	 * @return ApiResult 素材信息
 	 */
-	public static ApiResult getMaterial(String media_id) {
+	public static ApiResult getMaterial(String media_id, MediaType mediaType) {
 		String url = get_material_url + AccessTokenApi.getAccessTokenStr();
 		
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("media_id", media_id);
+		
+		// 待完善
+		switch (mediaType) {
+		case NEWS:
+			break;
+		case VIDEO:
+			break;
+		default:
+			break;
+		}
 		
 		String jsonResult = HttpKit.post(url, JsonUtils.toJson(dataMap));
 		return new ApiResult(jsonResult);
@@ -199,8 +215,12 @@ public class MediaApi {
 	public static ApiResult batchGetMaterial(MediaType mediaType, int offset, int count) {
 		String url = batchget_material_url + AccessTokenApi.getAccessTokenStr();
 		
+		if(offset < 0) offset = 0;
+		if(count > 20) count = 20;
+		if(count < 1) count = 1;
+		
 		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("type", mediaType.name());
+		dataMap.put("type", mediaType.get());
 		dataMap.put("offset", offset);
 		dataMap.put("count", count);
 		
