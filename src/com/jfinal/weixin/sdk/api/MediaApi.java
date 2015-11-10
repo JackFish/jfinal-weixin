@@ -6,7 +6,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,6 +18,7 @@ import java.util.Map;
 
 import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.StrKit;
+import com.jfinal.weixin.sdk.utils.IOUtils;
 import com.jfinal.weixin.sdk.utils.JsonUtils;
 
 /**
@@ -39,17 +39,6 @@ public class MediaApi {
 		// 转化成小写形式
 		public String get() {
 			return this.name().toLowerCase();
-		}
-	}
-	
-	/**
-	 * 请求类型
-	 */
-	private static enum RequestMethod {
-		GET, POST;
-		
-		public String get() {
-			return this.name();
 		}
 	}
 	
@@ -165,35 +154,19 @@ public class MediaApi {
 	 * 获取永久素材
 	 * @param media_id 要获取的素材的media_id
 	 * @param mediaType 素材分图文消息，视频素材和其他素材
-	 * @return ApiResult 素材信息
+	 * @return InputStream 流，考虑到这里可能返回json或file请自行使用IOUtils转换
 	 */
-	public static ApiResult getMaterial(String media_id, MediaType mediaType) {
+	public static InputStream getMaterial(String media_id) {
 		String url = get_material_url + AccessTokenApi.getAccessTokenStr();
 		
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("media_id", media_id);
 		
-		// 待完善
-		switch (mediaType) {
-		case NEWS:
-			break;
-		case VIDEO:
-			break;
-		default:
-			break;
-		}
-		
 		try {
-			MediaFile file = downloadMaterial(url, JsonUtils.toJson(dataMap));
-			
-			
+			return downloadMaterial(url, JsonUtils.toJson(dataMap));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		
-//		String jsonResult = HttpKit.post(url, JsonUtils.toJson(dataMap));
-		return new ApiResult("{}");
 	}
 	
 	// 删除永久素材
@@ -310,9 +283,9 @@ public class MediaApi {
 		while ((bytes = fs.read(bufferOut)) != -1) {
 			out.write(bufferOut, 0, bytes);
 		}
+		IOUtils.closeQuietly(fs);
 		// 多个文件时，二个文件之间加入这个
 		out.write("\r\n".getBytes());
-		fs.close();
 		if (StrKit.notBlank(params)) {
 			StringBuilder paramData = new StringBuilder();
 			paramData.append("--").append(BOUNDARY).append("\r\n");
@@ -324,8 +297,8 @@ public class MediaApi {
 		byte[] end_data = ("\r\n--" + BOUNDARY + "--\r\n").getBytes();
 		out.write(end_data);
 		out.flush();
-		out.close();
-
+		IOUtils.closeQuietly(out);
+		
 		// 定义BufferedReader输入流来读取URL的响应  
 		InputStream in = conn.getInputStream();
 		BufferedReader read = new BufferedReader(new InputStreamReader(in, DEFAULT_CHARSET));
@@ -335,7 +308,7 @@ public class MediaApi {
 		while ((valueString = read.readLine()) != null){
 			bufferRes.append(valueString);
 		}
-		in.close();
+		IOUtils.closeQuietly(in);
 		// 关闭连接
 		if (conn != null) {
 			conn.disconnect();
@@ -346,11 +319,11 @@ public class MediaApi {
 	/**
 	 * 获取永久素材
 	 * @param url 素材地址
-	 * @return MediaFile
+	 * @return params post参数
+	 * @return InputStream 流，考虑到这里可能返回json或file
 	 * @throws IOException
 	 */
-	private static MediaFile downloadMaterial(String url, String params) throws IOException {
-		MediaFile mediaFile = new MediaFile();
+	private static InputStream downloadMaterial(String url, String params) throws IOException {
 		URL _url = new URL(url);
 		HttpURLConnection conn = (HttpURLConnection) _url.openConnection();
 		// 连接超时
@@ -363,23 +336,18 @@ public class MediaApi {
 		conn.setDoOutput(true);
 		conn.setDoInput(true);
 		conn.connect();
-		
 		if (StrKit.notBlank(params)) {
 			OutputStream out = conn.getOutputStream();
 			out.write(params.getBytes(DEFAULT_CHARSET));
 			out.flush();
-			out.close();
+			IOUtils.closeQuietly(out);
 		}
-
-		InputStream inputStream = conn.getInputStream();
-		FileOutputStream os = new FileOutputStream(new File("d://xxx.xx"));
-		int bytesRead = 0;
-		byte[] buffer = new byte[8192];
-		while ((bytesRead = inputStream.read(buffer, 0, 8192)) != -1) {
-			os.write(buffer, 0, bytesRead);
-		}
-//		bis.close();
-		return mediaFile;
+		InputStream input = conn.getInputStream();
+//		// 关闭连接
+//		if (conn != null) {
+//			conn.disconnect();
+//		}
+		return input;
 	}
 	
 	/**
@@ -413,7 +381,7 @@ public class MediaApi {
 				bufferRes.append(valueString);
 			}
 			read.close();
-			in.close();
+			IOUtils.closeQuietly(in);
 			mediaFile.setError(bufferRes.toString());
 		}else{
 			BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());  
@@ -429,7 +397,11 @@ public class MediaApi {
 			mediaFile.setContentType(conn.getHeaderField("Content-Type"));
 			mediaFile.setFileStream(bis);
 			
-			bis.close();
+			IOUtils.closeQuietly(bis);
+		}
+		// 关闭连接
+		if (conn != null) {
+			conn.disconnect();
 		}
 		return mediaFile;
 	}
