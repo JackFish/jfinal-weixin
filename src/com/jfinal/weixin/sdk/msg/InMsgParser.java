@@ -160,6 +160,7 @@ public class InMsgParser {
 	}
 
 	// 解析各种事件
+	@SuppressWarnings("rawtypes")
 	private static InMsg parseInEvent(Element root, String toUserName, String fromUserName, Integer createTime, String msgType) {
 		String event = root.elementText("Event");
 		String eventKey = root.elementText("EventKey");

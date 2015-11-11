@@ -23,8 +23,10 @@ public class SnsAccessTokenApi
     
     /**
      * 生成Authorize链接
-     * @param base
-     * @return
+     * @param appId 应用id
+     * @param redirect_uri 回跳地址
+     * @param snsapiBase 时候完全信息
+     * @return url
      */
     public static String getAuthorizeURL(String appId, String redirect_uri, boolean snsapiBase) {
         Map<String, String> params = new HashMap<String, String>();
