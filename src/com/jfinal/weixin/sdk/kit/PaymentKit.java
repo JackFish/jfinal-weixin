@@ -71,6 +71,17 @@ public class PaymentKit {
 	}
 	
 	/**
+	 * 支付异步通知时校验sign
+	 * @param params
+	 * @param paternerKey
+	 * @return
+	 */
+	public static boolean verifyNotify(Map<String, String> params, String paternerKey){
+		String sign = PaymentKit.createSign(params, paternerKey);
+		return sign.equals(params.get("sign"));
+	}
+	
+	/**
 	 * 微信下单，map to xml
 	 * @param params 参数
 	 * @return String
