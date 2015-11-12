@@ -35,16 +35,16 @@ public class MsgInterceptor implements Interceptor {
 			// 将 ApiConfig 对象与当前线程绑定，以便在后续操作中方便获取该对象： ApiConfigKit.getApiConfig();
 			ApiConfigKit.setThreadLocalApiConfig(((MsgController)controller).getApiConfig());
 			
+			// 如果是服务器配置请求，则配置服务器并返回
+			if (isConfigServerRequest(controller)) {
+				configServer(controller);
+				return ;
+			}
+			
 			// 对开发测试更加友好
 			if (ApiConfigKit.isDevMode()) {
 				inv.invoke();
 			} else {
-				// 如果是服务器配置请求，则配置服务器并返回
-				if (isConfigServerRequest(controller)) {
-					configServer(controller);
-					return ;
-				}
-				
 				// 签名检测
 				if (checkSignature(controller)) {
 					inv.invoke();
