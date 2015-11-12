@@ -542,12 +542,12 @@ wx.ready(function () {
     });
   };
 
-  var shareData = typeof(wxShareData) === 'undefined' ? {
+  var shareData = typeof(shareData) === 'undefined' ? {
     title: '微信JS-SDK Demo测试',
     desc: '微信JS-SDK,帮助第三方为用户提供更优质的移动web服务',
     link: 'http://www.jfinal.com/',
     imgUrl: 'http://www.jfinal.com/img/weixin_142X142.jpg'
-  } : wxShareData;
+  } : shareData;
 
   wx.onMenuShareAppMessage(shareData);
   wx.onMenuShareTimeline(shareData);

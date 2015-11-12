@@ -220,7 +220,7 @@ public class WeixinApiController extends ApiController {
 - 将项目导入eclipse jee中，使用 export 功能导出 war包，其中的 WEB-INF/lib 下面会自动生成 jar 包
 - 让使用 maven 的朋友使用 mvn package 打出 war包，其中的 WEB-INF/lib 下面会自动生成 jar 包
 - 以上两种方法注意要先将pom.xml中的导出类型设置为 war，添加 <packaging>war</packaging> 内容进去即可
-- 依赖jackson或者fastjson包，两者必选其一
+- 依赖jackson或fastjson或gson包，三者必选其一
 
 ## 5、jar包依赖说明
 jar包下载：http://mvnrepository.com/artifact/com.jfinal/jfinal-weixin
