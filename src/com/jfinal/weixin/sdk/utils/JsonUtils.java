@@ -177,7 +177,7 @@ public class JsonUtils {
 		
 		@Override
 		public <T> T decode(String jsonString, Class<T> valueType) {
-			throw new RuntimeException("Jackson, Fastjson are not supported~");
+			throw new RuntimeException("Jackson or Fastjson or Gson are not supported~");
 		}
 	}
 	
@@ -188,7 +188,7 @@ public class JsonUtils {
 	 */
 	public static String toJson(Object object) {
 		if (delegate == null) {
-			throw new RuntimeException("Jackson, Fastjson or Gson or JsonKit are not supported");
+			throw new RuntimeException("Jackson, Fastjson or Gson or JsonKit not supported");
 		}
 		return delegate.toJson(object);
 	}
@@ -201,7 +201,7 @@ public class JsonUtils {
 	 */
 	public static <T> T decode(String jsonString, Class<T> valueType) {
 		if (delegate == null) {
-			throw new RuntimeException("Jackson, Fastjson or Gson or JsonKit are not supported");
+			throw new RuntimeException("Jackson, Fastjson or Gson or JsonKit not supported");
 		}
 		return delegate.decode(jsonString, valueType);
 	}
