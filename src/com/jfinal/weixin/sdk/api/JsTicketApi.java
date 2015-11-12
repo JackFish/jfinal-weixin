@@ -52,8 +52,6 @@ public class JsTicketApi {
 		if (null == jsTicket || !jsTicket.isAvailable()) {
 			ParaMap pm = ParaMap.create("access_token", access_token).put("type", jsApiType.name());
 			jsTicket = new JsTicket(HttpKit.get(apiUrl, pm.getData()));
-			// 方便页面中使用
-			jsTicket.setAppId(appId);
 			accessTokenCache.set(key, jsTicket);
 		}
 		return jsTicket;
