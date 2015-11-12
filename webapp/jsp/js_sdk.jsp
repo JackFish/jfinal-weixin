@@ -19,19 +19,15 @@ var shareData = {
 <script type="text/javascript" src="http://xxxx/js_sdk.jsp"></script>
 //-----------------------------------------------------------------------------//
  --%>
+<%@page import="com.jfinal.kit.HashKit"%>
+<%@page import="java.util.Map.Entry"%>
+<%@page import="java.util.Map"%>
 <%@page import="java.util.UUID"%>
+<%@page import="java.util.TreeMap"%>
 <%@page import="com.jfinal.weixin.sdk.api.JsTicket"%>
 <%@page import="com.jfinal.weixin.sdk.api.JsTicketApi.JsApiType"%>
 <%@page import="com.jfinal.weixin.sdk.api.JsTicketApi"%>
 <%@page import="com.jfinal.kit.StrKit"%>
-<%@page import="com.jfinal.weixin.sdk.api.ApiConfigKit"%>
-<%@page import="com.jfinal.weixin.sdk.api.ApiConfig"%>
-<%@page import="com.jfinal.weixin.sdk.api.AccessToken"%>
-<%@page import="com.jfinal.weixin.sdk.api.AccessTokenApi"%>
-<%@page import="com.jfinal.kit.HashKit"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.TreeMap"%>
-<%@page import="java.util.Map.Entry"%>
 <%@ page language="java" contentType="application/x-javascript; charset=utf-8" isELIgnored="false"%>
 <%@ page trimDirectiveWhitespaces="true" %>
 <%--微信环境内展示 --%>
