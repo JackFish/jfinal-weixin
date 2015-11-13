@@ -14,6 +14,7 @@ import com.jfinal.plugin.activerecord.Record;
  * Json转换
  * 默认使用jackson
  * 再次fastJson
+ * 再次Gson
  * 最后使用jsonKit
  * 
  * 参考Spring4中的base64工具类
@@ -24,7 +25,7 @@ import com.jfinal.plugin.activerecord.Record;
  * date 2015年5月13日下午4:58:33
  */
 public class JsonUtils {
-
+	
 	/**
 	 * 将model转为json字符串
 	 * @param model
@@ -33,7 +34,7 @@ public class JsonUtils {
 	public static String toJson(Model<? extends Model<?>> model) {
 		return toJson(CPI.getAttrs(model));
 	}
-
+	
 	/**
 	 * 将Collection<Model>转换为json字符串
 	 * @param models
@@ -46,7 +47,7 @@ public class JsonUtils {
 		}
 		return toJson(list);
 	}
-
+	
 	/**
 	 * 将 record 转为json字符串
 	 * @param record
@@ -55,7 +56,7 @@ public class JsonUtils {
 	public static String toJson(Record record) {
 		return toJson(record.getColumns());
 	}
-
+	
 	/**
 	 * 将List<Record>转换为json字符串
 	 * @param models
@@ -68,10 +69,10 @@ public class JsonUtils {
 		}
 		return toJson(list);
 	}
-
+	
 	// Json处理代理对象
 	private static final JsonDelegate delegate;
-
+	
 	static {
 		JsonDelegate delegateToUse = null;
 		// com.fasterxml.jackson.databind.ObjectMapper?
@@ -82,13 +83,17 @@ public class JsonUtils {
 		else if (JsonUtils.isPresent("com.alibaba.fastjson.JSONObject", JsonUtils.class.getClassLoader())) {
 			delegateToUse = new FastJsonDelegate();
 		}
+		// com.google.gson.Gson?
+		else if (JsonUtils.isPresent("com.google.gson.Gson", JsonUtils.class.getClassLoader())) {
+			delegateToUse = new GsonJsonDelegate();
+		}
 		// com.jfinal.kit.JsonKit
 		else if (JsonUtils.isPresent("com.jfinal.kit.JsonKit", JsonUtils.class.getClassLoader())) {
 			delegateToUse = new JsonKitDelegate();
 		}
 		delegate = delegateToUse;
 	}
-
+	
 	/**
 	 * Json 委托，默认使用
 	 * 默认使用jackson
@@ -101,15 +106,15 @@ public class JsonUtils {
 		// json转对象
 		<T> T decode(String jsonString, Class<T> valueType);
 	}
-
+	
 	/**
 	 * jackson委托
 	 */
 	private static class JacksonDelegate implements JsonDelegate {
-
+		private com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+		
 		@Override
 		public String toJson(Object object) {
-			com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
 			try {
 				return objectMapper.writeValueAsString(object);
 			} catch (com.fasterxml.jackson.core.JsonProcessingException e) {
@@ -119,50 +124,63 @@ public class JsonUtils {
 
 		@Override
 		public <T> T decode(String jsonString, Class<T> valueType) {
-			com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
 			try {
 				return objectMapper.readValue(jsonString, valueType);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
-
 	}
-
+	
 	/**
 	 * fastJson委托
 	 */
 	private static class FastJsonDelegate implements JsonDelegate {
-
+		
 		@Override
 		public String toJson(Object object) {
 			return com.alibaba.fastjson.JSONObject.toJSONString(object);
 		}
-
+		
 		@Override
 		public <T> T decode(String jsonString, Class<T> valueType) {
 			return com.alibaba.fastjson.JSON.parseObject(jsonString, valueType);
 		} 
-
 	}
-
+	
+	/**
+	 * Gson委托
+	 */
+	private static class GsonJsonDelegate implements JsonDelegate {
+		private com.google.gson.Gson gson = new com.google.gson.Gson();
+		
+		@Override
+		public String toJson(Object object) {
+			return gson.toJson(object);
+		}
+		
+		@Override
+		public <T> T decode(String jsonString, Class<T> valueType) {
+			return gson.fromJson(jsonString, valueType);
+		}
+	}
+	
 	/**
 	 * JsonKit委托
 	 */
 	private static class JsonKitDelegate implements JsonDelegate {
-
+		
 		@Override
 		public String toJson(Object object) {
 			return com.jfinal.kit.JsonKit.toJson(object);
 		}
-
+		
 		@Override
 		public <T> T decode(String jsonString, Class<T> valueType) {
-			throw new RuntimeException("Jackson, Fastjson are not supported~");
+			throw new RuntimeException("Jackson or Fastjson or Gson are not supported~");
 		}
-
 	}
-
+	
 	/**
 	 * 将 Object 转为json字符串
 	 * @param record
@@ -170,11 +188,11 @@ public class JsonUtils {
 	 */
 	public static String toJson(Object object) {
 		if (delegate == null) {
-			throw new RuntimeException("Jackson, Fastjson and JsonKit are not supported");
+			throw new RuntimeException("Jackson, Fastjson or Gson or JsonKit not supported");
 		}
 		return delegate.toJson(object);
 	}
-
+	
 	/**
 	 * 将 json字符串 转为Object
 	 * @param jsonString
@@ -183,11 +201,11 @@ public class JsonUtils {
 	 */
 	public static <T> T decode(String jsonString, Class<T> valueType) {
 		if (delegate == null) {
-			throw new RuntimeException("Jackson, Fastjson and JsonKit are not supported");
+			throw new RuntimeException("Jackson, Fastjson or Gson or JsonKit not supported");
 		}
 		return delegate.decode(jsonString, valueType);
 	}
-
+	
 	/**
 	 * 确定class是否可以被加载
 	 * @param className

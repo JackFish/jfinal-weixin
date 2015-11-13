@@ -19,19 +19,18 @@ var shareData = {
 <script type="text/javascript" src="http://xxxx/js_sdk.jsp"></script>
 //-----------------------------------------------------------------------------//
  --%>
+<%@page import="com.jfinal.kit.PropKit"%>
+<%@page import="com.jfinal.weixin.sdk.api.ApiConfigKit"%>
+<%@page import="com.jfinal.weixin.sdk.api.ApiConfig"%>
+<%@page import="com.jfinal.kit.HashKit"%>
+<%@page import="java.util.Map.Entry"%>
+<%@page import="java.util.Map"%>
 <%@page import="java.util.UUID"%>
+<%@page import="java.util.TreeMap"%>
 <%@page import="com.jfinal.weixin.sdk.api.JsTicket"%>
 <%@page import="com.jfinal.weixin.sdk.api.JsTicketApi.JsApiType"%>
 <%@page import="com.jfinal.weixin.sdk.api.JsTicketApi"%>
 <%@page import="com.jfinal.kit.StrKit"%>
-<%@page import="com.jfinal.weixin.sdk.api.ApiConfigKit"%>
-<%@page import="com.jfinal.weixin.sdk.api.ApiConfig"%>
-<%@page import="com.jfinal.weixin.sdk.api.AccessToken"%>
-<%@page import="com.jfinal.weixin.sdk.api.AccessTokenApi"%>
-<%@page import="com.jfinal.kit.HashKit"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.TreeMap"%>
-<%@page import="java.util.Map.Entry"%>
 <%@ page language="java" contentType="application/x-javascript; charset=utf-8" isELIgnored="false"%>
 <%@ page trimDirectiveWhitespaces="true" %>
 <%--微信环境内展示 --%>
@@ -41,10 +40,23 @@ String _wxShareUrl = request.getHeader("Referer");
 if (StrKit.notBlank(_wxShareUrl)) {
     _wxShareUrl = _wxShareUrl.split("#")[0];
 } else {
-	return;
+    return;
 }
-JsTicket jsTicket = JsTicketApi.getTicket(JsApiType.jsapi);
-String appId = jsTicket.getAppId();
+
+String appId = PropKit.get("appId");
+String appSecret = PropKit.get("appSecret");
+ApiConfig ac = new ApiConfig();
+ac.setAppId(appId);
+ac.setAppSecret(appSecret);
+
+ApiConfigKit.setThreadLocalApiConfig(ac);
+String _wxJsapiTicket = "";
+try {
+    JsTicket jsTicket = JsTicketApi.getTicket(JsApiType.jsapi);
+    _wxJsapiTicket      = jsTicket.getTicket();
+} finally {
+    ApiConfigKit.removeThreadLocalApiConfig();
+}
 
 Map<String, String> _wxMap = new TreeMap<String, String>();
 //noncestr
@@ -52,8 +64,6 @@ String _wxNoncestr         = UUID.randomUUID().toString().replace("-", "");
 //timestamp
 String _wxTimestamp        = (System.currentTimeMillis() / 1000) + "";
 
-//jsapi_ticket
-String _wxJsapiTicket      = jsTicket.getTicket();
 //参数封装
 _wxMap.put("noncestr", _wxNoncestr);
 _wxMap.put("timestamp", _wxTimestamp );
@@ -69,8 +79,6 @@ String _wxSignString = _wxBaseString.substring(0, _wxBaseString.length() - 1);
 // signature
 String _wxSignature = HashKit.sha1(_wxSignString);
  %>
-// <%=_wxSignString%>
-// <%=_wxShareUrl%>
 <%--兼容新老版本 --%>
 wx.config({
     debug: false,

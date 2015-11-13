@@ -220,7 +220,7 @@ public class WeixinApiController extends ApiController {
 - 将项目导入eclipse jee中，使用 export 功能导出 war包，其中的 WEB-INF/lib 下面会自动生成 jar 包
 - 让使用 maven 的朋友使用 mvn package 打出 war包，其中的 WEB-INF/lib 下面会自动生成 jar 包
 - 以上两种方法注意要先将pom.xml中的导出类型设置为 war，添加 <packaging>war</packaging> 内容进去即可
-- 依赖jackson或者fastjson包，两者必选其一
+- 依赖jackson或fastjson或gson包，三者必选其一
 
 ## 5、jar包依赖说明
 jar包下载：http://mvnrepository.com/artifact/com.jfinal/jfinal-weixin
@@ -232,22 +232,32 @@ jar包下载：http://mvnrepository.com/artifact/com.jfinal/jfinal-weixin
 </dependency>
 ```
 
-`1.5`可选Json解析包：`jackson`或者`fastjson`两者必选其一.
+`1.5`可选Json解析包：`jackson`或`fastjson`或`gson`三者必选其一.
 ```
 <dependency>
 	<groupId>com.fasterxml.jackson.core</groupId>
 	<artifactId>jackson-databind</artifactId>
 	<version>2.4.3</version>
 </dependency>
-或者
+或
 <dependency>
 	<groupId>com.alibaba</groupId>
 	<artifactId>fastjson</artifactId>
 	<version>1.2.6</version>
 </dependency>
+或
+<dependency>
+	<groupId>com.google.code.gson</groupId>
+	<artifactId>gson</artifactId>
+	<version>2.4</version>
+</dependency>
 ```
+## 6、WIKI持续更新中
+WIKI：http://git.oschina.net/jfinal/jfinal-weixin/wikis/home
 
-## 6、更多支持
+欢迎更多同学来帮助完善！
+
+## 7、更多支持
 - JFinal 官方网站  [http://www.jfinal.com](http://www.jfinal.com/) 
 - 关注官方微信号马上体验 demo 功能  
 ![JFinal Weixin SDK](http://static.oschina.net/uploads/space/2015/0211/181947_2431_201137.jpg) 

@@ -3,13 +3,14 @@
 <html>
   <head>
     <title>JFinal-weixin，微信分享测试</title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<link rel="stylesheet" href="http://demo.open.weixin.qq.com/jssdk/css/style.css">
+    <meta charset="utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="This is my page">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="http://demo.open.weixin.qq.com/jssdk/css/style.css">
   </head>
   <body>
    <div class="wxapi_container">
@@ -541,12 +542,12 @@ wx.ready(function () {
     });
   };
 
-  var shareData = typeof(wxShareData) === 'undefined' ? {
+  var shareData = typeof(shareData) === 'undefined' ? {
     title: '微信JS-SDK Demo测试',
     desc: '微信JS-SDK,帮助第三方为用户提供更优质的移动web服务',
     link: 'http://www.jfinal.com/',
     imgUrl: 'http://www.jfinal.com/img/weixin_142X142.jpg'
-  } : wxShareData;
+  } : shareData;
 
   wx.onMenuShareAppMessage(shareData);
   wx.onMenuShareTimeline(shareData);
