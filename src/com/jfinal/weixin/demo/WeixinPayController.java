@@ -1,7 +1,6 @@
 package com.jfinal.weixin.demo;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.dom4j.Document;
@@ -89,14 +88,8 @@ public class WeixinPayController extends Controller {
 		
 		String xmlMsg = HttpKit.readIncommingRequestData(getRequest());
 		System.out.println("支付通知="+xmlMsg);
-		Document doc = DocumentHelper.parseText(xmlMsg);
-		System.out.println("生成doc");
-		Element root = doc.getRootElement();
-		List<Element> rList = root.elements();
-		Map<String, String> params = new HashMap<String, String>();
-		for(Element element :rList){
-			params.put(element.getName(), element.getText());
-		}
+		Map<String, String> params = PaymentKit.xmlToMap(xmlMsg);
+		
 		String result_code  = params.get("result_code");
 		String totalFee     = params.get("total_fee");
 		String orderId      = params.get("out_trade_no");

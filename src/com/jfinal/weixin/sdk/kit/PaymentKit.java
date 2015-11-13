@@ -2,8 +2,16 @@ package com.jfinal.weixin.sdk.kit;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
 import java.util.TreeMap;
 
 import com.jfinal.kit.HashKit;
@@ -100,6 +108,30 @@ public class PaymentKit {
 		}
 		xml.append("</xml>");
 		return xml.toString();
+	}
+	
+	/**
+	 * 针对支付的xml，没有嵌套节点的简单处理
+	 * @param xml xml字符串
+	 * @return Map<String, String> map集合
+	 * @throws DocumentException 
+	 */
+	@SuppressWarnings("unchecked")
+	public static Map<String, String> xmlToMap(String xmlStr) {
+		Document doc;
+		try {
+			doc = DocumentHelper.parseText(xmlStr);
+		} catch (DocumentException e) {
+			throw new RuntimeException(e);
+		}
+		Element root = doc.getRootElement();
+		
+		List<Element> rList = root.elements();
+		Map<String, String> params = new HashMap<String, String>();
+		for(Element element :rList){
+			params.put(element.getName(), element.getText());
+		}
+		return params;
 	}
 	
 }
