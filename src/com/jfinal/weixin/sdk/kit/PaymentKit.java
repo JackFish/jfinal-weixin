@@ -13,6 +13,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 import java.util.TreeMap;
+import java.util.UUID;
 
 import com.jfinal.kit.HashKit;
 import com.jfinal.kit.StrKit;
@@ -24,6 +25,10 @@ import com.jfinal.kit.StrKit;
 public class PaymentKit {
 	
 	private static final String CHARSET = "UTF-8";
+	
+	public static String getUUID() {
+		return UUID.randomUUID().toString().replace("-", "");
+	}
 	
 	/**
 	 * 组装签名的字段
