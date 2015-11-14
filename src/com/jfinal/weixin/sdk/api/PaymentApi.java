@@ -178,4 +178,8 @@ public class PaymentApi {
 		params.put("refund_id", refund_id);
 		return baseRefundQuery(params, appid, mch_id, paternerKey);
 	}
+	
+	private static String postSSL() {
+		return null;
+	}
 }
