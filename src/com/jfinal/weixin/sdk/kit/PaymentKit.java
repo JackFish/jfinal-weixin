@@ -1,22 +1,35 @@
 package com.jfinal.weixin.sdk.kit;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.security.KeyStore;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
+import java.util.UUID;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-import java.util.TreeMap;
-import java.util.UUID;
-
 import com.jfinal.kit.HashKit;
 import com.jfinal.kit.StrKit;
+import com.jfinal.weixin.sdk.utils.IOUtils;
 
 /**
  * 微信支付的统一下单工具类
@@ -137,6 +150,64 @@ public class PaymentKit {
 			params.put(element.getName(), element.getText());
 		}
 		return params;
+	}
+	
+	/**
+	 * 涉及资金回滚的接口会使用到商户证书，包括退款、撤销接口的请求
+	 * @param url 请求的地址
+	 * @param data xml数据
+	 * @param certPath 证书文件目录
+	 * @param certPass 证书密码
+	 * @return String 回调的xml信息
+	 */
+	public static String postSSL(String url, String data, String certPath, String certPass) {
+		HttpsURLConnection conn = null;
+		OutputStream out = null;
+		InputStream inputStream = null;
+		BufferedReader reader = null;
+		try {
+			KeyStore clientStore = KeyStore.getInstance("PKCS12");
+			clientStore.load(new FileInputStream(certPath), certPass.toCharArray());
+			KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+			kmf.init(clientStore, certPass.toCharArray());
+			KeyManager[] kms = kmf.getKeyManagers();
+			SSLContext sslContext = SSLContext.getInstance("TLSv1");
+			
+			sslContext.init(kms, null, new SecureRandom());
+			HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+			URL _url = new URL(url);
+			conn = (HttpsURLConnection) _url.openConnection();
+			
+			conn.setRequestMethod("POST");
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+			
+			conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+			conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36");
+			conn.connect();
+			
+			out = conn.getOutputStream();
+			out.write(data.getBytes(CHARSET));
+			out.flush();
+			
+			inputStream = conn.getInputStream();
+			reader = new BufferedReader(new InputStreamReader(inputStream, CHARSET));
+			StringBuilder sb = new StringBuilder();
+			String line = null;
+			while ((line = reader.readLine()) != null){
+				sb.append(line).append("\n");
+			}
+			return sb.toString();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			IOUtils.closeQuietly(out);
+			IOUtils.closeQuietly(reader);
+			IOUtils.closeQuietly(inputStream);
+			if (conn != null) {
+				conn.disconnect();
+			}
+		}
 	}
 	
 }

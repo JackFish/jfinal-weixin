@@ -108,10 +108,17 @@ public class PaymentApi {
 	 * 申请退款，内部添加了随机字符串nonce_str和签名sign
 	 * @param params 参数map，内部添加了随机字符串nonce_str和签名sign
 	 * @param paternerKey 商户密钥
+	 * @param certPath 证书文件目录
 	 * @return Map<String, String> map
+	 * @throws Exception 
 	 */
-	public static Map<String, String> refund(Map<String, String> params, String paternerKey) {
-		return request(closeOrderUrl, params, paternerKey);
+	public static Map<String, String> refund(Map<String, String> params, String paternerKey, String certPath) {
+		params.put("nonce_str", PaymentKit.getUUID());
+		String sign = PaymentKit.createSign(params, paternerKey);
+		params.put("sign", sign);
+		String partner = params.get("mch_id");
+		String xmlStr = PaymentKit.postSSL(refundUrl, PaymentKit.toXml(params), certPath, partner);
+		return PaymentKit.xmlToMap(xmlStr);
 	}
 	
 	// 查询退款文档地址：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_5
@@ -179,7 +186,4 @@ public class PaymentApi {
 		return baseRefundQuery(params, appid, mch_id, paternerKey);
 	}
 	
-	private static String postSSL() {
-		return null;
-	}
 }
