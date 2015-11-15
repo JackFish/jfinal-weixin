@@ -33,8 +33,7 @@ public class ShorturlApi
 	public static ApiResult getShortUrl(String longUrl) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("action", "long2short");
-		params.put("long_url", "longUrl");
-		
+		params.put("long_url", longUrl);
 		return getShorturl(JsonUtils.toJson(params));
 	}
 }

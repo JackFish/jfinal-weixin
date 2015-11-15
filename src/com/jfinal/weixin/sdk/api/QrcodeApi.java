@@ -68,7 +68,7 @@ public class QrcodeApi
 	 * @param sceneStr 场景值ID（字符串形式的ID），字符串类型，长度限制为1到64，仅永久二维码支持此字段
 	 * @return ApiResult 二维码信息
 	 */
-	public static ApiResult createTemporary(String sceneStr) {
+	public static ApiResult createPermanent(String sceneStr) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("action_name", "QR_LIMIT_STR_SCENE");
 		
