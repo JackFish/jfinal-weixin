@@ -3,7 +3,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jfinal</groupId>
     <artifactId>jfinal-weixin</artifactId>
-    <version>1.5-SNAPSHOT</version>
     <name>jfinal-weixin</name>
     <url>http://www.jfinal.com</url>
     <properties>
@@ -13,18 +12,12 @@
     </properties>
 
     <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
+        <groupId>com.jfinal</groupId>
+        <artifactId>jfinal-weixin-parent</artifactId>
+        <version>1.5-SNAPSHOT</version>
+        <relativePath>../jfinal-weixin-parent</relativePath>
     </parent>
 
-    <repositories>
-    </repositories>
-    <scm>
-        <connection>scm:git:git@git.oschina.net:jfinal/jfinal-weixin.git</connection>
-        <developerConnection>scm:git:git@git.oschina.net:jfinal/jfinal-weixin.git</developerConnection>
-        <url>git@git.oschina.net:jfinal/jfinal-weixin.git</url>
-    </scm>
 
     <dependencies>
         <dependency>
@@ -177,6 +170,7 @@
                         <exclude>a_little_config_pro.txt</exclude>
                         <exclude>ehcache.xml</exclude>
                         <exclude>log4j.properties</exclude>
+                        <exclude>com\jfinal\weixin\demo\*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -229,7 +223,6 @@
             </plugin>
         </plugins>
     </build>
-    <packaging>war</packaging>
 </project>
 
 
