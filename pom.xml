@@ -5,6 +5,7 @@
     <artifactId>jfinal-weixin</artifactId>
     <version>1.5-SNAPSHOT</version>
     <name>jfinal-weixin</name>
+    <packaging>war</packaging>
     <url>http://www.jfinal.com</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -229,7 +230,6 @@
             </plugin>
         </plugins>
     </build>
-    <packaging>war</packaging>
 </project>
 
 

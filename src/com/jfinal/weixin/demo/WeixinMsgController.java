@@ -13,6 +13,8 @@ import com.jfinal.weixin.sdk.msg.in.*;
 import com.jfinal.weixin.sdk.msg.in.event.*;
 import com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults;
 import com.jfinal.weixin.sdk.msg.out.OutCustomMsg;
+import com.jfinal.weixin.sdk.msg.out.OutImageMsg;
+import com.jfinal.weixin.sdk.msg.out.OutMsg;
 import com.jfinal.weixin.sdk.msg.out.OutTextMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +55,15 @@ public class WeixinMsgController extends MsgController {
 	protected void processInTextMsg(InTextMsg inTextMsg)
 	{
 		//转发给多客服PC客户端
-		OutCustomMsg outCustomMsg = new OutCustomMsg(inTextMsg);
+		String msg=inTextMsg.getContent();
+		OutMsg outCustomMsg=null;
+		if(msg!=null&&!msg.isEmpty()&&msg.contains("图片")){
+			outCustomMsg=new OutImageMsg(inTextMsg);
+			((OutImageMsg)outCustomMsg).setMediaId("tAOB5ytJSTVB5QHthnDh7mVb6gt-YT0MrV8V6eZeZlH2chwax2RgJbi6ZuvNSSIg");
+		}else{
+			outCustomMsg = new OutTextMsg(inTextMsg);
+			((OutTextMsg)outCustomMsg).setContent("你好！");
+		}
 		render(outCustomMsg);
 	}
 
