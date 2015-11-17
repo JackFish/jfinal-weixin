@@ -4,7 +4,7 @@
     <groupId>com.jfinal</groupId>
     <artifactId>jfinal-weixin</artifactId>
     <name>jfinal-weixin</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <url>http://www.jfinal.com</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
