@@ -27,8 +27,8 @@ public class JsTicket implements Serializable {
 			@SuppressWarnings("unchecked")
 			Map<String, Object> temp = JsonUtils.decode(jsonStr, Map.class);
 			ticket = (String) temp.get("ticket");
-			expires_in = (Integer) temp.get("expires_in");
-			errcode = (Integer) temp.get("errcode");
+			expires_in = getInt(temp, "expires_in");
+			errcode = getInt(temp, "errcode");
 			errmsg = (String) temp.get("errmsg");
 
 			if (expires_in != null)
@@ -43,7 +43,12 @@ public class JsTicket implements Serializable {
 	public String toString() {
 		return getJson();
 	}
-
+	
+	private Integer getInt(Map<String, Object> temp, String key) {
+		Number number = (Number) temp.get(key);
+		return number == null ? null : number.intValue();
+	}
+	
 	public String getJson() {
 		return json;
 	}
