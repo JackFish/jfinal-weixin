@@ -60,6 +60,27 @@ public class MediaApi {
 		}
 	}
 	
+	private static String uploadVideoUrl = "https://file.api.weixin.qq.com/cgi-bin/media/uploadvideo?access_token=";
+	
+	/**
+	 * 视频群发的消息素材上传
+	 * @param mediaId 用于群发的消息的media_id
+	 * @param title 消息的标题
+	 * @param description 消息的描述
+	 * @return
+	 */
+	public static ApiResult uploadVideo(String mediaId, String title, String description) {
+		String url = uploadVideoUrl + AccessTokenApi.getAccessTokenStr();
+		
+		Map<String, String> mapData = new HashMap<String, String>();
+		mapData.put("media_id", mediaId);
+		mapData.put("title", title);
+		mapData.put("description", description);
+		
+		String jsonResult = HttpKit.post(url, JsonUtils.toJson(mapData));
+		return new ApiResult(jsonResult);
+	}
+	
 	private static String get_url = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=";
 	
 	/**
