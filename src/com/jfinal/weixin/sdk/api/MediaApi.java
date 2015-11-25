@@ -417,8 +417,6 @@ public class MediaApi {
 			mediaFile.setContentLength(conn.getHeaderField("Content-Length"));
 			mediaFile.setContentType(conn.getHeaderField("Content-Type"));
 			mediaFile.setFileStream(bis);
-			
-			IOUtils.closeQuietly(bis);
 		}
 		// 关闭连接
 		if (conn != null) {
