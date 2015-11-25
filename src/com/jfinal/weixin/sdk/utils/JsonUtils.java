@@ -152,7 +152,7 @@ public class JsonUtils {
 	 * Gson委托
 	 */
 	private static class GsonJsonDelegate implements JsonDelegate {
-		private com.google.gson.Gson gson = new com.google.gson.Gson();
+		private com.google.gson.Gson gson = new com.google.gson.GsonBuilder().create();
 		
 		@Override
 		public String toJson(Object object) {

@@ -75,9 +75,10 @@ public class UserApi {
 		
 		List<Map<String, Object>> userList = new ArrayList<Map<String,Object>>();
 		for (String openId : openIdList) {
-			Map<String, String> mapData = new HashMap<String, String>();
+			Map<String, Object> mapData = new HashMap<String, Object>();
 			mapData.put("openid", openId);
-			mapData.put("lang", "zh-CN");
+			mapData.put("lang", "zh_CN");
+			userList.add(mapData);
 		}
 		userListMap.put("user_list", userList);
 		

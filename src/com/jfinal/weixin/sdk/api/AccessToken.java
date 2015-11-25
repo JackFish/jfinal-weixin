@@ -34,8 +34,8 @@ public class AccessToken implements Serializable {
 		try {
 			Map<String, Object> temp = JsonUtils.decode(jsonStr, Map.class);
 			access_token = (String) temp.get("access_token");
-			expires_in = (Integer) temp.get("expires_in");
-			errcode = (Integer) temp.get("errcode");
+			expires_in = getInt(temp, "expires_in");
+			errcode = getInt(temp, "errcode");
 			errmsg = (String) temp.get("errmsg");
 
 			if (expires_in != null)
@@ -58,6 +58,11 @@ public class AccessToken implements Serializable {
 		if (expiredTime < System.currentTimeMillis())
 			return false;
 		return access_token != null;
+	}
+	
+	private Integer getInt(Map<String, Object> temp, String key) {
+		Number number = (Number) temp.get(key);
+		return number == null ? null : number.intValue();
 	}
 	
 	public String getAccessToken() {

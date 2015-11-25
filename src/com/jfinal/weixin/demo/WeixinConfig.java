@@ -52,6 +52,9 @@ public class WeixinConfig extends JFinalConfig {
 		
 		// EhCachePlugin ecp = new EhCachePlugin();
 		// me.add(ecp);
+		
+		// RedisPlugin redisPlugin = new RedisPlugin("weixin", "127.0.0.1");
+		// me.add(redisPlugin);
 	}
 	
 	public void configInterceptor(Interceptors me) {
@@ -62,6 +65,14 @@ public class WeixinConfig extends JFinalConfig {
 		
 	}
 	
+	public void afterJFinalStart() {
+		// 1.5 之后支持redis存储access_token、js_ticket，需要先启动RedisPlugin
+//		ApiConfigKit.setAccessTokenCache(new RedisAccessTokenCache());
+		// 1.6新增的2种初始化
+//		ApiConfigKit.setAccessTokenCache(new RedisAccessTokenCache(Redis.use("weixin")));
+//		ApiConfigKit.setAccessTokenCache(new RedisAccessTokenCache("weixin"));
+	}
+
 	public static void main(String[] args) {
 		JFinal.start("webapp", 80, "/", 5);
 	}

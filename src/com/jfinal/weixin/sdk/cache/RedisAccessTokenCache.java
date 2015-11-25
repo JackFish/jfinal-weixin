@@ -7,7 +7,19 @@ public class RedisAccessTokenCache implements IAccessTokenCache {
 	
 	private final String ACCESS_TOKEN_PREFIX = "jfinal_weixin:";
 	
-	private Cache cache = Redis.use();
+	private final Cache cache;
+	
+	public RedisAccessTokenCache() {
+		this.cache = Redis.use();
+	}
+	
+	public RedisAccessTokenCache(String cacheName) {
+		this.cache = Redis.use(cacheName);
+	}
+	
+	public RedisAccessTokenCache(Cache cache) {
+		this.cache = cache;
+	}
 	
 	@Override
 	public <T> T get(String key) {

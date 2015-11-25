@@ -86,7 +86,7 @@ public class ApiResult {
 	}
 	
 	public Integer getErrorCode() {
-		return (Integer)attrs.get("errcode");
+		return getInt("errcode");
 	}
 	
 	public String getErrorMsg() {
@@ -109,11 +109,13 @@ public class ApiResult {
 	}
 	
 	public Integer getInt(String name) {
-		return (Integer)attrs.get(name);
+		Number number = (Number) attrs.get(name);
+		return number == null ? null : number.intValue();
 	}
 	
 	public Long getLong(String name) {
-		return (Long)attrs.get(name);
+		Number number = (Number) attrs.get(name);
+		return number == null ? null : number.longValue();
 	}
 	
 	public BigInteger getBigInteger(String name) {
